@@ -2,13 +2,13 @@
 
 Proyecto de análisis automático de requerimientos, código y diseño (Figma)
 
-# 📌 Objetivo del Proyecto
+## 📌 Objetivo del Proyecto
 
 El propósito de este proyecto es desarrollar un chat de IA especializado en validar los desarrollos implementados en el sitio web mediante Adobe Target, siguiendo el mismo enfoque estructural utilizado previamente en la IA APA para pruebas automatizadas con Playwright.
 
 Esta IA permitirá analizar requerimientos, código e interfaces, con el fin de asegurar calidad, consistencia visual y cumplimiento técnico antes de que las implementaciones lleguen a QA y producción.
 
-# 📝 Descripción General
+## 📝 Descripción General
 
 La IA recibirá como inputs:
 
@@ -18,9 +18,9 @@ La IA recibirá como inputs:
 
 A partir de esta información, la IA generará de forma automática un análisis estandarizado que apoye al equipo de desarrollo, QA y producto.
 
-# 📤 Resultados Generados por la IA
+## 📤 Resultados Generados por la IA
 
-## 1️⃣ Análisis del Requerimiento
+### 1️⃣ Análisis del Requerimiento
 
 La IA desglosará el requerimiento identificando:
 - Escenarios funcionales que deben cumplir los desarrolladores.
@@ -28,7 +28,7 @@ La IA desglosará el requerimiento identificando:
 - Criterios de aceptación implícitos o faltantes.
 - Riesgos o dependencias técnicas.
 
-## 2️⃣ Análisis del Código
+### 2️⃣ Análisis del Código
 
 El motor de análisis validará que el código cumpla con estándares mínimos definidos:
 ⏱️ Intervalos de ejecución ≥ 500 ms
@@ -39,7 +39,7 @@ El motor de análisis validará que el código cumpla con estándares mínimos d
 - ❌ No se aceptan estructuras monolíticas
 - ✔️ Buenas prácticas y consistencia general
 
-## 3️⃣ Comparativa entre Diseño (Figma) y Desarrollo
+### 3️⃣ Comparativa entre Diseño (Figma) y Desarrollo
 
 La IA evaluará:
 
@@ -50,7 +50,7 @@ La IA evaluará:
 
 Esto permite validar la correcta visualización final y alertar inconsistencias antes de QA.
 
-## 4️⃣ Historial y Preservación de la Información
+### 4️⃣ Historial y Preservación de la Información
 
 El sistema mantendrá un historial persistente que permitirá:
 
@@ -58,19 +58,19 @@ El sistema mantendrá un historial persistente que permitirá:
 - Auditoría de análisis
 - Comparativa entre versiones
 
-# 🧩 Entrenamiento de la IA
+## 🧩 Entrenamiento de la IA
 
 La IA podrá ser entrenada con los códigos existentes en el repositorio de IDX:
 🔗 https://studio.firebase.google.com/target-avianca-617947
 
 Estos códigos servirán como base para comprender patrones, estándares y estructuras usadas actualmente por el equipo.
 
-# ☁️ Infraestructura y Alojamiento
+## ☁️ Infraestructura y Alojamiento
 
 Inicialmente el proyecto se alojará en GitHub.
 Se contempla una futura migración hacia Azure para servicios más robustos y escalables.
 
-# 🔐 Servicios y Credenciales
+## 🔐 Servicios y Credenciales
 
 Para uso de servicios externos, suscripciones o accesos a herramientas:
 
@@ -82,7 +82,7 @@ Clave general asignada:
 
 (Será utilizado únicamente para validaciones internas o provisión de acceso.)
 
-# 🚀 Resultado Esperado
+## 🚀 Resultado Esperado
 
 El sistema final será un chat inteligente con funcionamiento similar a la IA utilizada en pruebas automatizadas con Playwright, capaz de recibir:
 
@@ -93,7 +93,7 @@ El sistema final será un chat inteligente con funcionamiento similar a la IA ut
 
 Y generar de manera automática todo el análisis detallado requerido, reduciendo tiempos de validación y estandarizando los criterios entre equipos.
 
-# 🛠️ Tecnologías Consideradas (Propuesta)
+## 🛠️ Tecnologías Consideradas (Propuesta)
 
 OpenAI / Gemini Google
 GitHub Actions para CI/CD
