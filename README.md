@@ -31,7 +31,8 @@ La IA desglosará el requerimiento identificando:
 ### 2️⃣ Análisis del Código
 
 El motor de análisis validará que el código cumpla con estándares mínimos definidos:
-⏱️ Intervalos de ejecución ≥ 500 ms
+
+- ⏱️ Intervalos de ejecución ≥ 500 ms
 - ❌ No se permite el uso de Mutation Observers
 - ❌ Prohibido uso de múltiples hilos de ejecución
 - 🏷️ Variables descriptivas
