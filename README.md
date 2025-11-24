@@ -1,4 +1,4 @@
-# IA de Validación para Desarrollos con Adobe Target - Target Scan
+# Target Scan
 
 Proyecto de análisis automático de requerimientos, código y diseño (Figma)
 
