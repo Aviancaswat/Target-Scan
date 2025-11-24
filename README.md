@@ -1,73 +1,100 @@
-# React + TypeScript + Vite
+# IA de Validación para Desarrollos con Adobe Target - Target Scan
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto de análisis automático de requerimientos, código y diseño (Figma)
 
-Currently, two official plugins are available:
+# 📌 Objetivo del Proyecto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+El propósito de este proyecto es desarrollar un chat de IA especializado en validar los desarrollos implementados en el sitio web mediante Adobe Target, siguiendo el mismo enfoque estructural utilizado previamente en la IA APA para pruebas automatizadas con Playwright.
 
-## React Compiler
+Esta IA permitirá analizar requerimientos, código e interfaces, con el fin de asegurar calidad, consistencia visual y cumplimiento técnico antes de que las implementaciones lleguen a QA y producción.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# 📝 Descripción General
 
-## Expanding the ESLint configuration
+La IA recibirá como inputs:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 📸 Imágenes del diseño en Figma (si el desarrollo lo incluye).
+- 📄 Descripción exacta del requerimiento funcional.
+- 💻 Código desarrollado para cumplir dicho requerimiento.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+A partir de esta información, la IA generará de forma automática un análisis estandarizado que apoye al equipo de desarrollo, QA y producto.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# 📤 Resultados Generados por la IA
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 1️⃣ Análisis del Requerimiento
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+La IA desglosará el requerimiento identificando:
+- Escenarios funcionales que deben cumplir los desarrolladores.
+- Escenarios de validación para el equipo de QA.
+- Criterios de aceptación implícitos o faltantes.
+- Riesgos o dependencias técnicas.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 2️⃣ Análisis del Código
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+El motor de análisis validará que el código cumpla con estándares mínimos definidos:
+⏱️ Intervalos de ejecución ≥ 500 ms
+- ❌ No se permite el uso de Mutation Observers
+- ❌ Prohibido uso de múltiples hilos de ejecución
+- 🏷️ Variables descriptivas
+- 📦 Código modular, legible y mantenible
+- ❌ No se aceptan estructuras monolíticas
+- ✔️ Buenas prácticas y consistencia general
+
+## 3️⃣ Comparativa entre Diseño (Figma) y Desarrollo
+
+La IA evaluará:
+
+- Diferencias visuales
+- Espaciados, tamaños, tipografías
+- Comportamiento esperado vs. implementado
+- Cumplimiento del lineamiento UI/UX del proyecto
+
+Esto permite validar la correcta visualización final y alertar inconsistencias antes de QA.
+
+## 4️⃣ Historial y Preservación de la Información
+
+El sistema mantendrá un historial persistente que permitirá:
+
+- Consultas retrospectivas
+- Auditoría de análisis
+- Comparativa entre versiones
+
+# 🧩 Entrenamiento de la IA
+
+La IA podrá ser entrenada con los códigos existentes en el repositorio de IDX:
+🔗 https://studio.firebase.google.com/target-avianca-617947
+
+Estos códigos servirán como base para comprender patrones, estándares y estructuras usadas actualmente por el equipo.
+
+# ☁️ Infraestructura y Alojamiento
+
+Inicialmente el proyecto se alojará en GitHub.
+Se contempla una futura migración hacia Azure para servicios más robustos y escalables.
+
+# 🔐 Servicios y Credenciales
+
+Para uso de servicios externos, suscripciones o accesos a herramientas:
+
+Correo autorizado:
+📧 aviancaswat@gmail.com
+
+Clave general asignada:
+🔑 aviancaswat2024
+
+(Será utilizado únicamente para validaciones internas o provisión de acceso.)
+
+# 🚀 Resultado Esperado
+
+El sistema final será un chat inteligente con funcionamiento similar a la IA utilizada en pruebas automatizadas con Playwright, capaz de recibir:
+
+✔️ Imagen de referencia del desarrollo
+✔️ Imagen de Figma
+✔️ Requerimiento funcional
+✔️ Código implementado
+
+Y generar de manera automática todo el análisis detallado requerido, reduciendo tiempos de validación y estandarizando los criterios entre equipos.
+
+# 🛠️ Tecnologías Consideradas (Propuesta)
+
+OpenAI / Gemini Google
+GitHub Actions para CI/CD
+Firebase / IDX para entrenamiento inicial
