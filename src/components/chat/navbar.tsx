@@ -12,7 +12,6 @@ const Navbar = () => {
             <AppBar position="fixed" color="default" elevation={0}>
                 <Toolbar>
                     <Stack direction="row" spacing={1} alignItems="center">
-                        <SideBarChat />
                         <Box>
                             <MessageCircleCode size={30} />
                         </Box>
@@ -24,6 +23,7 @@ const Navbar = () => {
                         >
                             Target Scan
                         </Typography>
+                        <SideBarChat />
                     </Stack>
 
                     {/* Esto es para el final del documento */}
