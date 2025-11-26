@@ -24,9 +24,9 @@ export default function SideBarChat() {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 1, justifyContent: 'space-between' }}>
                 <Stack direction="row" spacing={1} alignItems="center">
                     <Box>
-                        <MessageCircleCode size={30} />
+                        <MessageCircleCode size={25} />
                     </Box>
-                    <Typography variant="h6" fontWeight="bold">
+                    <Typography variant="subtitle1" fontWeight="bold">
                         Target Scan
                     </Typography>
                 </Stack>
@@ -107,7 +107,7 @@ export default function SideBarChat() {
                         }}
                     >
 
-                        Targer Scan
+                        Target Scan
                     </Button>
                 </Box>
             </Drawer>

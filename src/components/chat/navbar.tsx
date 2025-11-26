@@ -25,8 +25,6 @@ const Navbar = () => {
                         </Typography>
                         <SideBarChat />
                     </Stack>
-
-                    {/* Esto es para el final del documento */}
                 </Toolbar>
             </AppBar>
         </Box>
