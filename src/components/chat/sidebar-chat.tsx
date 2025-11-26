@@ -60,30 +60,23 @@ export default function SideBarChat() {
                 </Typography>
             </Box>
             <List>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <MessageCircleMore />
-                        </ListItemIcon>
-                        <ListItemText primary={"Chat 1 de ejemplo"} />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <MessageCircleMore />
-                        </ListItemIcon>
-                        <ListItemText primary={"Chat 1 de ejemplo"} />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <MessageCircleMore />
-                        </ListItemIcon>
-                        <ListItemText primary={"Chat 1 de ejemplo"} />
-                    </ListItemButton>
-                </ListItem>
+                {
+                    [
+                        "Chat 1",
+                        "Chat 2",
+                        "Chat 3",
+                        "Chat 4",
+                    ].map((text, index) => (
+                        <ListItem key={text} disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <MessageCircleMore size={20} />
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))
+                }
             </List>
         </Box>
     );
@@ -106,7 +99,6 @@ export default function SideBarChat() {
                             backgroundColor: '#1B1B1B',
                         }}
                     >
-
                         Target Scan
                     </Button>
                 </Box>

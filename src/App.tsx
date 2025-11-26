@@ -1,12 +1,11 @@
-import Navbar from './components/chat/navbar';
-import ChatPage from './pages/chat.page';
+import Layout from './layout/layout';
+import RoutesApp from './routes/router-app';
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <ChatPage />
-    </>
+    <Layout>
+      <RoutesApp />
+    </Layout>
   )
 }
 
