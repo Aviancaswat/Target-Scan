@@ -62,16 +62,12 @@ const ChatPage = () => {
             flexDirection="column"
             overflow="hidden"
         >
-            {/* Navbar arriba */}
             <Navbar />
-
-            {/* Contenedor de mensajes: ocupa todo el espacio disponible entre navbar y textarea */}
             <Box
                 flex={1}
                 overflow="auto"
                 px={2}
                 py={2}
-                // Si tu Navbar es fixed / position: "fixed", puedes agregar un marginTop aquí
                 mt={8}
             >
                 {messages.map((msg, index) => (
@@ -100,12 +96,9 @@ const ChatPage = () => {
                         </Box>
                     </Box>
                 ))}
-
-                {/* Marker para hacer scroll al final */}
                 <div ref={messagesEndRef} />
             </Box>
 
-            {/* Input abajo */}
             <Box width="90%" px={2} pb={2} margin={"auto"} >
                 <textarea
                     placeholder="Escribe cualquier cosa..."
