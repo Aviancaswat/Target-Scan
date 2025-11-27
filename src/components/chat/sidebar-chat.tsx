@@ -8,12 +8,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { MessageCircleCode, MessageCircleMore, PanelRight, Search, SquarePen, X } from 'lucide-react';
+import { MessageCircleCode, MessageCircleMore, MessageCircleOff, PanelRight, Search, SquarePen, X } from 'lucide-react';
 import { useState } from 'react';
+import '../../styles/chat.style.css';
 
 export default function SideBarChat() {
 
     const [open, setOpen] = useState<boolean>(false);
+    const [messages,] = useState<Array<string>>([]);
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
@@ -61,21 +63,25 @@ export default function SideBarChat() {
             </Box>
             <List>
                 {
-                    [
-                        "Chat 1",
-                        "Chat 2",
-                        "Chat 3",
-                        "Chat 4",
-                    ].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <MessageCircleMore size={20} />
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))
+                    messages.length === 0 ? (
+                        <Box mt={2} textAlign="center">
+                            <MessageCircleOff size={30} />
+                            <Typography variant="body2" color="textSecondary">
+                                No hay chats disponibles
+                            </Typography>
+                        </Box>
+                    ) : (
+                        messages.map((text, index) => (
+                            <ListItem key={index} disablePadding disableGutters>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <MessageCircleMore size={20} />
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))
+                    )
                 }
             </List>
         </Box>
