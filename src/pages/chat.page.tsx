@@ -1,6 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import Navbar from "../components/chat/navbar";
 import { AgentTargetScanService } from "../services/targetScanService";
 
@@ -36,7 +39,11 @@ const ChatPage = () => {
                     Chat Page
                 </Typography>
                 <Typography variant="body1">
-                    <ReactMarkdown>{response}</ReactMarkdown>
+                    <ReactMarkdown
+                        children={response}
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                    />
                 </Typography>
             </Box>
             <Box
