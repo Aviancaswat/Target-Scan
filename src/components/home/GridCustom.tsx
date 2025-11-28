@@ -5,7 +5,16 @@ import ModalDetailsFeature from "./ModalDetailsFeature";
 
 export default function GridCustom() {
     return (
-        <Grid spacing={2} width={"80%"} className="animate__animated animate__fadeIn animate__delay-0.5s">
+        <Grid
+            spacing={2}
+            className="animate__animated animate__fadeIn"
+            sx={{
+                width: {
+                    xs: "95%",
+                    lg: "80%"
+                }
+            }}
+        >
             <Grid container size={{ xs: 12, md: 6 }} spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Box

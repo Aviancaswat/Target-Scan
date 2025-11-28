@@ -53,7 +53,7 @@ const HomePage = () => {
                     textAlign={"center"}
                     sx={{
                         fontSize: {
-                            xs: "20px",
+                            xs: "24px",
                             sm: "24px",
                             md: "30px",
                             lg: "36px",

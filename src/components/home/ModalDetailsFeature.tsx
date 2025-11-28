@@ -94,7 +94,7 @@ export default function ModalDetailsFeature(props: ModalDetailsFeatureProps) {
                             <CircleX />
                         </IconButton>
                     </Box>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Typography id="modal-modal-description" sx={{ mt: 2, p: 1 }} >
                         {
                             dataFeature[props.type - 1].description.map(e => (
                                 <li>{e}</li>
