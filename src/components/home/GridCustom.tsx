@@ -1,11 +1,11 @@
-import { IconButton, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Maximize2 } from "lucide-react";
+import ModalDetailsFeature from "./ModalDetailsFeature";
 
 export default function GridCustom() {
     return (
-        <Grid spacing={2} width={"80%"}>
+        <Grid spacing={2} width={"80%"} className="animate__animated animate__fadeIn animate__delay-0.5s">
             <Grid container size={{ xs: 12, md: 6 }} spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Box
@@ -39,9 +39,7 @@ export default function GridCustom() {
                             >
                                 Análisis Requerimientos
                             </Typography>
-                            <IconButton>
-                                <Maximize2 />
-                            </IconButton>
+                            <ModalDetailsFeature type={1} />
                         </Box>
                     </Box>
                 </Grid>
@@ -77,9 +75,7 @@ export default function GridCustom() {
                             >
                                 Análisis Visual
                             </Typography>
-                            <IconButton>
-                                <Maximize2 />
-                            </IconButton>
+                            <ModalDetailsFeature type={2} />
                         </Box>
                     </Box>
                 </Grid>
@@ -115,9 +111,7 @@ export default function GridCustom() {
                             >
                                 Análisis Funcional
                             </Typography>
-                            <IconButton>
-                                <Maximize2 />
-                            </IconButton>
+                            <ModalDetailsFeature type={3} />
                         </Box>
                     </Box>
                 </Grid>

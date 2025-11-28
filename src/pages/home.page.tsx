@@ -41,6 +41,7 @@ const HomePage = () => {
                             lg: "18px"
                         }
                     }}
+                    className="animate__animated animate__fadeInDown"
                 >
                     Comienza a explorar Target Scan
                 </Typography>
@@ -58,6 +59,7 @@ const HomePage = () => {
                             lg: "36px",
                         }
                     }}
+                    className="animate__animated animate__fadeInDown"
                 >
                     Automatiza el análisis técnico, visual y funcional
                 </Typography>
