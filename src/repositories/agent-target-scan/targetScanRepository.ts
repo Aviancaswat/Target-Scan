@@ -19,7 +19,7 @@ export class TargetScanRepository {
         if (!this.genAI) {
             const apiKey = import.meta.env.VITE_API_KEY_GEMINI || "";
             if (!apiKey) {
-                throw new Error("VITE_API_KEY_GEMINI is missing");
+                throw new Error("VITE_API_KEY_GEMINI no es válida");
             }
             this.genAI = new GoogleGenAI({ apiKey });
         }
@@ -32,7 +32,7 @@ export class TargetScanRepository {
             reader.onload = () => {
                 const result = reader.result;
                 if (typeof result !== "string") {
-                    return reject(new Error("Unexpected FileReader result type"));
+                    return reject(new Error("Tipo de resultado del archivo no válido"));
                 }
 
                 const [metadata, data] = result.split(",");

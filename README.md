@@ -71,18 +71,6 @@ Estos códigos servirán como base para comprender patrones, estándares y estru
 Inicialmente el proyecto se alojará en GitHub.
 Se contempla una futura migración hacia Azure para servicios más robustos y escalables.
 
-## 🔐 Servicios y Credenciales
-
-Para uso de servicios externos, suscripciones o accesos a herramientas:
-
-Correo autorizado:
-📧 aviancaswat@gmail.com
-
-Clave general asignada:
-🔑 aviancaswat2024
-
-(Será utilizado únicamente para validaciones internas o provisión de acceso.)
-
 ## 🚀 Resultado Esperado
 
 El sistema final será un chat inteligente con funcionamiento similar a la IA utilizada en pruebas automatizadas con Playwright, capaz de recibir:
