@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { lightBlue } from "@mui/material/colors";
+import "highlight.js/styles/tokyo-night-dark.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
@@ -8,6 +9,7 @@ import remarkGfm from "remark-gfm";
 import Navbar from "../components/chat/navbar";
 import { ChatInput } from "../components/chat/textAreaCustom";
 import { AgentTargetScanService } from "../services/targetScanService";
+import '../styles/chat.style.css';
 
 type Message = {
     role: "user" | "assistant";
@@ -15,6 +17,7 @@ type Message = {
 };
 
 const ChatPage = () => {
+
     const [question, setQuestion] = useState<string>("");
     const [messages, setMessages] = useState<Message[]>([]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -36,17 +39,35 @@ const ChatPage = () => {
             setQuestion("");
 
             try {
-                const { text: aiText } = await AgentTargetScanService.getResponseIA(
+
+                const response = await AgentTargetScanService.getResponseIA(
                     question,
                     files
                 );
 
-                const assistantMessage: Message = {
-                    role: "assistant",
-                    content: aiText || "No response",
-                };
+                let assistantIndex = -1;
+                setMessages(prev => {
+                    assistantIndex = prev.length;
+                    return [...prev, { role: "assistant", content: "" }];
+                });
 
-                setMessages((prev) => [...prev, assistantMessage]);
+                let responseModel = "";
+                for await (const part of response) {
+                    if (!part) continue;
+
+                    console.log("Part: ", part);
+
+                    responseModel += part;
+
+                    setMessages(prev =>
+                        prev.map((msg, i) =>
+                            i === assistantIndex
+                                ? { ...msg, content: responseModel }
+                                : msg
+                        )
+                    );
+                }
+
             } catch (error) {
                 const errorMessage: Message = {
                     role: "assistant",
@@ -72,6 +93,7 @@ const ChatPage = () => {
             display="flex"
             flexDirection="column"
             overflow="hidden"
+            className="animate__animated animate__fadeIn"
         >
             <Navbar />
             <Box

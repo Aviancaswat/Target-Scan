@@ -1,3 +1,21 @@
 h1 {
     font-size: 20px;
 }
+
+code {
+    background: #eee;
+    color: #d63384;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+pre code {
+    border-radius: 8px;
+}
+
+p {
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin: 2px 0;
+}

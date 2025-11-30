@@ -2,7 +2,6 @@ import {
     GoogleGenAI,
     type Content,
     type ContentListUnion,
-    type GenerateContentResponse,
     type Part
 } from "@google/genai";
 import { PROMPT_TARGET_SCAN_MAIN } from "../../utils/prompt";
@@ -70,10 +69,10 @@ export class TargetScanRepository {
         }
     }
 
-    static async generateTextTargetScan(
+    static async *generateTextTargetScan(
         userPrompt: string,
         files: File[] = []
-    ): Promise<GenerateContentResponse> {
+    ): AsyncGenerator<string> {
 
         const trimmedPrompt = userPrompt.trim();
         if (!trimmedPrompt && files.length === 0) {
@@ -99,25 +98,30 @@ export class TargetScanRepository {
 
         const contents: ContentListUnion = contentsArray;
 
-        const response = await this.genAI!.models.generateContent({
+        const response = await this.genAI!.models.generateContentStream({
             model: this.modelName,
             contents,
             config: {
-                systemInstruction: PROMPT_TARGET_SCAN_MAIN,
-            },
+                systemInstruction: PROMPT_TARGET_SCAN_MAIN
+            }
         });
 
         this.pushToHistory(userContent);
+
+        let responseModel = "";
+        for await (const part of response) {
+            const text = part.text ?? "";
+            responseModel += text;
+            yield text
+        }
 
         this.pushToHistory({
             role: "model",
             parts: [
                 {
-                    text: response.text ?? "",
-                },
-            ],
+                    text: responseModel ?? "",
+                }
+            ]
         });
-
-        return response;
     }
 }

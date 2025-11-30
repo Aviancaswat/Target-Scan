@@ -10,7 +10,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { MessageCircleCode, MessageCircleMore, MessageCircleOff, PanelRight, Search, SquarePen, X } from 'lucide-react';
 import { useState } from 'react';
-import '../../styles/chat.style.css';
 
 export default function SideBarChat() {
 

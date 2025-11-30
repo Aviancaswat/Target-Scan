@@ -123,15 +123,6 @@ Usa siempre buenas prácticas de DevOps, accesos y control de versiones.
 
 ---
 
-## 📧 **Servicios y suscripciones**
-
-Si necesitas activar o validar algún servicio externo (por ejemplo, Vision, Imagen, almacenamiento, plugins, etc.) deberás solicitarlo usando:
-
-**Correo:** [aviancaswat@gmail.com](mailto:aviancaswat@gmail.com)
-**Clave:** aviancaswat2024
-
----
-
 ## 📝 **ESTRUCTURA FINAL DEL RESULTADO**
 
 Tu respuesta SIEMPRE debe generar:
