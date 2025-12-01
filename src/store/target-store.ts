@@ -41,7 +41,7 @@ const targetScanStore = create<TargetScanStore>()(
                 conversations: updater(state.conversations),
             })),
         setCurrentConversationId: (id: string) => set({ currentConversationId: id }),
-        setCurrentMessages: (updater: unknown) =>
+        setCurrentMessages: (updater) =>
             set((state) => ({
                 currentMessages:
                     typeof updater === "function"
@@ -54,7 +54,6 @@ const targetScanStore = create<TargetScanStore>()(
         })
     })
 );
-
 
 export const useTargetScanStore = () => {
     const {
