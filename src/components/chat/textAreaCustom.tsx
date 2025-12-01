@@ -2,6 +2,7 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import {
     Box,
+    Button,
     IconButton,
     Paper,
     Stack,
@@ -262,19 +263,27 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 <Stack direction="row" spacing={0.5} alignItems="center">
                     <Tooltip title="Adjuntar archivos">
                         <label htmlFor="chat-file-input">
-                            <IconButton
+                            <Button
                                 component="span"
                                 size="small"
                                 sx={{
                                     backgroundColor: "primary.main",
                                     color: "text.primary",
+                                    textTransform: "none",
                                     '&:hover': {
-                                        backgroundColor: "primary.light",
-                                        color: "text.primary"
-                                    }
-                                }}>
-                                <AttachFileIcon fontSize="small" />
-                            </IconButton>
+                                        color: "text.primary",
+                                        boxShadow: "0px 4px 15px rgba(246, 196, 80, 0.4)",
+                                    },
+                                    padding: "6px 16px",     
+                                    borderRadius: "16px",   
+                                    fontWeight: 600,
+                                    fontSize: "0.875rem", 
+                                    boxShadow: "none",
+                                }}
+                                startIcon={<AttachFileIcon fontSize="small" />}
+                            >
+                                Adjuntar
+                            </Button>
                         </label>
                     </Tooltip>
 
