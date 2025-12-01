@@ -1,15 +1,23 @@
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CodeIcon from "@mui/icons-material/Code";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import {
     Box,
-    Chip,
     IconButton,
+    Paper,
     Stack,
     TextField,
     Tooltip,
+    Typography,
 } from "@mui/material";
-import { ArrowUp } from "lucide-react";
-import { type ChangeEvent, type DragEvent, type KeyboardEvent, useState } from "react";
+import { ArrowUp, X } from "lucide-react";
+import {
+    type ChangeEvent,
+    type DragEvent,
+    type KeyboardEvent,
+    useEffect,
+    useState,
+} from "react";
 
 interface ChatInputProps {
     question: string;
@@ -17,8 +25,13 @@ interface ChatInputProps {
     onSend: (payload: { text: string; files: File[] }) => void;
 }
 
+type UploadItem = {
+    file: File;
+    preview?: string;
+};
+
 export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => {
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<UploadItem[]>([]);
     const [isDragOver, setIsDragOver] = useState(false);
 
     const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -28,23 +41,52 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         }
     };
 
+    const clearPreviews = (items: UploadItem[]) => {
+        items.forEach((item) => {
+            if (item.preview) URL.revokeObjectURL(item.preview);
+        });
+    };
+
     const handleSend = () => {
         const trimmed = question.trim();
         if (!trimmed && files.length === 0) return;
 
-        onSend({ text: trimmed, files });
+        onSend({
+            text: trimmed,
+            files: files.map((item) => item.file),
+        });
+
+        clearPreviews(files);
         setQuestion("");
         setFiles([]);
     };
 
+    const mapFilesToUploadItems = (fileList: FileList | File[]) => {
+        return Array.from(fileList).map((file) => ({
+            file,
+            preview: file.type.startsWith("image/")
+                ? URL.createObjectURL(file)
+                : undefined,
+        }));
+    };
+
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
-        setFiles((prev) => [...prev, ...Array.from(e.target.files!)]);
+
+        const mapped = mapFilesToUploadItems(e.target.files);
+        setFiles((prev) => [...prev, ...mapped]);
+
         e.target.value = "";
     };
 
     const handleRemoveFile = (fileIndex: number) => {
-        setFiles((prev) => prev.filter((_, i) => i !== fileIndex));
+        setFiles((prev) => {
+            const copy = [...prev];
+            const item = copy[fileIndex];
+            if (item.preview) URL.revokeObjectURL(item.preview);
+            copy.splice(fileIndex, 1);
+            return copy;
+        });
     };
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -52,7 +94,8 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         e.stopPropagation();
         setIsDragOver(false);
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            setFiles((prev) => [...prev, ...Array.from(e.dataTransfer.files)]);
+            const mapped = mapFilesToUploadItems(e.dataTransfer.files);
+            setFiles((prev) => [...prev, ...mapped]);
         }
     };
 
@@ -67,6 +110,14 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         e.stopPropagation();
         setIsDragOver(false);
     };
+
+    // Limpieza de previews al desmontar el componente
+    useEffect(() => {
+        return () => {
+            clearPreviews(files);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Box width="90%" margin="auto" px={2} pb={2}>
@@ -92,15 +143,88 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
 
             {files.length > 0 && (
                 <Stack direction="row" spacing={1} flexWrap="wrap" mb={1}>
-                    {files.map((file, index) => (
-                        <Chip
-                            key={`${file.name}-${index}`}
-                            label={`${file.name} (${Math.round(file.size / 1024)} KB)`}
-                            onDelete={() => handleRemoveFile(index)}
-                            variant="outlined"
-                            size="small"
-                        />
-                    ))}
+                    {files.map((item, index) => {
+                        const { file, preview } = item;
+                        const isImage = !!preview;
+
+                        return (
+                            <Paper
+                                key={`${file.name}-${index}`}
+                                sx={{
+                                    position: "relative",
+                                    width: 140,
+                                    p: 1,
+                                    borderRadius: 2,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 0.5,
+                                    boxShadow: 2,
+                                    bgcolor: "#fafafa",
+                                }}
+                            >
+                                {/* Botón eliminar */}
+                                <IconButton
+                                    size="small"
+                                    onClick={() => handleRemoveFile(index)}
+                                    sx={{
+                                        position: "absolute",
+                                        top: 4,
+                                        right: 4,
+                                        bgcolor: "rgba(0,0,0,0.4)",
+                                        color: "white",
+                                        "&:hover": {
+                                            bgcolor: "rgba(0,0,0,0.7)",
+                                        },
+                                    }}
+                                >
+                                    <X size={14} />
+                                </IconButton>
+
+                                {/* Preview o ícono */}
+                                {isImage ? (
+                                    <Box
+                                        component="img"
+                                        src={preview}
+                                        alt={file.name}
+                                        sx={{
+                                            width: "100%",
+                                            height: 80,
+                                            borderRadius: 1,
+                                            objectFit: "cover",
+                                        }}
+                                    />
+                                ) : (
+                                    <Box
+                                        sx={{
+                                            width: "100%",
+                                            height: 80,
+                                            borderRadius: 1,
+                                            border: "1px dashed",
+                                            borderColor: "divider",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                        }}
+                                    >
+                                        <InsertDriveFileIcon fontSize="small" />
+                                    </Box>
+                                )}
+
+                                {/* Nombre y tamaño */}
+                                <Typography
+                                    variant="caption"
+                                    noWrap
+                                    title={file.name}
+                                    sx={{ fontWeight: 500 }}
+                                >
+                                    {file.name}
+                                </Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                    {(file.size / 1024).toFixed(1)} KB
+                                </Typography>
+                            </Paper>
+                        );
+                    })}
                 </Stack>
             )}
 
@@ -161,10 +285,10 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                 sx={{
                                     bgcolor: "black",
                                     color: "#FFFFFF",
-                                    '&:hover': {
+                                    "&:hover": {
                                         background: "#3e3e3eff",
-                                        color: "#ffffff"
-                                    }
+                                        color: "#ffffff",
+                                    },
                                 }}
                             >
                                 <ArrowUp />
