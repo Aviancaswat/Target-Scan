@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import { lightBlue } from "@mui/material/colors";
 import "highlight.js/styles/tokyo-night-dark.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -11,6 +10,7 @@ import { ChatInput } from "../components/chat/textAreaCustom";
 import WelcomeChat from "../components/chat/welcome-chat";
 import { AgentTargetScanService } from "../services/targetScanService";
 import '../styles/chat.style.css';
+import { getColor } from "../utils/colors";
 
 type Message = {
     role: "user" | "assistant";
@@ -23,6 +23,8 @@ const ChatPage = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [userColors] = useState<[string, string]>(() => getColor());
+    const [bgColor, textColor] = userColors;
 
     const handleResponseIA = useCallback(
         async ({ text, files }: { text: string; files: File[] }) => {
@@ -138,8 +140,8 @@ const ChatPage = () => {
                                         maxWidth="80%"
                                         px={1.5}
                                         borderRadius={8}
-                                        bgcolor={msg.role === "user" ? lightBlue[100] : "transparent"}
-                                        color={msg.role === "user" ? lightBlue[600] : "text.primary"}
+                                        bgcolor={msg.role === "user" ? bgColor : "transparent"}
+                                        color={msg.role === "user" ? textColor : "text.primary"}
                                         sx={{ wordBreak: "break-word" }}
                                     >
                                         <ReactMarkdown
