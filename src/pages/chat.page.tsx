@@ -8,6 +8,7 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import Navbar from "../components/chat/navbar";
 import { ChatInput } from "../components/chat/textAreaCustom";
+import WelcomeChat from "../components/chat/welcome-chat";
 import { AgentTargetScanService } from "../services/targetScanService";
 import '../styles/chat.style.css';
 
@@ -113,43 +114,52 @@ const ChatPage = () => {
                 py={2}
                 mt={8}
             >
-                {messages.map((msg, index) => {
+                {
+                    messages.length === 0 ? (
+                        <>
+                            <WelcomeChat />
+                        </>
+                    ) : (
 
-                    const isUser = msg.role === "user";
-                    const isLastMessage = index === messages.length - 1;
-                    const showLoader = !isUser && isLastMessage && loading;
+                        messages.map((msg, index) => {
 
-                    return (
-                        <Box
-                            key={index}
-                            display="flex"
-                            justifyContent={msg.role === "user" ? "flex-end" : "flex-start"}
-                            mb={1.5}
-                        >
-                            <Box
-                                maxWidth="80%"
-                                px={1.5}
-                                borderRadius={8}
-                                bgcolor={msg.role === "user" ? lightBlue[100] : "transparent"}
-                                color={msg.role === "user" ? lightBlue[600] : "text.primary"}
-                                sx={{ wordBreak: "break-word" }}
-                            >
-                                <ReactMarkdown
-                                    remarkPlugins={[remarkGfm]}
-                                    rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                            const isUser = msg.role === "user";
+                            const isLastMessage = index === messages.length - 1;
+                            const showLoader = !isUser && isLastMessage && loading;
+
+                            return (
+                                <Box
+                                    key={index}
+                                    display="flex"
+                                    justifyContent={msg.role === "user" ? "flex-end" : "flex-start"}
+                                    mb={1.5}
                                 >
-                                    {msg.content}
-                                </ReactMarkdown>
-                            </Box>
-                            {
-                                showLoader && (
-                                    <Box ml={1} mt={1} className="loader-model" />
-                                )
-                            }
-                        </Box>
+                                    <Box
+                                        maxWidth="80%"
+                                        px={1.5}
+                                        borderRadius={8}
+                                        bgcolor={msg.role === "user" ? lightBlue[100] : "transparent"}
+                                        color={msg.role === "user" ? lightBlue[600] : "text.primary"}
+                                        sx={{ wordBreak: "break-word" }}
+                                    >
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                                        >
+                                            {msg.content}
+                                        </ReactMarkdown>
+                                    </Box>
+                                    {
+                                        showLoader && (
+                                            <Box ml={1} mt={1} mb={5} className="loader-model" />
+                                        )
+                                    }
+                                </Box>
+                            )
+                        }
+                        )
                     )
                 }
-                )}
                 <div ref={messagesEndRef} />
             </Box>
 
