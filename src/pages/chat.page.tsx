@@ -1,6 +1,6 @@
-import { Box, IconButton } from "@mui/material";
+import { Box, Icon, IconButton } from "@mui/material";
 import "highlight.js/styles/tokyo-night-dark.css";
-import { Copy } from "lucide-react";
+import { Check, Copy, type LucideIcon } from "lucide-react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
@@ -25,6 +25,7 @@ const ChatPage = () => {
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [statusStream, setStatusStream] = useState<boolean>(false);
+    const [iconCopy, setIconCopy] = useState<LucideIcon>(Copy);
     const [userColors] = useState<[string, string]>(() => getColor());
     const [bgColor, textColor] = userColors;
 
@@ -102,6 +103,14 @@ const ChatPage = () => {
         [question]
     );
 
+    const handleCopy = async (content: string) => {
+        await navigator.clipboard.writeText(content);
+        setIconCopy(Check);
+        setTimeout(() => {
+            setIconCopy(Copy)
+        }, 1000)
+    }
+
     useLayoutEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -161,8 +170,8 @@ const ChatPage = () => {
                                         {
                                             msg.role === "assistant" && statusStream === false && (
                                                 <Box className="animate__animated animate__fadeIn">
-                                                    <IconButton sx={{ ml: 1 }}>
-                                                        <Copy size={15} />
+                                                    <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleCopy(msg.content)}>
+                                                        <Icon component={iconCopy} fontSize="small"/>
                                                     </IconButton>
                                                 </Box>
                                             )
