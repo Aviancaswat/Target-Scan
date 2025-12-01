@@ -26,6 +26,7 @@ const ChatPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [statusStream, setStatusStream] = useState<boolean>(false);
     const [iconCopy, setIconCopy] = useState<LucideIcon>(Copy);
+
     const [userColors] = useState<[string, string]>(() => getColor());
     const [bgColor, textColor] = userColors;
 
@@ -85,7 +86,7 @@ const ChatPage = () => {
 
                 setTimeout(() => {
                     setStatusStream(false);
-                }, 1000)
+                }, 300)
 
             } catch (error) {
                 const errorMessage: Message = {
@@ -148,44 +149,69 @@ const ChatPage = () => {
 
                             return (
                                 <Box
-                                    key={index}
+                                    key={`${msg.role}-${index}`}
                                     display="flex"
-                                    justifyContent={msg.role === "user" ? "flex-end" : "flex-start"}
+                                    justifyContent={isUser ? "flex-end" : "flex-start"}
                                     mb={10}
                                 >
                                     <Box
                                         maxWidth="80%"
                                         px={1.5}
                                         borderRadius={8}
-                                        bgcolor={msg.role === "user" ? bgColor : "transparent"}
-                                        color={msg.role === "user" ? textColor : "text.primary"}
+                                        bgcolor={isUser ? bgColor : "transparent"}
+                                        color={isUser ? textColor : "text.primary"}
                                         sx={{ wordBreak: "break-word" }}
                                     >
-                                        <ReactMarkdown
-                                            remarkPlugins={[remarkGfm]}
-                                            rehypePlugins={[rehypeRaw, rehypeHighlight]}
-                                        >
-                                            {msg.content}
-                                        </ReactMarkdown>
-                                        {
-                                            msg.role === "assistant" && statusStream === false && (
-                                                <Box className="animate__animated animate__fadeIn">
-                                                    <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleCopy(msg.content)}>
-                                                        <Icon component={iconCopy} fontSize="small"/>
-                                                    </IconButton>
-                                                </Box>
-                                            )
-                                        }
+                                        {isUser ? (
+                                            <ReactMarkdown
+                                                remarkPlugins={[remarkGfm]}
+                                                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                                            >
+                                                {msg.content}
+                                            </ReactMarkdown>
+                                        ) : (
+                                            <Box
+                                                sx={{
+                                                    '& > *': {
+                                                        animation: isLastMessage && statusStream
+                                                            ? 'fadeIn 0.3s ease-out'
+                                                            : 'none',
+                                                    },
+                                                    '@keyframes fadeIn': {
+                                                        '0%': { opacity: 0 },
+                                                        '100%': { opacity: 1 },
+                                                    },
+                                                }}
+                                            >
+                                                <ReactMarkdown
+                                                    remarkPlugins={[remarkGfm]}
+                                                    rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                                                >
+                                                    {msg.content}
+                                                </ReactMarkdown>
+                                            </Box>
+                                        )}
+
+                                        {msg.role === "assistant" && statusStream === false && (
+                                            <Box className="animate__animated animate__fadeIn">
+                                                <IconButton
+                                                    size="small"
+                                                    sx={{ ml: 1 }}
+                                                    onClick={() => handleCopy(msg.content)}
+                                                >
+                                                    <Icon component={iconCopy} fontSize="small" />
+                                                </IconButton>
+                                            </Box>
+                                        )}
                                     </Box>
-                                    {
-                                        showLoader && (
-                                            <Box ml={1} mt={1} mb={5} className="loader-model" />
-                                        )
-                                    }
+
+                                    {showLoader && (
+                                        <Box ml={1} mt={1} mb={5} className="loader-model" />
+                                    )}
                                 </Box>
-                            )
-                        }
-                        )
+                            );
+                        })
+
                     )
                 }
                 <div ref={messagesEndRef} />

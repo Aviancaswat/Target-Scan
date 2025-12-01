@@ -72,7 +72,7 @@ export class TargetScanRepository {
     static async *generateTextTargetScan(
         userPrompt: string,
         files: File[] = []
-    ): AsyncGenerator<string> {
+    ): AsyncGenerator<string, void, unknown> {
 
         const trimmedPrompt = userPrompt.trim();
         if (!trimmedPrompt && files.length === 0) {
@@ -111,6 +111,7 @@ export class TargetScanRepository {
         let responseModel = "";
         for await (const part of response) {
             const text = part.text ?? "";
+            if (!text) continue;
             responseModel += text;
             yield text
         }

@@ -127,10 +127,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     variant="standard"
                     InputProps={{
                         disableUnderline: true,
-                        sx: {
-                            fontFamily: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-                            fontSize: 14,
-                        },
                     }}
                 />
 
@@ -140,6 +136,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     multiple
                     style={{ display: "none" }}
                     onChange={handleFileChange}
+                    autoFocus
                 />
 
                 <Stack direction="row" spacing={0.5} alignItems="center">
