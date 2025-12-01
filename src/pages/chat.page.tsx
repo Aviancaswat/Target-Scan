@@ -1,6 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import "highlight.js/styles/tokyo-night-dark.css";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Copy } from "lucide-react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
@@ -23,6 +24,7 @@ const ChatPage = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [statusStream, setStatusStream] = useState<boolean>(false);
     const [userColors] = useState<[string, string]>(() => getColor());
     const [bgColor, textColor] = userColors;
 
@@ -58,6 +60,7 @@ const ChatPage = () => {
                 let responseModel = "";
                 let isFirstPart = false;
 
+                setStatusStream(true);
                 for await (const part of response) {
                     if (!part) continue;
 
@@ -79,6 +82,10 @@ const ChatPage = () => {
                     );
                 }
 
+                setTimeout(() => {
+                    setStatusStream(false);
+                }, 1000)
+
             } catch (error) {
                 const errorMessage: Message = {
                     role: "assistant",
@@ -89,12 +96,13 @@ const ChatPage = () => {
             }
             finally {
                 setLoading(false);
+                setStatusStream(false);
             }
         },
         [question]
     );
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
         }
@@ -134,7 +142,7 @@ const ChatPage = () => {
                                     key={index}
                                     display="flex"
                                     justifyContent={msg.role === "user" ? "flex-end" : "flex-start"}
-                                    mb={1.5}
+                                    mb={10}
                                 >
                                     <Box
                                         maxWidth="80%"
@@ -150,6 +158,15 @@ const ChatPage = () => {
                                         >
                                             {msg.content}
                                         </ReactMarkdown>
+                                        {
+                                            msg.role === "assistant" && statusStream === false && (
+                                                <Box className="animate__animated animate__fadeIn">
+                                                    <IconButton sx={{ ml: 1 }}>
+                                                        <Copy size={15} />
+                                                    </IconButton>
+                                                </Box>
+                                            )
+                                        }
                                     </Box>
                                     {
                                         showLoader && (
