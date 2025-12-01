@@ -88,7 +88,7 @@ export default function SideBarChat() {
 
     return (
         <div>
-            <IconButton onClick={toggleDrawer(true)} size='medium'>
+            <IconButton onClick={toggleDrawer(true)} size='medium'sx={{color: "text.primary"}} >
                 <PanelRight />
             </IconButton>
             <Drawer open={open} onClose={toggleDrawer(false)}>

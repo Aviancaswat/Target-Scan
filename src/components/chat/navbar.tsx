@@ -4,13 +4,26 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { MessageCircleCode } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SideBarChat from './sidebar-chat';
 
 const Navbar = () => {
     return (
-        <AppBar position="fixed" color="default" elevation={0}>
+        <AppBar position="fixed" color="primary" elevation={0} >
             <Toolbar>
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack
+                    component={Link}
+                    to={"/"}
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    color={"text.primary"}
+                    mr={2}
+                    sx={{
+                        textTransform: "none",
+                        textDecoration: "none"
+                    }}
+                >
                     <Box>
                         <MessageCircleCode size={30} />
                     </Box>
@@ -22,8 +35,8 @@ const Navbar = () => {
                     >
                         Target Scan
                     </Typography>
-                    <SideBarChat />
                 </Stack>
+                <SideBarChat />
             </Toolbar>
         </AppBar>
     );

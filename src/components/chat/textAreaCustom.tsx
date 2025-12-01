@@ -1,5 +1,4 @@
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import CodeIcon from "@mui/icons-material/Code";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import {
     Box,
@@ -124,17 +123,19 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                sx={{
-                    border: isDragOver ? "2px dashed #1976d2" : "1px dashed #ccc",
-                    borderRadius: 2,
-                    padding: 1,
-                    fontSize: 12,
-                    textAlign: "center",
-                    color: "#666",
-                    transition: "all 0.2s ease",
-                    bgcolor: isDragOver ? "rgba(25,118,210,0.04)" : "transparent",
-                    cursor: "pointer",
-                }}
+                sx={(theme) => (
+                    {
+                        border: isDragOver ? `2px dashed ${theme.palette.primary.main}` : "1px dashed #ccc",
+                        borderRadius: 2,
+                        padding: 1,
+                        fontSize: 12,
+                        textAlign: "center",
+                        color: "#666",
+                        transition: "all 0.2s ease",
+                        bgcolor: isDragOver ? "rgba(25,118,210,0.04)" : "transparent",
+                        cursor: "pointer",
+                    }
+                )}
             >
                 Arrastra archivos aquí o usa el ícono de clip para adjuntarlos
             </Box>
@@ -157,7 +158,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                     flexDirection: "column",
                                     gap: 0.5,
                                     boxShadow: 2,
-                                    bgcolor: "#fafafa",
+                                    bgcolor: "primary.main",
                                 }}
                             >
                                 <IconButton
@@ -210,7 +211,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                     variant="caption"
                                     noWrap
                                     title={file.name}
-                                    sx={{ fontWeight: 500 }}
+                                    sx={{ fontWeight: 500, color: "text.primary" }}
                                 >
                                     {file.name}
                                 </Typography>
@@ -259,13 +260,19 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 />
 
                 <Stack direction="row" spacing={0.5} alignItems="center">
-                    <Tooltip title="Marcar como código (opcional: usa ``` como en Markdown)">
-                        <CodeIcon fontSize="small" />
-                    </Tooltip>
-
                     <Tooltip title="Adjuntar archivos">
                         <label htmlFor="chat-file-input">
-                            <IconButton component="span" size="small">
+                            <IconButton
+                                component="span"
+                                size="small"
+                                sx={{
+                                    backgroundColor: "primary.main",
+                                    color: "text.primary",
+                                    '&:hover': {
+                                        backgroundColor: "primary.light",
+                                        color: "text.primary"
+                                    }
+                                }}>
                                 <AttachFileIcon fontSize="small" />
                             </IconButton>
                         </label>
