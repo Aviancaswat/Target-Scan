@@ -274,10 +274,10 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                         color: "text.primary",
                                         boxShadow: "0px 4px 15px rgba(246, 196, 80, 0.4)",
                                     },
-                                    padding: "6px 16px",     
-                                    borderRadius: "16px",   
+                                    padding: "6px 16px",
+                                    borderRadius: "16px",
                                     fontWeight: 600,
-                                    fontSize: "0.875rem", 
+                                    fontSize: "0.875rem",
                                     boxShadow: "none",
                                 }}
                                 startIcon={<AttachFileIcon fontSize="small" />}

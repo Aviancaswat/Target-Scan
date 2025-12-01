@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import imagePattern from "../../assets/patternOne.png";
 import ModalDetailsFeature from "./ModalDetailsFeature";
 
 export default function GridCustom() {
@@ -18,11 +19,21 @@ export default function GridCustom() {
             <Grid container size={{ xs: 12, md: 6 }} spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Box
-                        sx={{ bgcolor: "primary.main", borderRadius: 2, height: 100 }}
                         display="flex"
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
+                        sx={{
+                            borderRadius: 2,
+                            height: 100,
+                            backgroundImage: `
+                                linear-gradient(rgba(246, 196, 80, 0.75), rgba(246, 196, 80, 0.75)),
+                                url(${imagePattern})
+                            `,
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "cover"
+                        }}
                     >
                         <Box
                             display={"flex"}
@@ -54,11 +65,21 @@ export default function GridCustom() {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Box
-                        sx={{ bgcolor: "primary.main", borderRadius: 2, height: 100 }}
                         display="flex"
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
+                        sx={{
+                            borderRadius: 2,
+                            height: 100,
+                            backgroundImage: `
+                                linear-gradient(rgba(246, 196, 80, 0.75), rgba(246, 196, 80, 0.75)),
+                                url(${imagePattern})
+                            `,
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "cover"
+                        }}
                     >
                         <Box
                             display={"flex"}
@@ -90,11 +111,21 @@ export default function GridCustom() {
                 </Grid>
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Box
-                        sx={{ bgcolor: "primary.main", borderRadius: 2, height: 100 }}
                         display="flex"
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
+                        sx={{
+                            borderRadius: 2,
+                            height: 100,
+                            backgroundImage: `
+                                linear-gradient(rgba(246, 196, 80, 0.75), rgba(246, 196, 80, 0.75)),
+                                url(${imagePattern})
+                            `,
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "cover"
+                        }}
                     >
                         <Box
                             display={"flex"}
