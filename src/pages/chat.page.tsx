@@ -21,6 +21,7 @@ const ChatPage = () => {
     const [question, setQuestion] = useState<string>("");
     const [messages, setMessages] = useState<Message[]>([]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleResponseIA = useCallback(
         async ({ text, files }: { text: string; files: File[] }) => {
@@ -39,7 +40,7 @@ const ChatPage = () => {
             setQuestion("");
 
             try {
-
+                setLoading(true);
                 const response = await AgentTargetScanService.getResponseIA(
                     question,
                     files
@@ -52,10 +53,17 @@ const ChatPage = () => {
                 });
 
                 let responseModel = "";
+                let isFirstPart = false;
+
                 for await (const part of response) {
                     if (!part) continue;
 
                     console.log("Part: ", part);
+
+                    if (!isFirstPart) {
+                        isFirstPart = true;
+                        setLoading(false);
+                    }
 
                     responseModel += part;
 
@@ -76,10 +84,12 @@ const ChatPage = () => {
                 setMessages((prev) => [...prev, errorMessage]);
                 console.error("Error fetching AI response:", error);
             }
+            finally {
+                setLoading(false);
+            }
         },
         [question]
     );
-
 
     useEffect(() => {
         if (messagesEndRef.current) {
@@ -103,30 +113,43 @@ const ChatPage = () => {
                 py={2}
                 mt={8}
             >
-                {messages.map((msg, index) => (
-                    <Box
-                        key={index}
-                        display="flex"
-                        justifyContent={msg.role === "user" ? "flex-end" : "flex-start"}
-                        mb={1.5}
-                    >
+                {messages.map((msg, index) => {
+
+                    const isUser = msg.role === "user";
+                    const isLastMessage = index === messages.length - 1;
+                    const showLoader = !isUser && isLastMessage && loading;
+
+                    return (
                         <Box
-                            maxWidth="80%"
-                            px={1.5}
-                            borderRadius={8}
-                            bgcolor={msg.role === "user" ? lightBlue[100] : "transparent"}
-                            color={msg.role === "user" ? lightBlue[600] : "text.primary"}
-                            sx={{ wordBreak: "break-word" }}
+                            key={index}
+                            display="flex"
+                            justifyContent={msg.role === "user" ? "flex-end" : "flex-start"}
+                            mb={1.5}
                         >
-                            <ReactMarkdown
-                                remarkPlugins={[remarkGfm]}
-                                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                            <Box
+                                maxWidth="80%"
+                                px={1.5}
+                                borderRadius={8}
+                                bgcolor={msg.role === "user" ? lightBlue[100] : "transparent"}
+                                color={msg.role === "user" ? lightBlue[600] : "text.primary"}
+                                sx={{ wordBreak: "break-word" }}
                             >
-                                {msg.content}
-                            </ReactMarkdown>
+                                <ReactMarkdown
+                                    remarkPlugins={[remarkGfm]}
+                                    rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                                >
+                                    {msg.content}
+                                </ReactMarkdown>
+                            </Box>
+                            {
+                                showLoader && (
+                                    <Box ml={1} mt={1} className="loader-model" />
+                                )
+                            }
                         </Box>
-                    </Box>
-                ))}
+                    )
+                }
+                )}
                 <div ref={messagesEndRef} />
             </Box>
 
