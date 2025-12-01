@@ -11,7 +11,8 @@ const WelcomeChat = () => {
                 alignItems: "center",
                 flexDirection: "column",
                 gap: 2
-            }}>
+            }}
+        >
             <MessageCircleCode size={40} />
             <Typography
                 variant="h4"

@@ -111,12 +111,10 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         setIsDragOver(false);
     };
 
-    // Limpieza de previews al desmontar el componente
     useEffect(() => {
         return () => {
             clearPreviews(files);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -162,7 +160,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                     bgcolor: "#fafafa",
                                 }}
                             >
-                                {/* Botón eliminar */}
                                 <IconButton
                                     size="small"
                                     onClick={() => handleRemoveFile(index)}
@@ -174,13 +171,12 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                         color: "white",
                                         "&:hover": {
                                             bgcolor: "rgba(0,0,0,0.7)",
-                                        },
+                                        }
                                     }}
                                 >
                                     <X size={14} />
                                 </IconButton>
 
-                                {/* Preview o ícono */}
                                 {isImage ? (
                                     <Box
                                         component="img"
@@ -210,7 +206,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                     </Box>
                                 )}
 
-                                {/* Nombre y tamaño */}
                                 <Typography
                                     variant="caption"
                                     noWrap

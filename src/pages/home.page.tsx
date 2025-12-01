@@ -1,5 +1,4 @@
 import { Box, Button, Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { ChevronRight, MessageCircleCode } from "lucide-react";
 import { Link } from "react-router-dom";
 import GridCustom from "../components/home/GridCustom";
@@ -12,7 +11,7 @@ const HomePage = () => {
             display="flex"
             flexDirection={"column"}
             alignItems={"center"}
-            sx={{
+            sx={(theme) => ({
                 justifyContent: {
                     xs: "normal",
                     lg: "center"
@@ -20,8 +19,10 @@ const HomePage = () => {
                 marginTop: {
                     xs: 5,
                     lg: 0
-                }
-            }}
+                },
+                backgroundColor: "primary.main",
+                backgroundImage: `linear-gradient(180deg, ${theme.palette.primary.main} 0%, rgba(255,255,255,1) 50%)`
+            })}
         >
             <Box
                 display="flex"
@@ -33,7 +34,7 @@ const HomePage = () => {
                 <MessageCircleCode size={48} />
                 <Typography
                     variant="body1"
-                    color={grey[600]}
+                    color={"text.secondary"}
                     sx={{
                         fontSize: {
                             xs: "14px",
@@ -60,6 +61,7 @@ const HomePage = () => {
                         }
                     }}
                     className="animate__animated animate__fadeInDown"
+                    color="text.primary"
                 >
                     Automatiza el análisis técnico, visual y funcional
                 </Typography>
@@ -74,7 +76,7 @@ const HomePage = () => {
                         textTransform: "none",
                         fontSize: "16px",
                         width: "auto",
-                        backgroundColor: "#000000",
+                        backgroundColor: "text.primary",
                         color: "#FFFFFF",
                         borderColor: "#000000",
                         "&:hover": {
@@ -90,7 +92,7 @@ const HomePage = () => {
             <br />
             <br />
             <GridCustom />
-        </Box >
+        </Box>
     )
 }
 

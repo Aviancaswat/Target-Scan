@@ -18,7 +18,7 @@ export default function GridCustom() {
             <Grid container size={{ xs: 12, md: 6 }} spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Box
-                        sx={{ bgcolor: "#79C3E8", borderRadius: 2, height: 100 }}
+                        sx={{ bgcolor: "primary.main", borderRadius: 2, height: 100 }}
                         display="flex"
                         flexDirection={"column"}
                         justifyContent="center"
@@ -54,7 +54,7 @@ export default function GridCustom() {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Box
-                        sx={{ bgcolor: "#EF7F74", borderRadius: 2, height: 100 }}
+                        sx={{ bgcolor: "primary.main", borderRadius: 2, height: 100 }}
                         display="flex"
                         flexDirection={"column"}
                         justifyContent="center"
@@ -90,7 +90,7 @@ export default function GridCustom() {
                 </Grid>
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Box
-                        sx={{ bgcolor: "#4CBFB2", borderRadius: 2, height: 100 }}
+                        sx={{ bgcolor: "primary.main", borderRadius: 2, height: 100 }}
                         display="flex"
                         flexDirection={"column"}
                         justifyContent="center"

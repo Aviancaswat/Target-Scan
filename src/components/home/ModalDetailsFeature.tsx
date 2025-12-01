@@ -77,11 +77,11 @@ export default function ModalDetailsFeature(props: ModalDetailsFeatureProps) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{
+                <Box sx={(theme) => ({
                     ...style,
-                    background: `${props.type === 1 ? "#79C3E8" : (props.type === 2 ? "#EF7F74" : "#4CBFB2")}`,
-                    backgroundImage: `linear-gradient(180deg, ${props.type === 1 ? "#79C3E8" : (props.type === 2 ? "#EF7F74" : "#4CBFB2")} 0%, rgba(255,255,255,1) 50%)`
-                }}>
+                    backgroundColor: "primary.main",
+                    backgroundImage: `linear-gradient(180deg, ${theme.palette.primary.main} 0%, rgba(255,255,255,1) 50%)`
+                })}>
                     <Box
                         display={"flex"}
                         justifyContent={"space-between"}
