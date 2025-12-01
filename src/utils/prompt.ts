@@ -53,7 +53,7 @@ Ejemplo de formato:
 
 ---
 
-### **2️⃣ Análisis del Código**
+### **2. Análisis del Código**
 
 Evalúa el código según los siguientes criterios obligatorios:
 
@@ -74,7 +74,7 @@ Debes indicar:
 
 ---
 
-### **3️⃣ Comparativa entre Desarrollo vs. Figma**
+### **3. Comparativa entre Desarrollo vs. Figma**
 
 Si existe imagen de Figma:
 
@@ -90,7 +90,7 @@ Si no hay Figma:
 
 ---
 
-### **4️⃣ Historial / Preservación**
+### **4. Historial / Preservación**
 
 Debes:
 

@@ -1,6 +1,5 @@
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CodeIcon from "@mui/icons-material/Code";
-import SendIcon from "@mui/icons-material/Send";
 import {
     Box,
     Chip,
@@ -9,6 +8,7 @@ import {
     TextField,
     Tooltip,
 } from "@mui/material";
+import { ArrowUp } from "lucide-react";
 import { type ChangeEvent, type DragEvent, type KeyboardEvent, useState } from "react";
 
 interface ChatInputProps {
@@ -158,8 +158,16 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                 size="small"
                                 onClick={handleSend}
                                 disabled={!question.trim() && files.length === 0}
+                                sx={{
+                                    bgcolor: "black",
+                                    color: "#FFFFFF",
+                                    '&:hover': {
+                                        background: "#3e3e3eff",
+                                        color: "#ffffff"
+                                    }
+                                }}
                             >
-                                <SendIcon fontSize="small" />
+                                <ArrowUp />
                             </IconButton>
                         </span>
                     </Tooltip>

@@ -36,8 +36,6 @@ const ChatPage = () => {
 
             if (!question && files.length === 0) return;
 
-            console.log("Sending question to AI:", question, files);
-
             const userMessage: Message = {
                 role: "user",
                 content: question || "[Usuario envió solo archivos]"
@@ -63,10 +61,9 @@ const ChatPage = () => {
                 let isFirstPart = false;
 
                 setStatusStream(true);
+
                 for await (const part of response) {
                     if (!part) continue;
-
-                    console.log("Part: ", part);
 
                     if (!isFirstPart) {
                         isFirstPart = true;
@@ -129,10 +126,13 @@ const ChatPage = () => {
             <Navbar />
             <Box
                 flex={1}
-                overflow="auto"
                 px={2}
                 py={2}
                 mt={8}
+                sx={{
+                    overflowX: "hidden",
+                    overflowY: "auto"
+                }}
             >
                 {
                     messages.length === 0 ? (
