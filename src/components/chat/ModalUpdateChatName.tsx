@@ -12,6 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Pen, Pencil } from "lucide-react";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { ConversationService } from "../../firebase/firestore/services/conversation.service";
 
 export const ModalUpdateChatName = ({ conversationId }: { conversationId: string }) => {
@@ -34,14 +35,17 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                 title: newChatName.trim()
             });
 
-            // AviancaToast.success("Chat cambiado", {
-            //     description: "El nombre del chat se ha cambiado con éxito"
-            // });
+            toast.success("Chat cambiado", {
+                description: "El nombre del chat se ha cambiado con éxito",
+                position: "top-right"
+            });
 
             handleClose();
         } catch (error) {
             console.error("Error cambiando nombre del chat:", error);
-            //AviancaToast.error("No se pudo cambiar el nombre del chat");
+            toast.error("No se pudo cambiar el nombre del chat", {
+                position: "top-right"
+            });
         }
     };
 

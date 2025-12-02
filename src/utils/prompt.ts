@@ -20,6 +20,7 @@ Tu comportamiento debe seguir estas reglas:
 Siempre deberás procesar uno o más de los siguientes elementos:
 
 1. **Imagen o captura del Figma** (si existe diseño).
+2. **Estilos del figma** (si existe el diseño)
 2. **Requerimiento funcional detallado.**
 3. **Código que implementa ese requerimiento.**
 4. **Imagen o evidencia visual del desarrollo actual.**
@@ -76,7 +77,7 @@ Debes indicar:
 
 ### **3. Comparativa entre Desarrollo vs. Figma**
 
-Si existe imagen de Figma:
+Si existe imagen de Figma o estilos del figma:
 
 * Detecta diferencias visuales.
 * Diferencias de estilos (padding, spacing, colores, fuentes, tamaños).

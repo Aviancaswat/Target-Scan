@@ -30,6 +30,7 @@ import {
 
 import { red } from "@mui/material/colors";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 import { v4 as uuid } from "uuid";
 import { ConversationService } from "../../firebase/firestore/services/conversation.service";
 import { useTargetScanStore } from "../../store/target-store";
@@ -54,11 +55,14 @@ export default function SidebarChatHistory() {
     const handleDeleteChat = async (conversationId: string) => {
         try {
             await ConversationService.deleteConversation(conversationId);
-            // AviancaToast.success("Chat eliminado", {
-            //     description: "El chat se ha eliminado correctamente",
-            // });
+            toast.success("Chat eliminado", {
+                description: "El chat se ha eliminado correctamente",
+                position: "top-right"
+            });
         } catch (error) {
-            //AviancaToast.error("Error al eliminar el chat");
+            toast.error("Error al eliminar el chat", {
+                position: "top-right"
+            });
             console.log("Error al eliminar el chat...")
         }
     };
