@@ -10,7 +10,7 @@ import SideBarChat from './sidebar-chat';
 const Navbar = () => {
     return (
         <AppBar position="fixed" color="primary" elevation={0} >
-            <Toolbar>
+            <Toolbar sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                 <Stack
                     component={Link}
                     to={"/"}

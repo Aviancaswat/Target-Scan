@@ -28,12 +28,13 @@ import {
     Trash2
 } from "lucide-react";
 
+import { red } from "@mui/material/colors";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { ConversationService } from "../../firebase/firestore/services/conversation.service";
 import { useTargetScanStore } from "../../store/target-store";
-// import { ModalSearchChats } from "./ModalSearchChats";
-// import { ModalUpdateChatName } from "./ModalUpdateChatName";
+import { ModalSearchChats } from "./ModalSearchChats";
+import { ModalUpdateChatName } from "./ModalUpdateChatName";
 
 export default function SidebarChatHistory() {
 
@@ -91,7 +92,7 @@ export default function SidebarChatHistory() {
                     ref={anchorRef}
                     size="small"
                     onClick={handleOpen}
-                    sx={{ color: "white" }}
+                    sx={{ color: "text.primary" }}
                 >
                     <PanelRightOpen />
                 </IconButton>
@@ -120,13 +121,12 @@ export default function SidebarChatHistory() {
                                 </ListItemButton>
                             </ListItem>
 
-                            {/* <ModalSearchChats onCloseSidebar={handleClose} /> */}
+                            <ModalSearchChats onCloseSidebar={handleClose} />
                         </List>
                     </Box>
 
                     <Divider sx={{ my: 2 }} />
 
-                    {/* Acordeón Lista de Chats */}
                     <Accordion defaultExpanded elevation={0}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography>Chats</Typography>
@@ -172,7 +172,6 @@ export default function SidebarChatHistory() {
                                                     />
                                                 </ListItemButton>
 
-                                                {/* Botón de opciones al hover */}
                                                 {hoverChatId === e.converdationId && (
                                                     <ListItemSecondaryAction>
                                                         <MenuOptionsChat
@@ -220,11 +219,16 @@ const MenuOptionsChat = ({
                 open={open}
                 onClose={handleClose}
             >
-                {/* <ModalUpdateChatName conversationId={conversationId} /> */}
+                <ModalUpdateChatName conversationId={conversationId} />
 
                 <MenuItem
                     onClick={() => handleDeleteChat(conversationId)}
-                    sx={{ color: "red" }}
+                    sx={{
+                        color: "red",
+                        '&:hover':{
+                            background: red[100]
+                        }
+                    }}
                 >
                     <Trash2 size={16} style={{ marginRight: 8 }} />
                     Eliminar

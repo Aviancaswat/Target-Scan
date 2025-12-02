@@ -19,6 +19,7 @@
     "animate.css": "^4.1.1",
     "firebase": "^12.6.0",
     "highlight.js": "^11.11.1",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.554.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/lodash": "^4.17.21",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
