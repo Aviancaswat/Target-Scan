@@ -90,6 +90,7 @@ export class TargetScanRepository {
         const contents: ContentListUnion = contentsArray;
 
 
+        //response
         const response = await this.genAI!.models.generateContentStream({
             model: this.modelName,
             contents,
