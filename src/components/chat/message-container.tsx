@@ -82,7 +82,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                     </Box>
                                 )}
 
-                                {msg.role === "assistant" && statusStream === false && (
+                                {msg.role === "model" && statusStream === false && (
                                     <Box className="animate__animated animate__fadeIn">
                                         <IconButton
                                             size="small"

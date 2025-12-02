@@ -1,3 +1,4 @@
+import type { Content } from "@google/genai";
 import { Box } from "@mui/material";
 import { doc, onSnapshot } from "firebase/firestore";
 import "highlight.js/styles/tokyo-night-dark.css";
@@ -29,6 +30,16 @@ const ChatPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [statusStream, setStatusStream] = useState<boolean>(false);
 
+    const buildHistoryFromCurrentConversation = (conversationId: string, conversations: ConversationsTargetScan[]): Content[] => {
+        const conv = conversations.find(c => c.converdationId === conversationId);
+        if (!conv) return [];
+        return conv.messages.map(msg => ({
+            role: msg.role,
+            parts: [{ text: msg.message }]
+        }));
+    };
+
+
     const handleResponseIA = useCallback(
         async ({ text, files }: { text: string; files: File[] }) => {
 
@@ -53,14 +64,14 @@ const ChatPage = () => {
             try {
                 setLoading(true);
 
-                const stream = await AgentTargetScanService.getResponseIA(question, files);
+                const stream = await AgentTargetScanService.getResponseIA(buildHistoryFromCurrentConversation(conversationId!, conversations), question, files);
 
                 setStatusStream(true);
 
                 let assistantIndex = -1;
                 setMessages(prev => {
                     assistantIndex = prev.length;
-                    return [...prev, { role: "assistant", message: "", timestamp: new Date().toISOString() }];
+                    return [...prev, { role: "model", message: "", timestamp: new Date().toISOString() }];
                 });
 
                 let currentText = "";
@@ -86,7 +97,7 @@ const ChatPage = () => {
                 }
 
                 await ConversationService.addMessage(conversationId!, {
-                    role: "assistant",
+                    role: "model",
                     message: currentText,
                     timestamp: new Date().toISOString(),
                 });
@@ -96,7 +107,7 @@ const ChatPage = () => {
             } catch (error) {
 
                 const errorMsg: Messages = {
-                    role: "assistant",
+                    role: "model",
                     message: "Ocurrió un error al procesar tu solicitud.",
                     timestamp: new Date().toISOString(),
                 };

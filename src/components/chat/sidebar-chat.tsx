@@ -225,7 +225,7 @@ const MenuOptionsChat = ({
                     onClick={() => handleDeleteChat(conversationId)}
                     sx={{
                         color: "red",
-                        '&:hover':{
+                        '&:hover': {
                             background: red[100]
                         }
                     }}

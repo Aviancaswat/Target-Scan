@@ -1,7 +1,7 @@
 import { create } from "zustand"
 
 export type Messages = {
-    role: "user" | "assistant"
+    role: "user" | "model"
     message: string,
     timestamp: string
 }
