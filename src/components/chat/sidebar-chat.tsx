@@ -9,12 +9,63 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { MessageCircleCode, MessageCircleMore, MessageCircleOff, PanelRight, Search, SquarePen, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+import { ConversationService } from '../../firebase/firestore/services/conversation.service';
+import { useTargetScanStore } from '../../store/target-store';
 
 export default function SideBarChat() {
 
+    const {
+        conversations,
+        setCurrentConversationId,
+        setCurrentMessages,
+    } = useTargetScanStore();
+
+    const btnRef = useRef<HTMLButtonElement>(null);
+    const [hoverChatId, setHoverChatId] = useState<string | undefined>(undefined);
     const [open, setOpen] = useState<boolean>(false);
     const [messages,] = useState<Array<string>>([]);
+
+    useEffect(() => {
+        console.log("cambió conversationsAPA: ", conversations);
+    }, [conversations])
+
+    const handleDeleteChat = async (conversationId: string) => {
+
+        if (!conversationId) return;
+
+        try {
+
+            await ConversationService.deleteConversation(conversationId);
+            // AviancaToast.success("Chat eliminado", {
+            //     description: "El chat se ha eliminado correctamente",
+            // });
+            console.log("Toast eliminado...");
+
+        } catch (error) {
+            console.error("Error eliminando chat:", error);
+            //AviancaToast.error("Error al eliminar el chat");
+            console.log("error eliminado en toast...");
+        }
+    };
+
+    const createNewChat = async () => {
+        const newId = uuid();
+        setCurrentConversationId(newId);
+        setCurrentMessages([]);
+        console.log("Nuevo chat creado:", newId);
+        setOpen(false);
+    };
+
+    const setChatSelectedUser = (conversationId: string) => {
+        if (conversationId.trim().length === 0) return;
+        const conversationFind = conversations.find(e => e.converdationId === conversationId);
+        if (!conversationFind) return;
+        setCurrentConversationId(conversationFind.converdationId);
+        setCurrentMessages(conversationFind.messages);
+        setOpen(false);
+    }
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
@@ -88,7 +139,7 @@ export default function SideBarChat() {
 
     return (
         <div>
-            <IconButton onClick={toggleDrawer(true)} size='medium'sx={{color: "text.primary"}} >
+            <IconButton onClick={toggleDrawer(true)} size='medium' sx={{ color: "text.primary" }} >
                 <PanelRight />
             </IconButton>
             <Drawer open={open} onClose={toggleDrawer(false)}>
