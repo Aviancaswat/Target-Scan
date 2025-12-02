@@ -61,37 +61,30 @@ export class TargetScanRepository {
 
         this.ensureClient();
 
-        // Obtener partes de archivos (si hay)
         const fileParts = files.length > 0 ? await this.filesToParts(files) : [];
 
-        // Preparar partes de texto si hay texto
         const textParts: Part[] = [];
         if (trimmedPrompt) {
             textParts.push({ text: trimmedPrompt });
         }
 
-        // Combinar partes: texto + archivos
         const userParts: Part[] = [
             ...textParts,
             ...fileParts
         ];
 
-        // Validar que hay al menos una parte
         if (userParts.length === 0) {
             throw new Error("Content for user must have at least one part");
         }
 
-        // Construir Content para el mensaje del usuario
         const userContent: Content = {
             role: "user",
             parts: userParts
         };
 
-        // Combinar historial previo + nuevo mensaje
-        console.log("Contents enviados al agente:", historyChat);
         const contentsArray: Content[] = [
-            ...historyChat,    // historial previo como Content[]
-            userContent         // nuevo Content
+            ...historyChat,
+            userContent
         ];
 
         const contents: ContentListUnion = contentsArray;

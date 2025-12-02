@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 
 import { red } from "@mui/material/colors";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { ConversationService } from "../../firebase/firestore/services/conversation.service";
 import { useTargetScanStore } from "../../store/target-store";
@@ -46,12 +46,7 @@ export default function SidebarChatHistory() {
 
     const [open, setOpen] = useState(false);
     const [hoverChatId, setHoverChatId] = useState<string | undefined>(undefined);
-
     const anchorRef = useRef(null);
-
-    useEffect(() => {
-        console.log("Conversaciones cargadas:", conversations);
-    }, [conversations]);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -62,7 +57,6 @@ export default function SidebarChatHistory() {
             // AviancaToast.success("Chat eliminado", {
             //     description: "El chat se ha eliminado correctamente",
             // });
-            console.log("Chat eliminado...")
         } catch (error) {
             //AviancaToast.error("Error al eliminar el chat");
             console.log("Error al eliminar el chat...")

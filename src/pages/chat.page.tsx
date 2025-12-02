@@ -46,23 +46,23 @@ const ChatPage = () => {
             const question = text.trim();
             if (!question && files.length === 0) return;
 
-            const userMessage: Messages = {
-                role: "user",
-                message: question,
-                timestamp: new Date().toISOString(),
-            };
-
-            await ConversationService.addMessage(conversationId!, userMessage);
-            const conversation = await ConversationService.getConversation(conversationId!);
-            console.log("get conversation: ", conversation);
-            if (!conversation?.title || conversation.title.trim() === "") {
-                await ConversationService.updateConversation(conversationId!, {
-                    title: userMessage.message.slice(0, 400),
-                });
-            }
-
             try {
+
+                const userMessage: Messages = {
+                    role: "user",
+                    message: question,
+                    timestamp: new Date().toISOString(),
+                };
+
                 setLoading(true);
+                await ConversationService.addMessage(conversationId!, userMessage);
+                const conversation = await ConversationService.getConversation(conversationId!);
+                if (!conversation?.title || conversation.title.trim() === "") {
+                    await ConversationService.updateConversation(conversationId!, {
+                        title: userMessage.message.slice(0, 400),
+                    });
+                }
+
 
                 const stream = await AgentTargetScanService.getResponseIA(buildHistoryFromCurrentConversation(conversationId!, conversations), question, files);
 
@@ -134,13 +134,7 @@ const ChatPage = () => {
     useEffect(() => {
         const conversationUUID = uuid();
         setConversationId(conversationUUID);
-        console.log("Se creo la conversación con id: ", conversationUUID);
-        console.log("conversationsAPA: ", conversationUUID);
     }, [])
-
-    useEffect(() => {
-        console.log("Se actualiza las conversaciones: ", conversations)
-    }, [conversations])
 
     useEffect(() => {
 
