@@ -104,13 +104,11 @@ export default function SidebarChatHistory() {
             >
                 <Box sx={{ width: 320, p: 2 }}>
 
-                    {/* Header */}
                     <Box display="flex" alignItems="center" gap={1} mb={1}>
                         <MessageCircleCode size={30} />
                         <Typography variant="h6">Target Scan</Typography>
                     </Box>
 
-                    {/* Opciones */}
                     <Box mt={1}>
                         <List>
                             <ListItem disablePadding>

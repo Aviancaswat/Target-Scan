@@ -1,4 +1,4 @@
-import { addDoc, arrayUnion, deleteDoc, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { addDoc, arrayUnion, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import type { Messages } from "../../../store/target-store";
 import { conversationCollection } from "../collections/conversation.collection";
 import type { ChatMessage } from "../types/conversation.type";
@@ -41,5 +41,21 @@ export const coversationRepository = {
             },
             { merge: true }
         );
+    },
+
+    async getById(conversationId: string): Promise<ChatMessage | null> {
+        const ref = doc(conversationCollection, conversationId);
+        const snap = await getDoc(ref);
+
+        if (!snap.exists()) return null;
+
+        const data = snap.data();
+
+        return {
+            converdationId: conversationId,
+            title: data.title ?? "",
+            messages: data.messages ?? []
+        } as ChatMessage;
     }
+
 }

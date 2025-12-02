@@ -41,21 +41,22 @@ const ChatPage = () => {
                 timestamp: new Date().toISOString(),
             };
 
-            // Guarda mensaje del usuario en Firebase
             await ConversationService.addMessage(conversationId!, userMessage);
-            await ConversationService.updateConversation(conversationId!, {
-                title: userMessage.message,
-            });
+            const conversation = await ConversationService.getConversation(conversationId!);
+            console.log("get conversation: ", conversation);
+            if (!conversation?.title || conversation.title.trim() === "") {
+                await ConversationService.updateConversation(conversationId!, {
+                    title: userMessage.message.slice(0, 400),
+                });
+            }
 
             try {
                 setLoading(true);
 
-                // Llamada al modelo IA (stream)
                 const stream = await AgentTargetScanService.getResponseIA(question, files);
 
                 setStatusStream(true);
 
-                // Agrega mensaje vacío del asistente (placeholder)
                 let assistantIndex = -1;
                 setMessages(prev => {
                     assistantIndex = prev.length;
@@ -84,7 +85,6 @@ const ChatPage = () => {
                     );
                 }
 
-                // Guarda el mensaje final en Firebase
                 await ConversationService.addMessage(conversationId!, {
                     role: "assistant",
                     message: currentText,
@@ -111,7 +111,7 @@ const ChatPage = () => {
                 setStatusStream(false);
             }
         },
-        [conversationId] // dependencias correctas
+        [question, conversationId]
     );
 
     useLayoutEffect(() => {

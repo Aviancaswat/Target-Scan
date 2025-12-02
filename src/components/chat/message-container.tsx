@@ -25,7 +25,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
         setIconCopy(Check);
         setTimeout(() => {
             setIconCopy(Copy)
-        }, 1000)
+        }, 600)
     }
 
     return (

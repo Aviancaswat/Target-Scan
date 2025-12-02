@@ -23,5 +23,9 @@ export const ConversationService = {
 
     async addMessage(conversationId: string, message: Messages) {
         return await coversationRepository.addMessage(conversationId, message);
+    },
+
+    async getConversation(conversationId: string) {
+        return await coversationRepository.getById(conversationId);
     }
 };
