@@ -54,6 +54,7 @@ export class TargetScanRepository {
         userPrompt: string,
         files: File[] = []
     ): AsyncGenerator<string, void, unknown> {
+
         const trimmedPrompt = userPrompt.trim();
         if (!trimmedPrompt && files.length === 0) {
             throw new Error("User prompt and files cannot both be empty");
@@ -89,20 +90,14 @@ export class TargetScanRepository {
 
         const contents: ContentListUnion = contentsArray;
 
-
-        //response
         const response = await this.genAI!.models.generateContentStream({
             model: this.modelName,
             contents,
             config: { systemInstruction: PROMPT_TARGET_SCAN_MAIN }
         });
 
-        let responseModel = "";
-
         for await (const part of response) {
             const text = part.text ?? "";
-            if (!text) continue;
-            responseModel += text;
             yield text;
         }
     }
