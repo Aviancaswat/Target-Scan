@@ -278,25 +278,27 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     }
                 )}
             >
-                <IconButton
-                    sx={{
-                        backgroundColor: "#000",
-                        color: "#fff",
-                        position: "absolute",
-                        top: 0,
-                        right: 0,
-                        width: 25,
-                        height: 25,
-                        margin: 1,
-                        '&:hover': {
-                            backgroundColor: "#000000b2"
-                        }
-                    }}
-                    size="small"
-                    onClick={handleHeightInput}
-                >
-                    {fullHeightInputChat ? <Minimize2 /> : <Maximize2 />}
-                </IconButton>
+                <Tooltip title={fullHeightInputChat ? "Contraer" : "Expandir"} placement="top">
+                    <IconButton
+                        sx={{
+                            backgroundColor: "#000",
+                            color: "#fff",
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                            width: 25,
+                            height: 25,
+                            margin: 1,
+                            '&:hover': {
+                                backgroundColor: "#000000b2"
+                            }
+                        }}
+                        size="small"
+                        onClick={handleHeightInput}
+                    >
+                        {fullHeightInputChat ? <Minimize2 /> : <Maximize2 />}
+                    </IconButton>
+                </Tooltip>
                 <TextField
                     multiline
                     minRows={3}
