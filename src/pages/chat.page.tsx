@@ -1,5 +1,5 @@
 import type { Content } from "@google/genai";
-import { Box } from "@mui/material";
+import { Box, Fade, useTheme } from "@mui/material";
 import { doc, onSnapshot } from "firebase/firestore";
 import "highlight.js/styles/tokyo-night-dark.css";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -15,7 +15,7 @@ import { useTargetScanStore, type ConversationsTargetScan, type Messages } from 
 import '../styles/chat.style.css';
 
 const ChatPage = () => {
-
+    const theme = useTheme();
     const {
         currentConversationId: conversationId,
         currentMessages: messages,
@@ -27,10 +27,15 @@ const ChatPage = () => {
 
     const [question, setQuestion] = useState<string>("");
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const messagesContainerRef = useRef<HTMLDivElement | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [statusStream, setStatusStream] = useState<boolean>(false);
+    const [isNearBottom, setIsNearBottom] = useState<boolean>(true);
 
-    const buildHistoryFromCurrentConversation = (conversationId: string, conversations: ConversationsTargetScan[]): Content[] => {
+    const buildHistoryFromCurrentConversation = (
+        conversationId: string,
+        conversations: ConversationsTargetScan[]
+    ): Content[] => {
         const conv = conversations.find(c => c.converdationId === conversationId);
         if (!conv) return [];
         return conv.messages.map(msg => ({
@@ -39,23 +44,44 @@ const ChatPage = () => {
         }));
     };
 
+    const scrollToBottom = useCallback((behavior: ScrollBehavior = "smooth") => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior,
+                block: "end",
+                inline: "nearest"
+            });
+        }
+    }, []);
+
+    const handleScroll = useCallback(() => {
+        if (!messagesContainerRef.current) return;
+
+        const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+        const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+        setIsNearBottom(distanceFromBottom < 100);
+    }, []);
 
     const handleResponseIA = useCallback(
         async ({ text, files }: { text: string; files: File[] }) => {
-
-            const question = text.trim();
-            if (!question && files.length === 0) return;
+            const questionText = text.trim();
+            if (!questionText && files.length === 0) return;
 
             try {
-
                 const userMessage: Messages = {
                     role: "user",
-                    message: question,
+                    message: questionText,
                     timestamp: new Date().toISOString(),
                 };
 
                 setLoading(true);
+
+                setMessages(prev => [...prev, userMessage]);
+
+                setTimeout(() => scrollToBottom("smooth"), 50);
+
                 await ConversationService.addMessage(conversationId!, userMessage);
+
                 const conversation = await ConversationService.getConversation(conversationId!);
                 if (!conversation?.title || conversation.title.trim() === "") {
                     await ConversationService.updateConversation(conversationId!, {
@@ -63,15 +89,22 @@ const ChatPage = () => {
                     });
                 }
 
-
-                const stream = await AgentTargetScanService.getResponseIA(buildHistoryFromCurrentConversation(conversationId!, conversations), question, files);
+                const stream = await AgentTargetScanService.getResponseIA(
+                    buildHistoryFromCurrentConversation(conversationId!, conversations),
+                    questionText,
+                    files
+                );
 
                 setStatusStream(true);
 
                 let assistantIndex = -1;
                 setMessages(prev => {
                     assistantIndex = prev.length;
-                    return [...prev, { role: "model", message: "", timestamp: new Date().toISOString() }];
+                    return [...prev, {
+                        role: "model",
+                        message: "",
+                        timestamp: new Date().toISOString()
+                    }];
                 });
 
                 let currentText = "";
@@ -105,10 +138,9 @@ const ChatPage = () => {
                 setTimeout(() => setStatusStream(false), 300);
 
             } catch (error) {
-
                 const errorMsg: Messages = {
                     role: "model",
-                    message: "Ocurrió un error al procesar tu solicitud.",
+                    message: "Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente.",
                     timestamp: new Date().toISOString(),
                 };
 
@@ -122,22 +154,27 @@ const ChatPage = () => {
                 setStatusStream(false);
             }
         },
-        [question, conversationId]
+        [conversationId, conversations, scrollToBottom, setMessages]
     );
 
     useLayoutEffect(() => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        if (isNearBottom) {
+            scrollToBottom("smooth");
         }
-    }, [messages]);
+    }, [messages, isNearBottom, scrollToBottom]);
+
+    useLayoutEffect(() => {
+        if (messages.length > 0) {
+            setTimeout(() => scrollToBottom("auto"), 100);
+        }
+    }, [conversationId]);
 
     useEffect(() => {
         const conversationUUID = uuid();
         setConversationId(conversationUUID);
-    }, [])
+    }, [setConversationId]);
 
     useEffect(() => {
-
         if (!conversationId) return;
 
         const ref = doc(conversationCollection, conversationId);
@@ -169,22 +206,19 @@ const ChatPage = () => {
         });
 
         return () => unsub();
-    }, [conversationId]);
+    }, [conversationId, setMessages, setConversations]);
 
     useEffect(() => {
+        const unsub = onSnapshot(conversationCollection, (snapshot) => {
+            const convs = snapshot.docs.map((doc) => ({
+                converdationId: doc.id,
+                ...(doc.data() as Omit<ConversationsTargetScan, 'converdationId'>)
+            }));
+            setConversations(() => convs);
+        });
 
-        const listenConversations = () => {
-
-            return onSnapshot(conversationCollection, (snapshot) => {
-                const convs = snapshot.docs.map((doc) => ({
-                    converdationId: doc.id,
-                    ...(doc.data() as any)
-                }));
-                setConversations(() => [...convs]);
-            });
-        }
-        listenConversations();
-    }, [])
+        return () => unsub();
+    }, [setConversations]);
 
     return (
         <Box
@@ -192,40 +226,79 @@ const ChatPage = () => {
             display="flex"
             flexDirection="column"
             overflow="hidden"
-            className="animate__animated animate__fadeIn"
+            sx={{
+                background: theme.palette.mode === 'dark'
+                    ? 'linear-gradient(to bottom, #0a0a0a, #1a1a1a)'
+                    : 'linear-gradient(to bottom, #f8f9fa, #ffffff)',
+            }}
         >
             <Navbar />
+
             <Box
+                ref={messagesContainerRef}
                 flex={1}
                 px={2}
                 py={2}
                 mt={8}
+                onScroll={handleScroll}
                 sx={{
                     overflowX: "hidden",
-                    overflowY: "auto"
+                    overflowY: "auto",
+                    scrollBehavior: "smooth",
+                    position: "relative",
+                    '&::-webkit-scrollbar': {
+                        width: '8px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                        background: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        background: theme.palette.mode === 'dark'
+                            ? 'rgba(255,255,255,0.2)'
+                            : 'rgba(0,0,0,0.2)',
+                        borderRadius: '4px',
+                        '&:hover': {
+                            background: theme.palette.mode === 'dark'
+                                ? 'rgba(255,255,255,0.3)'
+                                : 'rgba(0,0,0,0.3)',
+                        },
+                    },
                 }}
             >
-                {
-                    messages.length === 0 ? (
-                        <>
+                <Fade in timeout={600}>
+                    <Box>
+                        {messages.length === 0 ? (
                             <WelcomeChat />
-                        </>
-                    ) : (
-                        <MessageContainer
-                            isLoading={loading}
-                            messages={messages}
-                            statusStream={statusStream}
-                        />
-                    )
-                }
-                <div ref={messagesEndRef} />
+                        ) : (
+                            <MessageContainer
+                                isLoading={loading}
+                                messages={messages}
+                                statusStream={statusStream}
+                            />
+                        )}
+                        <div ref={messagesEndRef} />
+                    </Box>
+                </Fade>
             </Box>
 
-            <ChatInput
-                question={question}
-                setQuestion={setQuestion}
-                onSend={handleResponseIA}
-            />
+            <Box
+                sx={{
+                    borderTop: theme.palette.mode === 'dark'
+                        ? '1px solid rgba(255,255,255,0.1)'
+                        : '1px solid rgba(0,0,0,0.1)',
+                    bgcolor: theme.palette.mode === 'dark'
+                        ? 'rgba(0,0,0,0.3)'
+                        : 'rgba(255,255,255,0.8)',
+                    backdropFilter: 'blur(10px)',
+                    pt: 1,
+                }}
+            >
+                <ChatInput
+                    question={question}
+                    setQuestion={setQuestion}
+                    onSend={handleResponseIA}
+                />
+            </Box>
         </Box>
     );
 };

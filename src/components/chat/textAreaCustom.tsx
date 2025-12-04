@@ -16,6 +16,7 @@ import {
     type DragEvent,
     type KeyboardEvent,
     useEffect,
+    useRef,
     useState,
 } from "react";
 
@@ -31,9 +32,9 @@ type UploadItem = {
 };
 
 export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => {
-
     const [files, setFiles] = useState<UploadItem[]>([]);
     const [isDragOver, setIsDragOver] = useState(false);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -60,6 +61,10 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         clearPreviews(files);
         setQuestion("");
         setFiles([]);
+
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+        }
     };
 
     const mapFilesToUploadItems = (fileList: FileList | File[]) => {
@@ -112,6 +117,17 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         setIsDragOver(false);
     };
 
+    const adjustTextareaHeight = () => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+    };
+
+    useEffect(() => {
+        adjustTextareaHeight();
+    }, [question]);
+
     useEffect(() => {
         return () => {
             clearPreviews(files);
@@ -125,25 +141,23 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                sx={(theme) => (
-                    {
-                        border: isDragOver ? `2px dashed ${theme.palette.primary.main}` : "1px dashed #ccc",
-                        borderRadius: 2,
-                        padding: 1,
-                        fontSize: 12,
-                        textAlign: "center",
-                        color: "#666",
-                        transition: "all 0.2s ease",
-                        bgcolor: isDragOver ? "rgba(25,118,210,0.04)" : "transparent",
-                        cursor: "pointer",
-                    }
-                )}
+                sx={(theme) => ({
+                    border: isDragOver ? `2px dashed ${theme.palette.primary.main}` : "1px dashed #ccc",
+                    borderRadius: 2,
+                    padding: 1,
+                    fontSize: 12,
+                    textAlign: "center",
+                    color: "#666",
+                    transition: "all 0.2s ease",
+                    bgcolor: isDragOver ? "rgba(25,118,210,0.04)" : "transparent",
+                    cursor: "pointer",
+                })}
             >
                 Arrastra archivos aquí o usa el ícono de clip para adjuntarlos
             </Box>
 
             {files.length > 0 && (
-                <Stack direction="row" spacing={1} flexWrap="wrap" mb={1}>
+                <Stack direction="row" spacing={1} flexWrap="wrap" mb={1} useFlexGap>
                     {files.map((item, index) => {
                         const { file, preview } = item;
                         const isImage = !!preview;
@@ -160,7 +174,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                     flexDirection: "column",
                                     gap: 0.5,
                                     boxShadow: 2,
-                                    bgcolor: "primary.main",
+                                    bgcolor: "background.paper",
                                 }}
                             >
                                 <IconButton
@@ -174,7 +188,8 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                         color: "white",
                                         "&:hover": {
                                             bgcolor: "rgba(0,0,0,0.7)",
-                                        }
+                                        },
+                                        zIndex: 1,
                                     }}
                                 >
                                     <X size={14} />
@@ -205,7 +220,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                             justifyContent: "center",
                                         }}
                                     >
-                                        <InsertDriveFileIcon fontSize="small" />
+                                        <InsertDriveFileIcon fontSize="large" />
                                     </Box>
                                 )}
 
@@ -230,33 +245,36 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 display="flex"
                 alignItems="flex-end"
                 gap={1}
-                sx={(theme) => (
-                    {
-                        border: `1px solid ${theme.palette.primary.main}`,
-                        borderRadius: 2,
-                        padding: 1,
-                        bgcolor: "#fff",
-                        position: "relative",
-                        transition: "all 0.5s ease"
-                    }
-                )}
+                sx={(theme) => ({
+                    border: `1px solid ${theme.palette.primary.main}`,
+                    borderRadius: 2,
+                    padding: 1,
+                    bgcolor: "#fff",
+                    position: "relative",
+                })}
             >
                 <TextField
+                    inputRef={textareaRef}
                     multiline
                     minRows={3}
-                    maxRows={15}
+                    maxRows={10}
                     placeholder="Escribe texto, pega código o describe qué quieres hacer..."
                     fullWidth
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e)}
+                    onKeyDown={handleKeyDown}
                     variant="standard"
                     InputProps={{
                         disableUnderline: true,
                     }}
                     sx={{
-                        resize: "none",
-                        transition: "height 1s ease",
+                        '& .MuiInputBase-root': {
+                            alignItems: 'flex-start',
+                        },
+                        '& textarea': {
+                            overflow: 'auto !important',
+                            resize: 'none',
+                        }
                     }}
                 />
 
@@ -266,25 +284,22 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     multiple
                     style={{ display: "none" }}
                     onChange={handleFileChange}
-                    autoFocus
                 />
 
-                <Stack direction="row" spacing={0.5} alignItems="center">
+                <Stack direction="row" spacing={0.5} alignItems="center" flexShrink={0}>
                     <Tooltip title="Insertar bloque de código">
                         <IconButton
                             size="small"
                             onClick={() => {
                                 const codeBlock = "```\n// código aquí\n```";
                                 const newValue = question + "\n" + codeBlock;
-
                                 setQuestion(newValue);
 
                                 setTimeout(() => {
-                                    const textarea = document.querySelector("#chat-textarea") as HTMLTextAreaElement;
-                                    if (textarea) {
-                                        const pos = newValue.indexOf("// código aquí") + 3;
-                                        textarea.setSelectionRange(pos, pos);
-                                        textarea.focus();
+                                    if (textareaRef.current) {
+                                        const pos = newValue.indexOf("// código aquí");
+                                        textareaRef.current.setSelectionRange(pos, pos + 14);
+                                        textareaRef.current.focus();
                                     }
                                 }, 0);
                             }}
@@ -294,7 +309,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                 "&:hover": { bgcolor: "#333" }
                             }}
                         >
-                            <CodeIcon fontSize="small" />
+                            <CodeIcon size={18} />
                         </IconButton>
                     </Tooltip>
 
@@ -316,6 +331,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                     fontWeight: 600,
                                     fontSize: "0.875rem",
                                     boxShadow: "none",
+                                    whiteSpace: 'nowrap',
                                 }}
                                 startIcon={<AttachFileIcon fontSize="small" />}
                             >
@@ -337,9 +353,13 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                         background: "#3e3e3eff",
                                         color: "#ffffff",
                                     },
+                                    "&:disabled": {
+                                        bgcolor: "grey.300",
+                                        color: "grey.500",
+                                    }
                                 }}
                             >
-                                <ArrowUp />
+                                <ArrowUp size={18} />
                             </IconButton>
                         </span>
                     </Tooltip>
