@@ -1,15 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import { MessageCircleCode } from "lucide-react";
-import { useTargetScanStore } from "../../store/target-store";
 
 const WelcomeChat = () => {
 
-    const { fullHeightInputChat } = useTargetScanStore();
 
     return (
         <Box
             height={"100%"}
-            display={fullHeightInputChat ? "none" : "flex"}
+            display={"flex"}
             sx={{
                 justifyContent: "center",
                 alignItems: "center",
