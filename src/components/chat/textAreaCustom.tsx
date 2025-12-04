@@ -11,7 +11,7 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { ArrowUp, Maximize2, Minimize2, X } from "lucide-react";
+import { ArrowUp, CodeIcon, Maximize2, Minimize2, X } from "lucide-react";
 import {
     type ChangeEvent,
     type DragEvent,
@@ -314,8 +314,8 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     }}
                     sx={{
                         resize: "none",
-                        transition: "height 1s ease", // Animación suave en la altura
-                        height: fullHeightInputChat ? "60vh" : "auto", // Control de la altura dinámica
+                        transition: "height 1s ease",
+                        height: fullHeightInputChat ? "60vh" : "auto",
                     }}
                 />
 
@@ -329,6 +329,34 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 />
 
                 <Stack direction="row" spacing={0.5} alignItems="center">
+                    <Tooltip title="Insertar bloque de código">
+                        <IconButton
+                            size="small"
+                            onClick={() => {
+                                const codeBlock = "```\n// código aquí\n```";
+                                const newValue = question + "\n" + codeBlock;
+
+                                setQuestion(newValue);
+
+                                setTimeout(() => {
+                                    const textarea = document.querySelector("#chat-textarea") as HTMLTextAreaElement;
+                                    if (textarea) {
+                                        const pos = newValue.indexOf("// código aquí") + 3;
+                                        textarea.setSelectionRange(pos, pos);
+                                        textarea.focus();
+                                    }
+                                }, 0);
+                            }}
+                            sx={{
+                                bgcolor: "black",
+                                color: "white",
+                                "&:hover": { bgcolor: "#333" }
+                            }}
+                        >
+                            <CodeIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+
                     <Tooltip title="Adjuntar archivos">
                         <label htmlFor="chat-file-input">
                             <Button
