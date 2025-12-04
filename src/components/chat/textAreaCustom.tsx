@@ -288,7 +288,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
 
                 <Stack direction="row" spacing={0.5} alignItems="center" flexShrink={0}>
                     <Tooltip title="Insertar bloque de código">
-                        <IconButton
+                        <Button
                             size="small"
                             onClick={() => {
                                 const codeBlock = "```\n// código aquí\n```";
@@ -306,11 +306,19 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                             sx={{
                                 bgcolor: "black",
                                 color: "white",
-                                "&:hover": { bgcolor: "#333" }
+                                "&:hover": { bgcolor: "#333" },
+                                textTransform: "none",
+                                padding: "6px 16px",
+                                borderRadius: "16px",
+                                fontWeight: 600,
+                                fontSize: "0.875rem",
+                                boxShadow: "none",
+                                whiteSpace: 'nowrap'
                             }}
+                            startIcon={<CodeIcon fontSize="small" />}
                         >
-                            <CodeIcon size={18} />
-                        </IconButton>
+                            Insertar código
+                        </Button>
                     </Tooltip>
 
                     <Tooltip title="Adjuntar archivos">
