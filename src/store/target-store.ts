@@ -18,7 +18,6 @@ type TargetState = {
     conversations: ConversationsTargetScan[]
     currentConversationId: string | undefined
     currentMessages: Messages[],
-    fullHeightInputChat: boolean
 }
 
 type TargetActions = {
@@ -28,7 +27,6 @@ type TargetActions = {
         messages: Messages[] | ((prev: Messages[]) => Messages[])
     ) => void;
     resetCurrentConversation: () => void;
-    setFullHeightInputChat: (newState: boolean) => void
 }
 
 type TargetScanStore = TargetState & TargetActions;
@@ -38,7 +36,6 @@ const targetScanStore = create<TargetScanStore>()(
         conversations: [],
         currentConversationId: undefined,
         currentMessages: [],
-        fullHeightInputChat: false,
         setConversations: (updater: (prev: ConversationsTargetScan[]) => ConversationsTargetScan[]) =>
             set((state) => ({
                 conversations: updater(state.conversations),
@@ -54,9 +51,6 @@ const targetScanStore = create<TargetScanStore>()(
         resetCurrentConversation: () => set({
             currentConversationId: undefined,
             currentMessages: []
-        }),
-        setFullHeightInputChat: (newState) => set({
-            fullHeightInputChat: newState
         })
     })
 );
@@ -66,23 +60,19 @@ export const useTargetScanStore = () => {
         conversations,
         currentConversationId,
         currentMessages,
-        fullHeightInputChat,
         resetCurrentConversation,
         setConversations,
         setCurrentConversationId,
         setCurrentMessages,
-        setFullHeightInputChat
     } = targetScanStore();
 
     return {
         conversations,
         currentConversationId,
         currentMessages,
-        fullHeightInputChat,
         resetCurrentConversation,
         setConversations,
         setCurrentConversationId,
         setCurrentMessages,
-        setFullHeightInputChat
     }
 }

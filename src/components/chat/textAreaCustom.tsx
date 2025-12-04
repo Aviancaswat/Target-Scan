@@ -3,15 +3,14 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import {
     Box,
     Button,
-    Chip,
     IconButton,
     Paper,
     Stack,
     TextField,
     Tooltip,
-    Typography,
+    Typography
 } from "@mui/material";
-import { ArrowUp, CodeIcon, Maximize2, Minimize2, X } from "lucide-react";
+import { ArrowUp, CodeIcon, X } from "lucide-react";
 import {
     type ChangeEvent,
     type DragEvent,
@@ -19,7 +18,6 @@ import {
     useEffect,
     useState,
 } from "react";
-import { useTargetScanStore } from "../../store/target-store";
 
 interface ChatInputProps {
     question: string;
@@ -34,7 +32,6 @@ type UploadItem = {
 
 export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => {
 
-    const { fullHeightInputChat, setFullHeightInputChat } = useTargetScanStore();
     const [files, setFiles] = useState<UploadItem[]>([]);
     const [isDragOver, setIsDragOver] = useState(false);
 
@@ -63,7 +60,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         clearPreviews(files);
         setQuestion("");
         setFiles([]);
-        setFullHeightInputChat(false);
     };
 
     const mapFilesToUploadItems = (fileList: FileList | File[]) => {
@@ -116,8 +112,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         setIsDragOver(false);
     };
 
-    const handleHeightInput = () => setFullHeightInputChat(!fullHeightInputChat);
-
     useEffect(() => {
         return () => {
             clearPreviews(files);
@@ -154,38 +148,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                         const { file, preview } = item;
                         const isImage = !!preview;
 
-                        return fullHeightInputChat ? (
-                            <Box
-                                display={"flex"}
-                                gap={1}
-                                flexWrap={"wrap"}
-                                alignItems={"center"}
-                                sx={{
-                                    flexDirection: {
-                                        sm: "column",
-                                        lg: "row"
-                                    },
-                                    gap: {
-                                        sm: 5,
-                                        lg: 1
-                                    }
-                                }}
-                            >
-                                <Chip
-                                    key={`${file.name}-${index}`}
-                                    label={file.name}
-                                    onDelete={() => handleRemoveFile(index)}
-                                    sx={(theme) => ({
-                                        maxWidth: 200,
-                                        textOverflow: "ellipsis",
-                                        background: theme.palette.primary.main,
-                                        '& .MuiChip-deleteIcon': {
-                                            color: "rgba(0,0,0,0.6)"
-                                        }
-                                    })}
-                                />
-                            </Box>
-                        ) : (
+                        return (
                             <Paper
                                 key={`${file.name}-${index}`}
                                 sx={{
@@ -278,27 +241,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     }
                 )}
             >
-                <Tooltip title={fullHeightInputChat ? "Contraer" : "Expandir"} placement="top">
-                    <IconButton
-                        sx={{
-                            backgroundColor: "#000",
-                            color: "#fff",
-                            position: "absolute",
-                            top: 0,
-                            right: 0,
-                            width: 25,
-                            height: 25,
-                            margin: 1,
-                            '&:hover': {
-                                backgroundColor: "#000000b2"
-                            }
-                        }}
-                        size="small"
-                        onClick={handleHeightInput}
-                    >
-                        {fullHeightInputChat ? <Minimize2 /> : <Maximize2 />}
-                    </IconButton>
-                </Tooltip>
                 <TextField
                     multiline
                     minRows={3}
@@ -315,7 +257,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     sx={{
                         resize: "none",
                         transition: "height 1s ease",
-                        height: fullHeightInputChat ? "60vh" : "auto",
                     }}
                 />
 
