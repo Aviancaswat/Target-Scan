@@ -2,12 +2,14 @@ import { Box, Button, Typography } from "@mui/material";
 import { ChevronRight, MessageCircleCode } from "lucide-react";
 import { Link } from "react-router-dom";
 import GridCustom from "../components/home/GridCustom";
+import '../pages/styles/chat.page.styles.css';
 
 const HomePage = () => {
     return (
         <Box
+            className="page-container"
             width={"100%"}
-            height={"100%"}
+            minHeight={"100vh"}
             display="flex"
             flexDirection={"column"}
             alignItems={"center"}
@@ -19,15 +21,18 @@ const HomePage = () => {
                 marginTop: {
                     xs: 5,
                     lg: 0
-                },
+                }
             }}
         >
+            <div className="fade-grid-bg" />
             <Box
                 display="flex"
                 flexDirection="column"
                 justifyContent="center"
                 alignItems="center"
                 gap={2}
+                position={"relative"}
+                zIndex={2}
             >
                 <MessageCircleCode size={48} />
                 <Typography
