@@ -324,7 +324,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                     textTransform: "none",
                                     '&:hover': {
                                         color: "text.primary",
-                                        boxShadow: "0px 4px 15px rgba(246, 196, 80, 0.4)",
+                                        boxShadow: "0px 4px 15px rgba(255, 0, 0, 0.4)",
                                     },
                                     padding: "6px 16px",
                                     borderRadius: "16px",

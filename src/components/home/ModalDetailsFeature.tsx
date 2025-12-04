@@ -87,7 +87,13 @@ export default function ModalDetailsFeature(props: ModalDetailsFeatureProps) {
                         justifyContent={"space-between"}
                         alignItems={"center"}
                     >
-                        <Typography id="modal-modal-title" variant="h6" component="h2" fontWeight={"bold"}>
+                        <Typography
+                            id="modal-modal-title"
+                            variant="h6"
+                            component="h2"
+                            fontWeight={"bold"}
+                            color='secondary.main'
+                        >
                             {dataFeature[props.type - 1].title}
                         </Typography>
                         <IconButton onClick={handleClose} sx={{ background: "#fff", color: "#000" }}>

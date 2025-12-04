@@ -1,38 +1,37 @@
 import { createTheme } from "@mui/material/styles";
+//@ts-ignore
+import '@fontsource-variable/red-hat-display';
 
 export const theme = createTheme({
     typography: {
-        fontFamily: `'Inter Variable', sans-serif`,
-        h1: { fontFamily: `'Inter Variable', sans-serif` },
-        h2: { fontFamily: `'Inter Variable', sans-serif` },
-        h3: { fontFamily: `'Inter Variable', sans-serif` },
-        h4: { fontFamily: `'Inter Variable', sans-serif` },
-        h5: { fontFamily: `'Inter Variable', sans-serif` },
-        h6: { fontFamily: `'Inter Variable', sans-serif` },
-        body1: { fontFamily: `'Ubuntu', sans-serif` },
-        body2: { fontFamily: `'Ubuntu', sans-serif` }
+        fontFamily: `'Red Hat Display Variable', sans-serif`,
     },
     palette: {
         primary: {
-            main: "#F6C450",   // Botones principales, elementos destacados
-            light: "#FCECC7",  // Fondos suaves, tarjetas claras, hovers
+            main: "#FF0000",        // rojo Avianca — botones principales, acentos, elementos destacados
+            light: "#FF7F7F",       // rojo suave / hover / estados ligeros
+            dark: "#CC0000",        // rojo oscuro — para hover activos, estados intensos
+            contrastText: "#FFFFFF" // texto sobre rojo
         },
         secondary: {
-            main: "#F5A623",   // Etiquetas, acentos, indicadores secundarios
-        },
-        text: {
-            primary: "#2E2E2E",   // Texto principal (títulos y contenido)
-            secondary: "#6D6D6D", // Texto secundario (descripciones, subtítulos)
+            main: "#FFFFFF",        // blanco — para fondos, cards, contenedores secundarios
+            light: "#FFFFFF",
+            dark: "#F2F2F2",
+            contrastText: "#FF0000"
         },
         background: {
-            default: "#FFFFFF",  // Fondo general de la app
-            paper: "#F7F7F8",    // Contenedores, tarjetas, secciones elevadas
+            default: "#FFFFFF",     // fondo general blanco
+            paper: "#F9F9F9"        // contenedores, tarjetas — blanco / casi blanco
+        },
+        text: {
+            primary: "#2E2E2E",     // texto principal — oscuro neutro
+            secondary: "#6D6D6D"    // texto secundario — gris medio
         },
         error: {
-            main: "#D63A32",     // Alertas, mensajes de error, iconos críticos
+            main: "#D63A32"         // puedes mantener un rojo de error personalizado como el actual
         },
         info: {
-            main: "#8FA4B3",     // Información, iconos suaves, estados neutrales
+            main: "#8FA4B3"         // opcional: tonos neutros/azules grises para información
         }
     }
 });

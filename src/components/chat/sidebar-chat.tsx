@@ -77,7 +77,6 @@ export default function SidebarChatHistory() {
     const selectChat = (conversationId: string) => {
         const conv = conversations.find(e => e.converdationId === conversationId);
         if (!conv) return;
-
         setCurrentConversationId(conv.converdationId);
         setCurrentMessages(conv.messages);
         handleClose();
@@ -90,7 +89,7 @@ export default function SidebarChatHistory() {
                     ref={anchorRef}
                     size="small"
                     onClick={handleOpen}
-                    sx={{ color: "text.primary" }}
+                    sx={{ color: "secondary.main" }}
                 >
                     <PanelRightOpen />
                 </IconButton>
@@ -103,12 +102,24 @@ export default function SidebarChatHistory() {
             >
                 <Box sx={{ width: 320, p: 2 }}>
 
-                    <Box display="flex" alignItems="center" gap={1} mb={1}>
-                        <MessageCircleCode size={30} />
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        gap={1}
+                        mb={1}
+                        borderRadius={2}
+                    >
+                        <MessageCircleCode size={25} />
                         <Typography variant="h6">Target Scan</Typography>
                     </Box>
 
-                    <Box mt={1}>
+                    <Divider sx={{ my: 2 }} />
+
+                    <Box
+                        mt={1}
+                        p={1}
+                        borderRadius={2}
+                    >
                         <List>
                             <ListItem disablePadding>
                                 <ListItemButton onClick={createNewChat}>
@@ -223,6 +234,7 @@ const MenuOptionsChat = ({
                     onClick={() => handleDeleteChat(conversationId)}
                     sx={{
                         color: "red",
+                        fontSize: 14,
                         '&:hover': {
                             background: red[100]
                         }

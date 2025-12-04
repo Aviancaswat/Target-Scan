@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { alpha, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import imagePattern from "../../assets/patternOne.png";
@@ -23,17 +23,20 @@ export default function GridCustom() {
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
-                        sx={{
+                        sx={(theme) => ({
                             borderRadius: 2,
                             height: 100,
                             backgroundImage: `
-                                linear-gradient(rgba(246, 196, 80, 0.75), rgba(246, 196, 80, 0.75)),
-                                url(${imagePattern})
-                            `,
+                                    linear-gradient(
+                                    ${alpha(theme.palette.primary.main, 0.75)},
+                                    ${alpha(theme.palette.primary.main, 0.75)}
+                                    ),
+                                    url(${imagePattern})
+                                    `,
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
                             backgroundSize: "cover"
-                        }}
+                        })}
                     >
                         <Box
                             display={"flex"}
@@ -49,6 +52,7 @@ export default function GridCustom() {
                                 component="h3"
                                 marginLeft={2}
                                 fontWeight={"bold"}
+                                color="secondary.main"
                                 sx={{
                                     fontSize: {
                                         xs: "18px",
@@ -69,17 +73,20 @@ export default function GridCustom() {
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
-                        sx={{
+                        sx={(theme) => ({
                             borderRadius: 2,
                             height: 100,
                             backgroundImage: `
-                                linear-gradient(rgba(246, 196, 80, 0.75), rgba(246, 196, 80, 0.75)),
-                                url(${imagePattern})
-                            `,
+                                    linear-gradient(
+                                    ${alpha(theme.palette.primary.main, 0.75)},
+                                    ${alpha(theme.palette.primary.main, 0.75)}
+                                    ),
+                                    url(${imagePattern})
+                                    `,
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
                             backgroundSize: "cover"
-                        }}
+                        })}
                     >
                         <Box
                             display={"flex"}
@@ -95,6 +102,7 @@ export default function GridCustom() {
                                 component="h3"
                                 marginLeft={2}
                                 fontWeight={"bold"}
+                                color="secondary.main"
                                 sx={{
                                     fontSize: {
                                         xs: "18px",
@@ -115,17 +123,20 @@ export default function GridCustom() {
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
-                        sx={{
+                        sx={(theme) => ({
                             borderRadius: 2,
                             height: 100,
                             backgroundImage: `
-                                linear-gradient(rgba(246, 196, 80, 0.75), rgba(246, 196, 80, 0.75)),
-                                url(${imagePattern})
-                            `,
+                                    linear-gradient(
+                                    ${alpha(theme.palette.primary.main, 0.75)},
+                                    ${alpha(theme.palette.primary.main, 0.75)}
+                                    ),
+                                    url(${imagePattern})
+                                    `,
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
                             backgroundSize: "cover"
-                        }}
+                        })}
                     >
                         <Box
                             display={"flex"}
@@ -141,6 +152,7 @@ export default function GridCustom() {
                                 component="h3"
                                 marginLeft={2}
                                 fontWeight={"bold"}
+                                color="secondary.main"
                                 sx={{
                                     fontSize: {
                                         xs: "18px",
@@ -156,6 +168,6 @@ export default function GridCustom() {
                     </Box>
                 </Grid>
             </Grid>
-        </Grid>
+        </Grid >
     );
 }

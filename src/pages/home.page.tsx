@@ -11,7 +11,7 @@ const HomePage = () => {
             display="flex"
             flexDirection={"column"}
             alignItems={"center"}
-            sx={(theme) => ({
+            sx={{
                 justifyContent: {
                     xs: "normal",
                     lg: "center"
@@ -20,9 +20,7 @@ const HomePage = () => {
                     xs: 5,
                     lg: 0
                 },
-                backgroundColor: "primary.main",
-                backgroundImage: `linear-gradient(180deg, ${theme.palette.primary.main} 0%, rgba(255,255,255,1) 50%)`
-            })}
+            }}
         >
             <Box
                 display="flex"

@@ -10,7 +10,7 @@ export const getColor = () => {
         // [deepPurple[100], deepPurple[600]],
         // [amber[100], amber[700]],
         // [deepOrange[100], deepOrange[700]],
-        [theme.palette.primary.main, theme.palette.text.primary]
+        [theme.palette.primary.main, theme.palette.secondary.main]
     ];
 
     const randomIndex = Math.floor(Math.random() * colorOptions.length);

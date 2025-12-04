@@ -54,7 +54,7 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
             <MenuItem
                 onClick={handleOpen}
                 sx={{
-                    fontSize: "16px",
+                    fontSize: "14px",
                     display: "flex",
                     gap: 1.5,
                     "&:hover": {
