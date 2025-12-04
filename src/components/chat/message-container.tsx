@@ -68,7 +68,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                                     : 'none',
                                             },
                                             '@keyframes fadeIn': {
-                                                '0%': { opacity: 0 },
+                                                '0%': { opacity: 0.5 },
                                                 '100%': { opacity: 1 },
                                             },
                                         }}
