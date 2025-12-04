@@ -59,7 +59,7 @@ const ChatPage = () => {
                 const conversation = await ConversationService.getConversation(conversationId!);
                 if (!conversation?.title || conversation.title.trim() === "") {
                     await ConversationService.updateConversation(conversationId!, {
-                        title: userMessage.message.slice(0, 400),
+                        title: userMessage.message.slice(0, 100),
                     });
                 }
 
