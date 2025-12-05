@@ -328,7 +328,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                 size="small"
                                 sx={{
                                     backgroundColor: "primary.main",
-                                    color: "text.primary",
+                                    color: "secondary.main",
                                     textTransform: "none",
                                     '&:hover': {
                                         color: "text.primary",

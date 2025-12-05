@@ -1,12 +1,14 @@
-import { Box, Icon, IconButton } from "@mui/material";
-import { Check, Copy, type LucideIcon } from "lucide-react";
+import { Box, CircularProgress, Icon, IconButton } from "@mui/material";
+import { Check, Copy, Download, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import { toast } from "sonner";
 import type { Messages } from "../../store/target-store";
 import { getColor } from "../../utils/colors";
+import { downloadFileMdToPdf } from "../../utils/download-response";
 
 interface MessageContainerProps {
     messages: Messages[],
@@ -16,6 +18,7 @@ interface MessageContainerProps {
 
 export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, isLoading, statusStream }) => {
 
+    const [isDonwloadFile, setDownloadFile] = useState<boolean>(false);
     const [iconType, setIconCopy] = useState<LucideIcon>(Copy);
     const [userColors] = useState<[string, string]>(() => getColor());
     const [bgColor, textColor] = userColors;
@@ -26,6 +29,21 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
         setTimeout(() => {
             setIconCopy(Copy)
         }, 600)
+    }
+
+    const handleDownloadFile = async (content: string) => {
+        try {
+            setDownloadFile(true);
+            await downloadFileMdToPdf(content);
+            toast.success("El documento se ha descargado correctamente...");
+        }
+        catch (error) {
+            console.log(`Error al descargar la respuesta: ${error}`)
+            toast.error("Upps! Ha ocurrido un error al descargar la respuesta");
+        }
+        finally {
+            setDownloadFile(false);
+        }
     }
 
     return (
@@ -90,6 +108,17 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                             onClick={() => handleCopy(msg.message)}
                                         >
                                             <Icon component={iconType} fontSize="small" />
+                                        </IconButton>
+                                        <IconButton
+                                            size="small"
+                                            sx={{ ml: 1 }}
+                                            onClick={() => handleDownloadFile(msg.message)}
+                                        >
+                                            {
+                                                isDonwloadFile ?
+                                                    <CircularProgress size="small" /> :
+                                                    <Icon component={Download} fontSize="small" />
+                                            }
                                         </IconButton>
                                     </Box>
                                 )}
