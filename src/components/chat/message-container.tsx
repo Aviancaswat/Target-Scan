@@ -35,11 +35,15 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
         try {
             setDownloadFile(true);
             await downloadFileMdToPdf(content);
-            toast.success("El documento se ha descargado correctamente...");
+            toast.success("El documento se ha descargado correctamente...", {
+                position: "top-left"
+            });
         }
         catch (error) {
             console.log(`Error al descargar la respuesta: ${error}`)
-            toast.error("Upps! Ha ocurrido un error al descargar la respuesta");
+            toast.error("Upps! Ha ocurrido un error al descargar la respuesta", {
+                position: "top-left"
+            });
         }
         finally {
             setDownloadFile(false);
