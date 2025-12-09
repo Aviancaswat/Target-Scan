@@ -19,6 +19,7 @@ import {
     useRef,
     useState,
 } from "react";
+import { toast } from "sonner";
 
 interface ChatInputProps {
     question: string;
@@ -30,6 +31,12 @@ type UploadItem = {
     file: File;
     preview?: string;
 };
+
+const MIME_TYPES_AVAILABLE_MODEL_GEMINI = [
+    'image/png',
+    'image/jpeg',
+    'image/webp'
+]
 
 export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => {
     const [files, setFiles] = useState<UploadItem[]>([]);
@@ -76,14 +83,36 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         }));
     };
 
+    const validateMimeTypeImages = (arrayFiles: UploadItem[] = []): UploadItem[] => {
+        if (!arrayFiles.length) return [];
+        const validFiles = arrayFiles.filter(e =>
+            MIME_TYPES_AVAILABLE_MODEL_GEMINI.includes(e.file.type)
+        );
+        const inValidFiles = arrayFiles.filter(e =>
+            !MIME_TYPES_AVAILABLE_MODEL_GEMINI.includes(e.file.type)
+        );
+
+        if (inValidFiles.length) {
+            const formatsAvailable = "png, jpeg y webp";
+            inValidFiles.forEach(e => {
+                toast.error(`El archivo ${e.file.name} tiene un formato no admitido. Solo se permiten archivos: ${formatsAvailable}`)
+            })
+        }
+
+        return validFiles;
+    };
+
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
-
         const mapped = mapFilesToUploadItems(e.target.files);
-        setFiles((prev) => [...prev, ...mapped]);
-
+        const validFiles = validateMimeTypeImages(mapped);
+        console.log("Mapped files: ", validFiles);
+        if (validFiles.length > 0) {
+            setFiles(prev => [...prev, ...validFiles]);
+        }
         e.target.value = "";
     };
+
 
     const handleRemoveFile = (fileIndex: number) => {
         setFiles((prev) => {
