@@ -175,18 +175,20 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 sx={(theme) => ({
-                    border: isDragOver ? `2px dashed ${theme.palette.primary.main}` : "1px dashed #ccc",
+                    display: "grid",
+                    placeContent: "center",
+                    border: isDragOver ? `1px dashed ${theme.palette.primary.main}` : "1px dashed #ccc",
                     borderRadius: 2,
                     padding: 1,
                     fontSize: 12,
                     textAlign: "center",
                     color: "#666",
-                    transition: "all 0.2s ease",
                     bgcolor: isDragOver ? "rgba(25,118,210,0.04)" : "transparent",
                     cursor: "pointer",
+                    transition: "all 0.2s ease",
                 })}
             >
-                Arrastra archivos aquí o usa el ícono de clip para adjuntarlos
+                Arrastra archivos aquí o usa el botón de adjuntar
             </Box>
 
             {files.length > 0 && (

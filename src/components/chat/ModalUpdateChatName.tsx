@@ -58,7 +58,7 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                     "&:hover": {
                         background: "#f1f1f1",
                         color: "black"
-                    },
+                    }
                 }}
             >
                 <Pencil size={15} />
@@ -105,7 +105,7 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                         }}
                     />
 
-                    <Typography variant="body2" color="gray" sx={{ mb: 2 }}>
+                    <Typography variant="body2" color="gray" sx={{ mb: 2, p: 0 }}>
                         Presiona Enter para actualizar el nombre
                     </Typography>
                 </DialogContent>
