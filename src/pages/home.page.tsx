@@ -1,8 +1,8 @@
+import '@/pages/styles/chat.page.styles.css';
+import GridCustom from "@components/home/GridCustom";
 import { Box, Button, Typography } from "@mui/material";
 import { ChevronRight, MessageCircleCode } from "lucide-react";
 import { Link } from "react-router-dom";
-import GridCustom from "../components/home/GridCustom";
-import '../pages/styles/chat.page.styles.css';
 
 const HomePage = () => {
     return (

@@ -1,3 +1,5 @@
+import { ConversationService } from "@/firebase/firestore/services/conversation.service";
+import { useTargetScanStore } from "@/store/target-store";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
@@ -19,6 +21,7 @@ import {
     Tooltip,
     Typography
 } from "@mui/material";
+import { red } from "@mui/material/colors";
 import {
     MessageCircleCode,
     MessageCircleMore,
@@ -27,13 +30,9 @@ import {
     SquarePen,
     Trash2
 } from "lucide-react";
-
-import { red } from "@mui/material/colors";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { v4 as uuid } from "uuid";
-import { ConversationService } from "../../firebase/firestore/services/conversation.service";
-import { useTargetScanStore } from "../../store/target-store";
 import { ModalSearchChats } from "./ModalSearchChats";
 import { ModalUpdateChatName } from "./ModalUpdateChatName";
 

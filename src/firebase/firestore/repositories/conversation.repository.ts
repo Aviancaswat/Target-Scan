@@ -1,5 +1,5 @@
+import type { Messages } from "@/store/target-store";
 import { addDoc, arrayUnion, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
-import type { Messages } from "../../../store/target-store";
 import { conversationCollection } from "../collections/conversation.collection";
 import type { ChatMessage } from "../types/conversation.type";
 

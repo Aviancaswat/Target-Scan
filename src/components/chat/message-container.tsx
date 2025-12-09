@@ -1,3 +1,6 @@
+import type { Messages } from "@/store/target-store";
+import { getColor } from "@/utils/colors";
+import { downloadFileMdToPdf } from "@/utils/download-response";
 import { Box, CircularProgress, Icon, IconButton } from "@mui/material";
 import { Check, Copy, Download, type LucideIcon } from "lucide-react";
 import { useState } from "react";
@@ -6,9 +9,6 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
-import type { Messages } from "../../store/target-store";
-import { getColor } from "../../utils/colors";
-import { downloadFileMdToPdf } from "../../utils/download-response";
 
 interface MessageContainerProps {
     messages: Messages[],

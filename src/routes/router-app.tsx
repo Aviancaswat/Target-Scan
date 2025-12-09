@@ -1,6 +1,6 @@
+import ChatPage from "@/pages/chat.page";
+import HomePage from "@/pages/home.page";
 import { Route, Routes } from "react-router-dom";
-import ChatPage from "../pages/chat.page";
-import HomePage from "../pages/home.page";
 
 const RoutesApp = () => {
     return (

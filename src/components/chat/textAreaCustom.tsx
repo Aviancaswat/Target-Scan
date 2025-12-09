@@ -95,7 +95,13 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         if (inValidFiles.length) {
             const formatsAvailable = "png, jpeg y webp";
             inValidFiles.forEach(e => {
-                toast.error(`El archivo ${e.file.name} tiene un formato no admitido. Solo se permiten archivos: ${formatsAvailable}`)
+                toast.error(
+                    `El archivo ${e.file.name} tiene un formato no admitido. 
+                    Solo se permiten archivos: ${formatsAvailable}`,
+                    {
+                        duration: 10000
+                    }
+                )
             })
         }
 
@@ -111,7 +117,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         }
         e.target.value = "";
     };
-
 
     const handleRemoveFile = (fileIndex: number) => {
         setFiles((prev) => {

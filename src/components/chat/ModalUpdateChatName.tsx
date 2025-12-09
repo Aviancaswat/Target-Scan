@@ -1,3 +1,5 @@
+import { ConversationService } from "@/firebase/firestore/services/conversation.service";
+import CloseIcon from "@mui/icons-material/Close";
 import {
     Dialog,
     DialogContent,
@@ -7,13 +9,9 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-
-import CloseIcon from "@mui/icons-material/Close";
 import { Pen, Pencil } from "lucide-react";
-
 import { useState } from "react";
 import { toast } from "sonner";
-import { ConversationService } from "../../firebase/firestore/services/conversation.service";
 
 export const ModalUpdateChatName = ({ conversationId }: { conversationId: string }) => {
     const [open, setOpen] = useState(false);

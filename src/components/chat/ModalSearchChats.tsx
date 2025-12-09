@@ -1,3 +1,5 @@
+import { useTargetScanStore, type ConversationsTargetScan } from "@/store/target-store";
+import CloseIcon from "@mui/icons-material/Close";
 import {
     Box,
     Dialog,
@@ -13,13 +15,9 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-
-import CloseIcon from "@mui/icons-material/Close";
-import { MessageCircleMore, Search } from "lucide-react";
-
 import { debounce } from "lodash";
+import { MessageCircleMore, Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useTargetScanStore, type ConversationsTargetScan } from "../../store/target-store";
 
 export const ModalSearchChats = ({ onCloseSidebar }: { onCloseSidebar: Function }) => {
 

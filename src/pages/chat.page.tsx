@@ -1,3 +1,9 @@
+import { conversationCollection } from "@/firebase/firestore/collections/conversation.collection";
+import { ConversationService } from "@/firebase/firestore/services/conversation.service";
+import { AgentTargetScanService } from "@/services/targetScanService";
+import '@/styles/chat.style.css';
+import { ChatInput } from "@components/chat/textAreaCustom";
+import WelcomeChat from "@components/chat/welcome-chat";
 import type { Content } from "@google/genai";
 import { Box, Fade, useTheme } from "@mui/material";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -6,13 +12,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { v4 as uuid } from "uuid";
 import { MessageContainer } from "../components/chat/message-container";
 import Navbar from "../components/chat/navbar";
-import { ChatInput } from "../components/chat/textAreaCustom";
-import WelcomeChat from "../components/chat/welcome-chat";
-import { conversationCollection } from "../firebase/firestore/collections/conversation.collection";
-import { ConversationService } from "../firebase/firestore/services/conversation.service";
-import { AgentTargetScanService } from "../services/targetScanService";
 import { useTargetScanStore, type ConversationsTargetScan, type Messages } from "../store/target-store";
-import '../styles/chat.style.css';
 
 const ChatPage = () => {
     const theme = useTheme();

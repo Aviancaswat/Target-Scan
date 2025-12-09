@@ -1,7 +1,7 @@
+import imagePattern from "@/assets/patternOne.png";
 import { alpha, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import imagePattern from "../../assets/patternOne.png";
 import ModalDetailsFeature from "./ModalDetailsFeature";
 
 export default function GridCustom() {
