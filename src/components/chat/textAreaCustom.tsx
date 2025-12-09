@@ -151,10 +151,12 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
     };
 
     const adjustTextareaHeight = () => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        }
+        const el = textareaRef.current;
+        if (!el) return;
+        const lineHeight = parseInt(window.getComputedStyle(el).lineHeight, 10);
+        const maxHeight = lineHeight * 8;
+        el.style.height = "auto";
+        el.style.height = Math.min(el.scrollHeight, maxHeight) + "px";
     };
 
     useEffect(() => {
@@ -278,6 +280,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
 
             <Box
                 display="flex"
+                flexDirection={"column"}
                 alignItems="flex-end"
                 gap={1}
                 sx={(theme) => ({
@@ -292,7 +295,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     inputRef={textareaRef}
                     multiline
                     minRows={3}
-                    maxRows={10}
+                    maxRows={6}
                     placeholder="Escribe texto, pega código o describe qué quieres hacer..."
                     fullWidth
                     value={question}
