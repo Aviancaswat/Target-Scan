@@ -60,10 +60,10 @@ export default function SidebarChatHistory() {
                 position: "top-right"
             });
         } catch (error) {
+            console.error("Error al eliminar el chat...")
             toast.error("Error al eliminar el chat", {
                 position: "top-right"
             });
-            console.log("Error al eliminar el chat...")
         }
     };
 

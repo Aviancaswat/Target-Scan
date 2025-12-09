@@ -40,7 +40,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
             });
         }
         catch (error) {
-            console.log(`Error al descargar la respuesta: ${error}`)
+            console.error(`Error al descargar la respuesta: ${error}`)
             toast.error("Upps! Ha ocurrido un error al descargar la respuesta", {
                 position: "top-left"
             });

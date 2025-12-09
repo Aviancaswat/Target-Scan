@@ -5,7 +5,7 @@ import RoutesApp from './routes/router-app';
 function App() {
   return (
     <Layout>
-      <Toaster />
+      <Toaster expand={true} />
       <RoutesApp />
     </Layout>
   )

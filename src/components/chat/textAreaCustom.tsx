@@ -106,7 +106,6 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         if (!e.target.files) return;
         const mapped = mapFilesToUploadItems(e.target.files);
         const validFiles = validateMimeTypeImages(mapped);
-        console.log("Mapped files: ", validFiles);
         if (validFiles.length > 0) {
             setFiles(prev => [...prev, ...validFiles]);
         }
