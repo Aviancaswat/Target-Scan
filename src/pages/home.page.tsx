@@ -9,7 +9,7 @@ const HomePage = () => {
         <Box
             className="page-container"
             width={"100%"}
-            minHeight={"100vh"}
+            minHeight={"100dvh"}
             display="flex"
             flexDirection={"column"}
             alignItems={"center"}
