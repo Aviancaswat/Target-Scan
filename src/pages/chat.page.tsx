@@ -138,15 +138,34 @@ const ChatPage = () => {
                 setTimeout(() => setStatusStream(false), 300);
 
             } catch (error) {
+                let userErrorMessage = "Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente.";
+                const errorCode = (error as any)?.status || (error as any)?.code;
+
+                if (errorCode) {
+                    switch (errorCode) {
+                        case 503:
+                            userErrorMessage = "El servicio de Target Scan está temporalmente sobrecargado. Espera un momento y vuelve a intentarlo.";
+                            break;
+                        case 429:
+                            userErrorMessage = "Has alcanzado temporalmente el límite de solicitudes (cuota) permitido. " +
+                                "Si necesitas aumentar este límite, puedes solicitar una ampliación en la consola de Google Cloud, o " +
+                                "esperar unos momentos para que se restablezca la cuota por minuto/hora."; break;
+                        case 400:
+                            userErrorMessage = "El contenido enviado no cumple con las políticas de seguridad o la solicitud es inválida. Por favor, revisa tu prompt.";
+                            break;
+                        default:
+                            userErrorMessage = `Ocurrió un error inesperado (Código: ${errorCode}). Por favor, contacta a soporte.`;
+                    }
+                }
+
                 const errorMsg: Messages = {
                     role: "model",
-                    message: "Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente.",
+                    message: userErrorMessage,
                     timestamp: new Date().toISOString(),
                 };
 
                 setMessages(prev => [...prev, errorMsg]);
                 await ConversationService.addMessage(conversationId!, errorMsg);
-
                 console.error("Error fetching AI response:", error);
 
             } finally {

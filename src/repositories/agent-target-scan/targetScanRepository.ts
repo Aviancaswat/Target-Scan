@@ -65,7 +65,7 @@ export class TargetScanRepository {
 
             const trimmedPrompt = userPrompt.trim();
             if (!trimmedPrompt && files.length === 0) {
-                throw new Error("User prompt and files cannot both be empty");
+                throw new Error("El prompt del usuario no puede estar vacío.");
             }
 
             this.ensureClient();
@@ -83,7 +83,7 @@ export class TargetScanRepository {
             ];
 
             if (userParts.length === 0) {
-                throw new Error("Content for user must have at least one part");
+                throw new Error("el contenido del usuario no puede estar vacío.");
             }
 
             const userContent: Content = {
@@ -109,11 +109,11 @@ export class TargetScanRepository {
                 yield text;
             }
         } catch (error) {
-            
+
             const isServiceUnavailable = error instanceof ApiError && error.status === 503;
             const isRateLimit = error instanceof ApiError && error.status === 429;
             if (isServiceUnavailable || isRateLimit) {
-                throw new Error("El servicio de generación de IA no está disponible en este momento. Por favor, intenta nuevamente más tarde.");
+                console.error("El servicio de target Scan  no está disponible en este momento. Por favor, intenta nuevamente más tarde.");
             }
             throw error;
         }
