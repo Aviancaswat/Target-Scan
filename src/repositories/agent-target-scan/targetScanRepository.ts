@@ -8,7 +8,8 @@ import { PROMPT_TARGET_SCAN_MAIN } from "../../utils/prompt";
 
 export class TargetScanRepository {
     private static genAI: GoogleGenAI | undefined;
-    private static modelName: string = "gemini-2.5-flash";
+    private static modelName: string = "gemini-2.5-pro";
+    // private static modelName = "gemini-2.5-flash";
 
     private static ensureClient() {
         if (!this.genAI) {
@@ -16,7 +17,10 @@ export class TargetScanRepository {
             if (!apiKey) {
                 throw new Error("VITE_API_KEY_GEMINI no es válida");
             }
-            this.genAI = new GoogleGenAI({ apiKey });
+
+            this.genAI = new GoogleGenAI({
+                apiKey: apiKey,
+            });
         }
     }
 
