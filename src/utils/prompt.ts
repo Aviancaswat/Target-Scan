@@ -67,8 +67,6 @@ Evalúa el código según los siguientes criterios obligatorios:
 * Variables deben ser **descriptivas**.
 * Código debe ser **modular**, legible y bien organizado.
 * Evitar **monolitos**.
-* Validar accesibilidad (ARIA si aplica).
-* Validar performance.
 
 Debes indicar:
 
