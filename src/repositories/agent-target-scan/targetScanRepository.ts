@@ -1,4 +1,5 @@
 import {
+    ApiError,
     GoogleGenAI,
     type Content,
     type ContentListUnion,
@@ -59,50 +60,62 @@ export class TargetScanRepository {
         files: File[] = []
     ): AsyncGenerator<string, void, unknown> {
 
-        const trimmedPrompt = userPrompt.trim();
-        if (!trimmedPrompt && files.length === 0) {
-            throw new Error("User prompt and files cannot both be empty");
-        }
+        try {
 
-        this.ensureClient();
 
-        const fileParts = files.length > 0 ? await this.filesToParts(files) : [];
+            const trimmedPrompt = userPrompt.trim();
+            if (!trimmedPrompt && files.length === 0) {
+                throw new Error("User prompt and files cannot both be empty");
+            }
 
-        const textParts: Part[] = [];
-        if (trimmedPrompt) {
-            textParts.push({ text: trimmedPrompt });
-        }
+            this.ensureClient();
 
-        const userParts: Part[] = [
-            ...textParts,
-            ...fileParts
-        ];
+            const fileParts = files.length > 0 ? await this.filesToParts(files) : [];
 
-        if (userParts.length === 0) {
-            throw new Error("Content for user must have at least one part");
-        }
+            const textParts: Part[] = [];
+            if (trimmedPrompt) {
+                textParts.push({ text: trimmedPrompt });
+            }
 
-        const userContent: Content = {
-            role: "user",
-            parts: userParts
-        };
+            const userParts: Part[] = [
+                ...textParts,
+                ...fileParts
+            ];
 
-        const contentsArray: Content[] = [
-            ...historyChat,
-            userContent
-        ];
+            if (userParts.length === 0) {
+                throw new Error("Content for user must have at least one part");
+            }
 
-        const contents: ContentListUnion = contentsArray;
+            const userContent: Content = {
+                role: "user",
+                parts: userParts
+            };
 
-        const response = await this.genAI!.models.generateContentStream({
-            model: this.modelName,
-            contents,
-            config: { systemInstruction: PROMPT_TARGET_SCAN_MAIN }
-        });
+            const contentsArray: Content[] = [
+                ...historyChat,
+                userContent
+            ];
 
-        for await (const part of response) {
-            const text = part.text ?? "";
-            yield text;
+            const contents: ContentListUnion = contentsArray;
+
+            const response = await this.genAI!.models.generateContentStream({
+                model: this.modelName,
+                contents,
+                config: { systemInstruction: PROMPT_TARGET_SCAN_MAIN }
+            });
+
+            for await (const part of response) {
+                const text = part.text ?? "";
+                yield text;
+            }
+        } catch (error) {
+            
+            const isServiceUnavailable = error instanceof ApiError && error.status === 503;
+            const isRateLimit = error instanceof ApiError && error.status === 429;
+            if (isServiceUnavailable || isRateLimit) {
+                throw new Error("El servicio de generación de IA no está disponible en este momento. Por favor, intenta nuevamente más tarde.");
+            }
+            throw error;
         }
     }
 }

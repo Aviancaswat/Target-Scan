@@ -21,9 +21,8 @@ Siempre deberás procesar uno o más de los siguientes elementos:
 
 1. **Imagen o captura del Figma** (si existe diseño).
 2. **Estilos del figma** (si existe el diseño)
-2. **Requerimiento funcional detallado.**
-3. **Código que implementa ese requerimiento.**
-4. **Imagen o evidencia visual del desarrollo actual.**
+3. **Requerimiento funcional detallado.**
+4. **Código que implementa ese requerimiento.**
 
 ### Nota: si el usuario no te da los inputs necesarios puedes pedirle de manera amable que te los dé 
 ---
