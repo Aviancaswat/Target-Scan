@@ -139,6 +139,7 @@ const ChatPage = () => {
 
             } catch (error) {
                 let userErrorMessage = "Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente.";
+                const technicalErrorMessage = (error as any)?.message || 'Mensaje de error no disponible.';
                 const errorCode = (error as any)?.status || (error as any)?.code;
 
                 if (errorCode) {
@@ -160,7 +161,7 @@ const ChatPage = () => {
 
                 const errorMsg: Messages = {
                     role: "model",
-                    message: userErrorMessage,
+                    message: userErrorMessage + ` (Detalle técnico: ${technicalErrorMessage})`,
                     timestamp: new Date().toISOString(),
                 };
 
