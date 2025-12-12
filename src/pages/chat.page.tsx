@@ -143,16 +143,28 @@ const ChatPage = () => {
                 const errorCode = (error as any)?.status || (error as any)?.code;
 
                 if (errorCode) {
+
                     switch (errorCode) {
-                        case 503:
-                            userErrorMessage = "El servicio de Target Scan está temporalmente sobrecargado. Espera un momento y vuelve a intentarlo.";
+                        case 400:
+                            userErrorMessage = "El cuerpo de la solicitud tiene un formato incorrecto. Por favor, verifica y vuelve a intentarlo.";
+                            break;
+                        case 403:
+                            userErrorMessage = "Tu clave de API no tiene los permisos necesarios. Por favor, revisa la configuración de tu cuenta.";
+                            break;
+                        case 404:
+                            userErrorMessage = "No se encontró un archivo de imagen, audio o video al que se hace referencia en tu solicitud. Por favor, verifica y vuelve a intentarlo.";
                             break;
                         case 429:
-                            userErrorMessage = "Has alcanzado temporalmente el límite de solicitudes (cuota) permitido. " +
-                                "Si necesitas aumentar este límite, puedes solicitar una ampliación en la consola de Google Cloud, o " +
-                                "esperar unos momentos para que se restablezca la cuota por minuto/hora."; break;
-                        case 400:
-                            userErrorMessage = "El contenido enviado no cumple con las políticas de seguridad o la solicitud es inválida. Por favor, revisa tu prompt.";
+                            userErrorMessage = "Has alcanzado temporalmente el límite de solicitudes (cuota) permitido. Por favor, espera unos momentos para que se restablezca la cuota por minuto/hora.";
+                            break;
+                        case 500:
+                            userErrorMessage = "El contexto de entrada es demasiado largo. Por favor, reduce la cantidad de información y vuelve a intentarlo.";
+                            break;
+                        case 503:
+                            userErrorMessage = "El servicio de Target Scan está temporalmente sobrecargado. Espera unos minutos y vuelve a intentarlo.";
+                            break;
+                        case 504:
+                            userErrorMessage = "Tu instrucción (o contexto) es demasiado grande para procesarse a tiempo. Por favor, reduce la cantidad de información y vuelve a intentarlo.";
                             break;
                         default:
                             userErrorMessage = `Ocurrió un error inesperado (Código: ${errorCode}). Por favor, contacta a soporte.`;

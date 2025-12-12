@@ -62,7 +62,6 @@ export class TargetScanRepository {
 
         try {
 
-
             const trimmedPrompt = userPrompt.trim();
             if (!trimmedPrompt && files.length === 0) {
                 throw new Error("El prompt del usuario no puede estar vacío.");
@@ -101,13 +100,16 @@ export class TargetScanRepository {
             const response = await this.genAI!.models.generateContentStream({
                 model: this.modelName,
                 contents,
-                config: { systemInstruction: PROMPT_TARGET_SCAN_MAIN }
+                config: {
+                    systemInstruction: PROMPT_TARGET_SCAN_MAIN
+                }
             });
 
             for await (const part of response) {
                 const text = part.text ?? "";
                 yield text;
             }
+
         } catch (error) {
 
             const isServiceUnavailable = error instanceof ApiError && error.status === 503;
