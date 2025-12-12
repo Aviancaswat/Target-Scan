@@ -177,7 +177,6 @@ const ChatPage = () => {
                     timestamp: new Date().toISOString(),
                 };
 
-                setMessages(prev => [...prev, errorMsg]);
                 await ConversationService.addMessage(conversationId!, errorMsg);
                 console.error("Error fetching AI response:", error);
 
