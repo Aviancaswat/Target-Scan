@@ -1,4 +1,3 @@
-import { ConversationService } from "@/firebase/firestore/services/conversation.service";
 import { useTargetScanStore } from "@/store/target-store";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -17,22 +16,19 @@ import {
     ListItemSecondaryAction,
     ListItemText,
     Menu,
-    MenuItem,
     Tooltip,
     Typography
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 import {
     MessageCircleCode,
     MessageCircleMore,
     MessageCircleOff,
     PanelRightOpen,
-    SquarePen,
-    Trash2
+    SquarePen
 } from "lucide-react";
 import { useRef, useState } from "react";
-import { toast } from "sonner";
 import { v4 as uuid } from "uuid";
+import ModalDeleteChat from "./ModalDeleteChat";
 import { ModalSearchChats } from "./ModalSearchChats";
 import { ModalUpdateChatName } from "./ModalUpdateChatName";
 
@@ -50,21 +46,6 @@ export default function SidebarChatHistory() {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const handleDeleteChat = async (conversationId: string) => {
-        try {
-            await ConversationService.deleteConversation(conversationId);
-            toast.success("Chat eliminado", {
-                description: "El chat se ha eliminado correctamente",
-                position: "top-right"
-            });
-        } catch (error) {
-            console.error("Error al eliminar el chat...")
-            toast.error("Error al eliminar el chat", {
-                position: "top-right"
-            });
-        }
-    };
 
     const createNewChat = async () => {
         const id = uuid();
@@ -184,7 +165,6 @@ export default function SidebarChatHistory() {
                                                     <ListItemSecondaryAction>
                                                         <MenuOptionsChat
                                                             conversationId={e.converdationId}
-                                                            handleDeleteChat={handleDeleteChat}
                                                         />
                                                     </ListItemSecondaryAction>
                                                 )}
@@ -202,10 +182,8 @@ export default function SidebarChatHistory() {
 
 const MenuOptionsChat = ({
     conversationId,
-    handleDeleteChat,
 }: {
     conversationId: string;
-    handleDeleteChat: (id: string) => void;
 }) => {
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -228,20 +206,7 @@ const MenuOptionsChat = ({
                 onClose={handleClose}
             >
                 <ModalUpdateChatName conversationId={conversationId} />
-
-                <MenuItem
-                    onClick={() => handleDeleteChat(conversationId)}
-                    sx={{
-                        color: "red",
-                        fontSize: 14,
-                        '&:hover': {
-                            background: red[100]
-                        }
-                    }}
-                >
-                    <Trash2 size={16} style={{ marginRight: 8 }} />
-                    Eliminar
-                </MenuItem>
+                <ModalDeleteChat conversationId={conversationId} />
             </Menu>
         </>
     );
