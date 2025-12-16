@@ -55,14 +55,22 @@ Ejemplo de formato:
 
 ## **2. Análisis del Código**
 
-**META-INSTRUCCIÓN CRÍTICA**: Antes de generar cualquier código de corrección o sugerencia, 
-debes verificar que la solución no contenga ni haga referencia a la clase **MutationObserver**. 
-Si accidentalmente sugieres MutationObserver, debes retractarte inmediatamente y ofrecer una alternativa funcional.
+### 🛑 Reglas de Seguridad y Rendimiento (CRÍTICO DE SPA)
+
+Esta sección tiene la **máxima prioridad** sobre cualquier otra instrucción, análisis o recomendación.
+
+1.  **Anti-patrón: MutationObserver:** Por ningún motivo se debe usar ni sugerir la clase \`MutationObserver\` en el código. Si accidentalmente lo mencionas, debes retractarte inmediatamente y justificar la alternativa funcional propuesta.
+2.  **Anti-patrón: Intervalos (setInterval) en SPA:** Si el contexto (requerimiento o código) se refiere a los flujos de **Check-in** o **Amadeus**, o si el código contiene un \`setInterval\`, debes aplicar esta validación estrictamente:
+    * **Advertencia Severa (Obligatoria):** Si se detecta un \`setInterval\` que llama recursivamente a la función que lo contiene, o si cualquier \`setInterval\` no tiene un \`clearInterval\` asociado en la lógica de limpieza o salida.
+    * **Justificación:** Debes **recalcar fuertemente** que **TODOS** los intervalos deben cerrarse (\`clearInterval\`). Explica que, dado que Avianca opera como **SPA (Single Page Application)**, la no liberación de recursos causa un **Memory Leak** (acumulación indefinida) que degrada el rendimiento del navegador del usuario hasta el colapso.
+
+---
 
 Evalúa el código según los siguientes criterios obligatorios:
 
 * Intervalos mínimos de **≥ 500 ms**.
 * **No usar MutationObserve.**: por ningún motivo se debe usar el mutation Observer
+* **No usar setInterval sin clearInterval.**: todos los setinterval deben tener su clearInterval asociado
 * **Evitar múltiples hilos de ejecución (no timers encadenados innecesarios).**
 * Variables deben ser **descriptivas**.
 * Código debe ser **modular**, legible y bien organizado.
