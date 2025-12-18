@@ -251,6 +251,15 @@ const ChatPage = () => {
         return () => unsub();
     }, [setConversations]);
 
+    const handleSelectedText = () => {
+        console.log("Evento disparado...");
+        const selectedText = window.getSelection()?.toString() || "";
+        if (selectedText) {
+            //setQuestion(selectedText);
+            console.log("Texto seleccionado:", selectedText);
+        }
+    }
+
     return (
         <Box
             height="100dvh"
@@ -262,6 +271,7 @@ const ChatPage = () => {
                     ? 'linear-gradient(to bottom, #0a0a0a, #1a1a1a)'
                     : 'linear-gradient(to bottom, #f8f9fa, #ffffff)',
             }}
+            onMouseUp={handleSelectedText}
         >
             <Navbar />
 
