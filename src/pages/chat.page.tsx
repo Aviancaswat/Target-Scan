@@ -253,10 +253,36 @@ const ChatPage = () => {
 
     const handleSelectedText = () => {
         console.log("Evento disparado...");
-        const selectedText = window.getSelection()?.toString() || "";
-        if (selectedText) {
-            //setQuestion(selectedText);
-            console.log("Texto seleccionado:", selectedText);
+        let selection = window.getSelection();
+        if (selection === null) return;
+
+        let range = selection.getRangeAt(0);
+        if (selection.toString().length > 0) {
+            // Obtener coordenadas del área seleccionada
+            let rect = range.getBoundingClientRect();
+
+            // Crear el input (o usar uno existente oculto)
+            let inputOverlay = document.getElementById('miInputOverlay');
+            if (!inputOverlay) {
+                inputOverlay = document.createElement('div');
+                inputOverlay.id = 'miInputOverlay';
+                document.body.appendChild(inputOverlay);
+            }
+
+            // Estilos para posicionarlo
+            inputOverlay.style.position = 'absolute';
+            inputOverlay.style.top = `${rect.bottom + window.scrollY}px`; // Abajo del texto seleccionado
+            inputOverlay.style.left = `${rect.left + window.scrollX}px`; // A la izquierda del texto seleccionado
+            inputOverlay.style.display = 'block';
+            inputOverlay.innerHTML = `<input type="text" value="${selection.toString()}">`; // El input con el texto
+            inputOverlay.style.border = '1px solid blue'; // Para verlo
+        
+        } else {
+            // Ocultar si no hay selección
+            let inputOverlay = document.getElementById('miInputOverlay');
+            if (inputOverlay) {
+                inputOverlay.style.display = 'none';
+            }
         }
     }
 
