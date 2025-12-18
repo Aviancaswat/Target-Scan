@@ -201,6 +201,46 @@ const ChatPage = () => {
         setSelectedText("");
     }, []);
 
+    const handleSelectedText = () => {
+
+        let selection = window.getSelection();
+        if (selection === null) return;
+
+        let range = selection.getRangeAt(0);
+        if (selection.toString().length > 0) {
+
+            setSelectedText(selection.toString());
+            let rect = range.getBoundingClientRect();
+
+            const componentHeight = 300;
+            const componentWidth = 450;
+            const padding = 16;
+
+            let top = rect.bottom + window.scrollY + 8;
+            let left = rect.left + window.scrollX;
+
+            if (rect.bottom + componentHeight > window.innerHeight) {
+                top = rect.top + window.scrollY - componentHeight - 8;
+            }
+
+            if (left + componentWidth > window.innerWidth) {
+                left = window.innerWidth - componentWidth - padding;
+            }
+
+            if (left < padding) {
+                left = padding;
+            }
+
+            if (top < padding) {
+                top = padding;
+            }
+
+            setPositionInputSelectedText({ top: `${top}px`, left: `${left}px` });
+        } else {
+            setSelectedText("");
+        }
+    }
+
     useLayoutEffect(() => {
         if (isNearBottom) {
             scrollToBottom("smooth");
@@ -263,75 +303,6 @@ const ChatPage = () => {
 
         return () => unsub();
     }, [setConversations]);
-
-    const handleSelectedText = () => {
-        console.log("Evento disparado...");
-        let selection = window.getSelection();
-        if (selection === null) return;
-
-        let range = selection.getRangeAt(0);
-        if (selection.toString().length > 0) {
-            console.log("Texto seleccionado:", selection.toString());
-            setSelectedText(selection.toString());
-            // Obtener coordenadas del área seleccionada
-            let rect = range.getBoundingClientRect();
-
-            // // Crear el input (o usar uno existente oculto)
-            // let inputOverlay = document.getElementById('miInputOverlay');
-            // if (!inputOverlay) {
-            //     inputOverlay = document.createElement('div');
-            //     inputOverlay.id = 'miInputOverlay';
-            //     document.body.appendChild(inputOverlay);
-            // }
-
-            // // Estilos para posicionarlo
-            // inputOverlay.style.position = 'absolute';
-            // inputOverlay.style.top = `${rect.bottom + window.scrollY}px`; // Abajo del texto seleccionado
-            // inputOverlay.style.left = `${rect.left + window.scrollX}px`; // A la izquierda del texto seleccionado
-            // inputOverlay.style.display = 'block';
-            // inputOverlay.innerHTML = `<input type="text" value="${selection.toString()}">`; // El input con el texto
-            // inputOverlay.style.border = '1px solid blue'; // Para verlo
-
-            // Calcular posición inteligente para que siempre esté visible
-            const componentHeight = 300; // Altura aproximada del componente
-            const componentWidth = 450; // Ancho del componente
-            const padding = 16; // Padding desde los bordes
-
-            let top = rect.bottom + window.scrollY + 8; // Por defecto, abajo del texto
-            let left = rect.left + window.scrollX;
-
-            // Si se sale por abajo del viewport, posicionarlo arriba del texto
-            if (rect.bottom + componentHeight > window.innerHeight) {
-                top = rect.top + window.scrollY - componentHeight - 8;
-            }
-
-            // Si se sale por la derecha, ajustar hacia la izquierda
-            if (left + componentWidth > window.innerWidth) {
-                left = window.innerWidth - componentWidth - padding;
-            }
-
-            // Si se sale por la izquierda, ajustar hacia la derecha
-            if (left < padding) {
-                left = padding;
-            }
-
-            // Si aún se sale por arriba, posicionarlo en el tope visible
-            if (top < padding) {
-                top = padding;
-            }
-
-            setPositionInputSelectedText({ top: `${top}px`, left: `${left}px` });
-
-        } else {
-
-            // // Ocultar si no hay selección
-            // let inputOverlay = document.getElementById('miInputOverlay');
-            // if (inputOverlay) {
-            //     inputOverlay.style.display = 'none';
-            // }
-            setSelectedText("");
-        }
-    }
 
     return (
         <Box
@@ -414,8 +385,8 @@ const ChatPage = () => {
                 />
             </Box>
 
-            <InputSelectedText 
-                selectedText={selectedText} 
+            <InputSelectedText
+                selectedText={selectedText}
                 position={positionInputSelectedText}
                 getResponseAgent={handleSendSelectedText}
                 onClose={handleCloseSelectedText}
