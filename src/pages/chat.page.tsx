@@ -1,3 +1,4 @@
+import { InputSelectedText } from "@/components/chat/InputSelectedText";
 import { conversationCollection } from "@/firebase/firestore/collections/conversation.collection";
 import { ConversationService } from "@/firebase/firestore/services/conversation.service";
 import { AgentTargetScanService } from "@/services/targetScanService";
@@ -31,6 +32,8 @@ const ChatPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [statusStream, setStatusStream] = useState<boolean>(false);
     const [isNearBottom, setIsNearBottom] = useState<boolean>(true);
+    const [positionInputSelectedText, setPositionInputSelectedText] = useState<{ top: string, left: string }>({ top: '0px', left: '0px' });
+    const [selectedText, setSelectedText] = useState<string>("");
 
     const buildHistoryFromCurrentConversation = (
         conversationId: string,
@@ -188,6 +191,16 @@ const ChatPage = () => {
         [conversationId, conversations, scrollToBottom, setMessages]
     );
 
+    const handleSendSelectedText = useCallback(async (prompt: string) => {
+        if (!prompt.trim()) return;
+        await handleResponseIA({ text: prompt, files: [] });
+        setSelectedText("");
+    }, [handleResponseIA]);
+
+    const handleCloseSelectedText = useCallback(() => {
+        setSelectedText("");
+    }, []);
+
     useLayoutEffect(() => {
         if (isNearBottom) {
             scrollToBottom("smooth");
@@ -258,31 +271,37 @@ const ChatPage = () => {
 
         let range = selection.getRangeAt(0);
         if (selection.toString().length > 0) {
+            console.log("Texto seleccionado:", selection.toString());
+            setSelectedText(selection.toString());
             // Obtener coordenadas del área seleccionada
             let rect = range.getBoundingClientRect();
 
-            // Crear el input (o usar uno existente oculto)
-            let inputOverlay = document.getElementById('miInputOverlay');
-            if (!inputOverlay) {
-                inputOverlay = document.createElement('div');
-                inputOverlay.id = 'miInputOverlay';
-                document.body.appendChild(inputOverlay);
-            }
+            // // Crear el input (o usar uno existente oculto)
+            // let inputOverlay = document.getElementById('miInputOverlay');
+            // if (!inputOverlay) {
+            //     inputOverlay = document.createElement('div');
+            //     inputOverlay.id = 'miInputOverlay';
+            //     document.body.appendChild(inputOverlay);
+            // }
 
-            // Estilos para posicionarlo
-            inputOverlay.style.position = 'absolute';
-            inputOverlay.style.top = `${rect.bottom + window.scrollY}px`; // Abajo del texto seleccionado
-            inputOverlay.style.left = `${rect.left + window.scrollX}px`; // A la izquierda del texto seleccionado
-            inputOverlay.style.display = 'block';
-            inputOverlay.innerHTML = `<input type="text" value="${selection.toString()}">`; // El input con el texto
-            inputOverlay.style.border = '1px solid blue'; // Para verlo
-        
+            // // Estilos para posicionarlo
+            // inputOverlay.style.position = 'absolute';
+            // inputOverlay.style.top = `${rect.bottom + window.scrollY}px`; // Abajo del texto seleccionado
+            // inputOverlay.style.left = `${rect.left + window.scrollX}px`; // A la izquierda del texto seleccionado
+            // inputOverlay.style.display = 'block';
+            // inputOverlay.innerHTML = `<input type="text" value="${selection.toString()}">`; // El input con el texto
+            // inputOverlay.style.border = '1px solid blue'; // Para verlo
+
+            setPositionInputSelectedText({ top: `${rect.bottom + window.scrollY}px`, left: `${rect.left + window.scrollX}px` });
+
         } else {
-            // Ocultar si no hay selección
-            let inputOverlay = document.getElementById('miInputOverlay');
-            if (inputOverlay) {
-                inputOverlay.style.display = 'none';
-            }
+
+            // // Ocultar si no hay selección
+            // let inputOverlay = document.getElementById('miInputOverlay');
+            // if (inputOverlay) {
+            //     inputOverlay.style.display = 'none';
+            // }
+            setSelectedText("");
         }
     }
 
@@ -366,6 +385,13 @@ const ChatPage = () => {
                     onSend={handleResponseIA}
                 />
             </Box>
+
+            <InputSelectedText 
+                selectedText={selectedText} 
+                position={positionInputSelectedText}
+                getResponseAgent={handleSendSelectedText}
+                onClose={handleCloseSelectedText}
+            />
         </Box>
     );
 };
