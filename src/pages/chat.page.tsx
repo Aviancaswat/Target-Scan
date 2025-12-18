@@ -292,7 +292,35 @@ const ChatPage = () => {
             // inputOverlay.innerHTML = `<input type="text" value="${selection.toString()}">`; // El input con el texto
             // inputOverlay.style.border = '1px solid blue'; // Para verlo
 
-            setPositionInputSelectedText({ top: `${rect.bottom + window.scrollY}px`, left: `${rect.left + window.scrollX}px` });
+            // Calcular posición inteligente para que siempre esté visible
+            const componentHeight = 300; // Altura aproximada del componente
+            const componentWidth = 450; // Ancho del componente
+            const padding = 16; // Padding desde los bordes
+
+            let top = rect.bottom + window.scrollY + 8; // Por defecto, abajo del texto
+            let left = rect.left + window.scrollX;
+
+            // Si se sale por abajo del viewport, posicionarlo arriba del texto
+            if (rect.bottom + componentHeight > window.innerHeight) {
+                top = rect.top + window.scrollY - componentHeight - 8;
+            }
+
+            // Si se sale por la derecha, ajustar hacia la izquierda
+            if (left + componentWidth > window.innerWidth) {
+                left = window.innerWidth - componentWidth - padding;
+            }
+
+            // Si se sale por la izquierda, ajustar hacia la derecha
+            if (left < padding) {
+                left = padding;
+            }
+
+            // Si aún se sale por arriba, posicionarlo en el tope visible
+            if (top < padding) {
+                top = padding;
+            }
+
+            setPositionInputSelectedText({ top: `${top}px`, left: `${left}px` });
 
         } else {
 
