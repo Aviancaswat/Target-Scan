@@ -1,6 +1,8 @@
+import { useTargetScanStore } from "@/store/target-store";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import {
+    alpha,
     Box,
     Button,
     IconButton,
@@ -8,7 +10,8 @@ import {
     Stack,
     TextField,
     Tooltip,
-    Typography
+    Typography,
+    useTheme
 } from "@mui/material";
 import { ArrowUp, CodeIcon, X } from "lucide-react";
 import {
@@ -39,6 +42,9 @@ const MIME_TYPES_AVAILABLE_MODEL_GEMINI = [
 ]
 
 export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => {
+    const theme = useTheme();
+    const { themeMode } = useTargetScanStore();
+    const isDark = themeMode === 'dark';
     const [files, setFiles] = useState<UploadItem[]>([]);
     const [isDragOver, setIsDragOver] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -178,19 +184,25 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                sx={(theme) => ({
+                sx={{
                     display: "grid",
                     placeContent: "center",
-                    border: isDragOver ? `1px dashed ${theme.palette.primary.main}` : "1px dashed #ccc",
+                    border: isDragOver 
+                        ? `2px dashed ${theme.palette.primary.main}` 
+                        : isDark
+                            ? `1px dashed ${alpha('#FFFFFF', 0.2)}`
+                            : "1px dashed #ccc",
                     borderRadius: 2,
                     padding: 1,
                     fontSize: 12,
                     textAlign: "center",
-                    color: "#666",
-                    bgcolor: isDragOver ? "rgba(25,118,210,0.04)" : "transparent",
+                    color: isDark ? alpha('#FFFFFF', 0.6) : "#666",
+                    bgcolor: isDragOver 
+                        ? alpha(theme.palette.primary.main, 0.1)
+                        : "transparent",
                     cursor: "pointer",
                     transition: "all 0.2s ease",
-                })}
+                }}
             >
                 Arrastra archivos aquí o usa el botón de adjuntar
             </Box>
@@ -212,8 +224,15 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                     display: "flex",
                                     flexDirection: "column",
                                     gap: 0.5,
-                                    boxShadow: 2,
-                                    bgcolor: "background.paper",
+                                    boxShadow: isDark
+                                        ? `0 2px 8px ${alpha('#000000', 0.6)}`
+                                        : 2,
+                                    bgcolor: isDark
+                                        ? alpha('#1a1a1a', 0.8)
+                                        : "background.paper",
+                                    border: isDark
+                                        ? `1px solid ${alpha('#FFFFFF', 0.1)}`
+                                        : 'none',
                                 }}
                             >
                                 <IconButton
@@ -285,13 +304,27 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                 flexDirection={"column"}
                 alignItems="flex-end"
                 gap={1}
-                sx={(theme) => ({
-                    border: `1px solid ${theme.palette.primary.main}`,
-                    borderRadius: 2,
-                    padding: 1,
-                    bgcolor: "#fff",
+                sx={{
+                    border: `1.5px solid ${theme.palette.primary.main}`,
+                    borderRadius: 2.5,
+                    padding: 1.5,
+                    bgcolor: isDark
+                        ? alpha('#0a0a0a', 0.6)
+                        : "#fff",
                     position: "relative",
-                })}
+                    backdropFilter: isDark ? 'blur(10px)' : 'none',
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                        boxShadow: isDark
+                            ? `0 0 0 1px ${alpha(theme.palette.primary.main, 0.3)}`
+                            : `0 0 0 1px ${alpha(theme.palette.primary.main, 0.15)}`,
+                    },
+                    '&:focus-within': {
+                        boxShadow: isDark
+                            ? `0 0 0 2px ${alpha(theme.palette.primary.main, 0.4)}`
+                            : `0 0 0 2px ${alpha(theme.palette.primary.main, 0.2)}`,
+                    }
+                }}
             >
                 <TextField
                     inputRef={textareaRef}
@@ -310,10 +343,17 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     sx={{
                         '& .MuiInputBase-root': {
                             alignItems: 'flex-start',
+                            color: 'text.primary',
                         },
                         '& textarea': {
                             overflow: 'auto !important',
                             resize: 'none',
+                            '&::placeholder': {
+                                color: isDark
+                                    ? alpha('#FFFFFF', 0.4)
+                                    : alpha('#000000', 0.5),
+                                opacity: 1,
+                            }
                         }
                     }}
                 />
@@ -344,16 +384,30 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                 }, 0);
                             }}
                             sx={{
-                                bgcolor: "black",
+                                bgcolor: isDark
+                                    ? alpha('#1a1a1a', 0.9)
+                                    : "black",
                                 color: "white",
-                                "&:hover": { bgcolor: "#333" },
+                                border: isDark
+                                    ? `1px solid ${alpha('#FFFFFF', 0.15)}`
+                                    : 'none',
+                                "&:hover": { 
+                                    bgcolor: isDark
+                                        ? alpha('#2a2a2a', 0.9)
+                                        : "#333",
+                                    transform: 'translateY(-1px)',
+                                    boxShadow: isDark
+                                        ? `0 4px 12px ${alpha('#000000', 0.5)}`
+                                        : 'none',
+                                },
                                 textTransform: "none",
                                 padding: "6px 16px",
                                 borderRadius: "16px",
                                 fontWeight: 600,
                                 fontSize: "0.875rem",
                                 boxShadow: "none",
-                                whiteSpace: 'nowrap'
+                                whiteSpace: 'nowrap',
+                                transition: 'all 0.2s ease',
                             }}
                             startIcon={<CodeIcon fontSize="small" />}
                         >
@@ -395,16 +449,32 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                                 onClick={handleSend}
                                 disabled={!question.trim() && files.length === 0}
                                 sx={{
-                                    bgcolor: "black",
+                                    bgcolor: isDark
+                                        ? alpha('#1a1a1a', 0.9)
+                                        : "black",
                                     color: "#FFFFFF",
+                                    border: isDark
+                                        ? `1px solid ${alpha('#FFFFFF', 0.15)}`
+                                        : 'none',
                                     "&:hover": {
-                                        background: "#3e3e3eff",
-                                        color: "#ffffff",
+                                        bgcolor: isDark
+                                            ? alpha('#2a2a2a', 0.9)
+                                            : "#3e3e3eff",
+                                        transform: 'translateY(-1px)',
+                                        boxShadow: isDark
+                                            ? `0 4px 12px ${alpha('#000000', 0.5)}`
+                                            : 'none',
                                     },
                                     "&:disabled": {
-                                        bgcolor: "grey.300",
-                                        color: "grey.500",
-                                    }
+                                        bgcolor: isDark
+                                            ? alpha('#FFFFFF', 0.05)
+                                            : "grey.300",
+                                        color: isDark
+                                            ? alpha('#FFFFFF', 0.25)
+                                            : "grey.500",
+                                        border: 'none',
+                                    },
+                                    transition: 'all 0.2s ease',
                                 }}
                             >
                                 <ArrowUp size={18} />

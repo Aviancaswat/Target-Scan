@@ -5,6 +5,7 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
+    alpha,
     Box,
     Divider,
     Drawer,
@@ -16,7 +17,8 @@ import {
     ListItemText,
     Menu,
     Tooltip,
-    Typography
+    Typography,
+    useTheme
 } from "@mui/material";
 import {
     MessageCircleCode,
@@ -32,14 +34,16 @@ import { ModalSearchChats } from "./ModalSearchChats";
 import { ModalUpdateChatName } from "./ModalUpdateChatName";
 
 export default function SidebarChatHistory() {
-
+    const theme = useTheme();
     const {
         conversations,
         setCurrentConversationId,
         setCurrentMessages,
-        currentConversationId
+        currentConversationId,
+        themeMode
     } = useTargetScanStore();
 
+    const isDark = themeMode === 'dark';
     const [open, setOpen] = useState(false);
     const [hoverChatId, setHoverChatId] = useState<string | undefined>(undefined);
     const anchorRef = useRef(null);
@@ -81,8 +85,15 @@ export default function SidebarChatHistory() {
                 onClose={handleClose}
                 PaperProps={{
                     sx: {
-                        background: 'linear-gradient(to bottom, #ffffff, #fafafa)',
-                        boxShadow: '-4px 0 24px rgba(0, 0, 0, 0.12)',
+                        background: isDark
+                            ? 'linear-gradient(to bottom, #0a0a0a, #1a1a1a)'
+                            : 'linear-gradient(to bottom, #ffffff, #fafafa)',
+                        boxShadow: isDark
+                            ? `-6px 0 32px ${alpha('#000000', 0.6)}`
+                            : '-4px 0 24px rgba(0, 0, 0, 0.12)',
+                        borderLeft: isDark
+                            ? `1px solid ${alpha('#FFFFFF', 0.08)}`
+                            : 'none',
                     }
                 }}
             >
@@ -101,11 +112,18 @@ export default function SidebarChatHistory() {
                         gap={1.5}
                         mb={2}
                         p={1.5}
-                        borderRadius={2}
+                        borderRadius={2.5}
                         sx={{
-                            background: 'linear-gradient(135deg, #E63946 0%, #C1121F 100%)',
+                            background: isDark
+                                ? `linear-gradient(135deg, ${alpha('#E63946', 0.9)} 0%, ${alpha('#C1121F', 0.9)} 100%)`
+                                : 'linear-gradient(135deg, #E63946 0%, #C1121F 100%)',
                             color: 'white',
-                            boxShadow: '0 4px 12px rgba(230, 57, 70, 0.3)',
+                            boxShadow: isDark
+                                ? `0 6px 20px ${alpha('#E63946', 0.4)}`
+                                : '0 4px 12px rgba(230, 57, 70, 0.3)',
+                            border: isDark
+                                ? `1px solid ${alpha('#FFFFFF', 0.1)}`
+                                : 'none',
                         }}
                     >
                         <MessageCircleCode size={25} />
@@ -117,10 +135,16 @@ export default function SidebarChatHistory() {
                     <Box
                         borderRadius={2}
                         sx={{
-                            bgcolor: 'background.paper',
+                            bgcolor: isDark
+                                ? alpha('#1a1a1a', 0.6)
+                                : 'background.paper',
                             border: '1px solid',
-                            borderColor: 'divider',
-                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                            borderColor: isDark
+                                ? alpha('#FFFFFF', 0.08)
+                                : 'divider',
+                            boxShadow: isDark
+                                ? `0 4px 16px ${alpha('#000000', 0.4)}`
+                                : '0 2px 8px rgba(0, 0, 0, 0.05)',
                             overflow: 'hidden',
                         }}
                     >
@@ -131,12 +155,19 @@ export default function SidebarChatHistory() {
                                     sx={{
                                         py: 1.5,
                                         transition: 'all 0.2s',
+                                        color: 'text.primary',
                                         '&:hover': {
-                                            bgcolor: 'primary.light',
-                                            color: 'primary.contrastText',
+                                            bgcolor: isDark
+                                                ? alpha(theme.palette.primary.main, 0.2)
+                                                : 'primary.light',
+                                            color: isDark
+                                                ? '#FFFFFF'
+                                                : 'primary.contrastText',
                                             transform: 'translateX(4px)',
                                             '& .MuiListItemIcon-root': {
-                                                color: 'primary.contrastText',
+                                                color: isDark
+                                                    ? '#FFFFFF'
+                                                    : 'primary.contrastText',
                                             }
                                         }
                                     }}
@@ -152,7 +183,13 @@ export default function SidebarChatHistory() {
                         </List>
                     </Box>
 
-                    <Divider sx={{ my: 2, opacity: 0.6 }} />
+                    <Divider sx={{ 
+                        my: 2, 
+                        opacity: isDark ? 0.15 : 0.6,
+                        borderColor: isDark
+                            ? alpha('#FFFFFF', 0.1)
+                            : undefined,
+                    }} />
 
                     <Box sx={{ flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                         <Accordion 
@@ -160,26 +197,34 @@ export default function SidebarChatHistory() {
                             elevation={0} 
                             sx={{ 
                                 overflow: 'visible',
-                                bgcolor: 'background.paper',
+                                bgcolor: isDark
+                                    ? alpha('#1a1a1a', 0.6)
+                                    : 'background.paper',
                                 border: '1px solid',
-                                borderColor: 'divider',
+                                borderColor: isDark
+                                    ? alpha('#FFFFFF', 0.08)
+                                    : 'divider',
                                 borderRadius: 2,
-                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                                boxShadow: isDark
+                                    ? `0 4px 16px ${alpha('#000000', 0.4)}`
+                                    : '0 2px 8px rgba(0, 0, 0, 0.05)',
                                 '&:before': { display: 'none' },
                             }}
                         >
                             <AccordionSummary 
-                                expandIcon={<ExpandMoreIcon />}
+                                expandIcon={<ExpandMoreIcon sx={{ color: 'text.primary' }} />}
                                 sx={{
                                     borderBottom: '1px solid',
-                                    borderColor: 'divider',
+                                    borderColor: isDark
+                                        ? alpha('#FFFFFF', 0.08)
+                                        : 'divider',
                                     minHeight: 48,
                                     '&.Mui-expanded': {
                                         minHeight: 48,
                                     },
                                 }}
                             >
-                                <Typography fontWeight={600} fontSize={14}>Chats</Typography>
+                                <Typography fontWeight={600} fontSize={14} color="text.primary">Chats</Typography>
                             </AccordionSummary>
 
                             <AccordionDetails sx={{ 
@@ -193,10 +238,14 @@ export default function SidebarChatHistory() {
                                     background: 'transparent',
                                 },
                                 '&::-webkit-scrollbar-thumb': {
-                                    background: 'rgba(0,0,0,0.2)',
+                                    background: isDark
+                                        ? alpha('#FFFFFF', 0.15)
+                                        : 'rgba(0,0,0,0.2)',
                                     borderRadius: '3px',
                                     '&:hover': {
-                                        background: 'rgba(0,0,0,0.3)',
+                                        background: isDark
+                                            ? alpha('#FFFFFF', 0.25)
+                                            : 'rgba(0,0,0,0.3)',
                                     },
                                 },
                             }}>
@@ -228,7 +277,11 @@ export default function SidebarChatHistory() {
                                                     position: 'relative',
                                                     borderLeft: e.converdationId === currentConversationId ? 4 : 0,
                                                     borderColor: e.converdationId === currentConversationId ? 'primary.main' : 'transparent',
-                                                    backgroundColor: e.converdationId === currentConversationId ? 'rgba(230, 57, 70, 0.08)' : 'inherit',
+                                                    backgroundColor: e.converdationId === currentConversationId 
+                                                        ? isDark
+                                                            ? alpha(theme.palette.primary.main, 0.15)
+                                                            : 'rgba(230, 57, 70, 0.08)'
+                                                        : 'inherit',
                                                     mb: 0.5,
                                                     borderRadius: 1,
                                                     transition: 'all 0.2s',
@@ -243,7 +296,9 @@ export default function SidebarChatHistory() {
                                                         borderRadius: 1,
                                                         transition: 'all 0.2s',
                                                         '&:hover': {
-                                                            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                                                            backgroundColor: isDark
+                                                                ? alpha('#FFFFFF', 0.05)
+                                                                : 'rgba(0, 0, 0, 0.04)',
                                                         }
                                                     }}
                                                 >

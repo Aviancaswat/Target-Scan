@@ -1,4 +1,5 @@
-import { alpha, Stack } from '@mui/material';
+import { useTargetScanStore } from '@/store/target-store';
+import { alpha, Stack, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,20 +10,25 @@ import SideBarChat from './sidebar-chat';
 import { ThemeToggle } from './ThemeToggle';
 
 const Navbar = () => {
+    const theme = useTheme();
+    const { themeMode } = useTargetScanStore();
+    const isDark = themeMode === 'dark';
+
     return (
         <AppBar position="fixed" color="primary" elevation={0} 
-            sx={(theme) => ({
-                backdropFilter: 'blur(20px)',
-                bgcolor: theme.palette.mode === 'dark'
-                    ? alpha(theme.palette.background.paper, 0.85)
+            sx={{
+                backdropFilter: 'blur(24px)',
+                bgcolor: isDark
+                    ? alpha('#0a0a0a', 0.85)
                     : theme.palette.primary.main,
-                borderBottom: theme.palette.mode === 'dark'
-                    ? `1px solid ${alpha(theme.palette.divider, 0.2)}`
+                borderBottom: isDark
+                    ? `1px solid ${alpha('#FFFFFF', 0.08)}`
                     : 'none',
-                boxShadow: theme.palette.mode === 'dark'
-                    ? `0 2px 12px ${alpha(theme.palette.primary.main, 0.15)}`
-                    : 'none',
-            })}
+                boxShadow: isDark
+                    ? `0 4px 20px ${alpha('#000000', 0.4)}`
+                    : '0 2px 8px rgba(0,0,0,0.1)',
+                transition: 'all 0.3s ease',
+            }}
         >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <Stack
@@ -32,19 +38,20 @@ const Navbar = () => {
                     spacing={1}
                     alignItems="center"
                     mr={2}
-                    sx={(theme) => ({
+                    sx={{
                         textTransform: "none",
                         textDecoration: "none",
-                        color: theme.palette.mode === 'dark'
-                            ? theme.palette.text.primary
+                        color: isDark
+                            ? '#FFFFFF'
                             : theme.palette.secondary.main,
                         transition: 'all 0.3s ease',
                         '&:hover': {
-                            color: theme.palette.mode === 'dark'
+                            color: isDark
                                 ? theme.palette.primary.main
                                 : theme.palette.secondary.main,
+                            transform: 'scale(1.02)',
                         }
-                    })}
+                    }}
                 >
                     <Box>
                         <MessageCircleCode size={30} />

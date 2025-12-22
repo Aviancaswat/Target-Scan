@@ -1,7 +1,8 @@
 import type { Messages } from "@/store/target-store";
+import { useTargetScanStore } from "@/store/target-store";
 import { getColor } from "@/utils/colors";
 import { downloadFileMdToPdf } from "@/utils/download-response";
-import { Box, CircularProgress, Icon, IconButton } from "@mui/material";
+import { alpha, Box, CircularProgress, Icon, IconButton, useTheme } from "@mui/material";
 import { Check, Copy, Download, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -17,6 +18,9 @@ interface MessageContainerProps {
 }
 
 export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, isLoading, statusStream }) => {
+    const theme = useTheme();
+    const { themeMode } = useTargetScanStore();
+    const isDark = themeMode === 'dark';
 
     const [isDonwloadFile, setDownloadFile] = useState<boolean>(false);
     const [iconType, setIconCopy] = useState<LucideIcon>(Copy);
@@ -68,14 +72,30 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                         >
                             <Box maxWidth="80%">
                                 <Box
-                                    px={1.5}
-                                    py={isUser ? 0 : 1.5}
-                                    borderRadius={8}
-                                    bgcolor={isUser ? bgColor : "secondary.dark"}
+                                    px={2}
+                                    py={isUser ? 1.5 : 2}
+                                    borderRadius={3}
+                                    bgcolor={isUser 
+                                        ? bgColor 
+                                        : isDark
+                                            ? alpha('#1a1a1a', 0.8)
+                                            : "secondary.dark"
+                                    }
                                     color={isUser ? textColor : "text.primary"}
                                     sx={{ 
                                         wordBreak: "break-word",
-                                        boxShadow: isUser ? `0 2px 8px ${bgColor}88` : '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                        boxShadow: isUser 
+                                            ? `0 4px 12px ${bgColor}99` 
+                                            : isDark
+                                                ? `0 4px 16px ${alpha('#000000', 0.5)}`
+                                                : '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                        border: !isUser && isDark
+                                            ? `1px solid ${alpha('#FFFFFF', 0.08)}`
+                                            : 'none',
+                                        backdropFilter: !isUser && isDark
+                                            ? 'blur(10px)'
+                                            : 'none',
+                                        transition: 'all 0.2s ease',
                                      }}
                                 >
                                     {isUser ? (
@@ -109,22 +129,56 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                     )}
                                 </Box>
                                 {msg.role === "model" && statusStream === false && (
-                                    <Box pt={1} className="animate__animated animate__fadeIn">
+                                    <Box pt={1} className="animate__animated animate__fadeIn" display="flex" gap={0.5}>
                                         <IconButton
                                             size="small"
-                                            sx={{ ml: 1 }}
+                                            sx={{ 
+                                                ml: 1,
+                                                bgcolor: isDark
+                                                    ? alpha('#1a1a1a', 0.6)
+                                                    : alpha('#000000', 0.03),
+                                                border: isDark
+                                                    ? `1px solid ${alpha('#FFFFFF', 0.08)}`
+                                                    : 'none',
+                                                color: 'text.secondary',
+                                                '&:hover': {
+                                                    bgcolor: isDark
+                                                        ? alpha('#2a2a2a', 0.8)
+                                                        : alpha('#000000', 0.08),
+                                                    color: theme.palette.primary.main,
+                                                    transform: 'scale(1.1)',
+                                                },
+                                                transition: 'all 0.2s ease',
+                                            }}
                                             onClick={() => handleCopy(msg.message)}
                                         >
                                             <Icon component={iconType} fontSize="small" />
                                         </IconButton>
                                         <IconButton
                                             size="small"
-                                            sx={{ ml: 1 }}
+                                            sx={{ 
+                                                ml: 0.5,
+                                                bgcolor: isDark
+                                                    ? alpha('#1a1a1a', 0.6)
+                                                    : alpha('#000000', 0.03),
+                                                border: isDark
+                                                    ? `1px solid ${alpha('#FFFFFF', 0.08)}`
+                                                    : 'none',
+                                                color: 'text.secondary',
+                                                '&:hover': {
+                                                    bgcolor: isDark
+                                                        ? alpha('#2a2a2a', 0.8)
+                                                        : alpha('#000000', 0.08),
+                                                    color: theme.palette.primary.main,
+                                                    transform: 'scale(1.1)',
+                                                },
+                                                transition: 'all 0.2s ease',
+                                            }}
                                             onClick={() => handleDownloadFile(msg.message)}
                                         >
                                             {
                                                 isDonwloadFile ?
-                                                    <CircularProgress size="small" /> :
+                                                    <CircularProgress size={18} sx={{ color: 'text.secondary' }} /> :
                                                     <Icon component={Download} fontSize="small" />
                                             }
                                         </IconButton>
