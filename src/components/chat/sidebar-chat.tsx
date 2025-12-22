@@ -38,6 +38,7 @@ export default function SidebarChatHistory() {
         conversations,
         setCurrentConversationId,
         setCurrentMessages,
+        currentConversationId
     } = useTargetScanStore();
 
     const [open, setOpen] = useState(false);
@@ -146,6 +147,11 @@ export default function SidebarChatHistory() {
                                                 disablePadding
                                                 onMouseEnter={() => setHoverChatId(e.converdationId)}
                                                 onMouseLeave={() => setHoverChatId(undefined)}
+                                                sx={{
+                                                    borderLeft: e.converdationId === currentConversationId ? 4 : 0,
+                                                    borderColor: e.converdationId === currentConversationId ? 'primary.main' : 'transparent',
+                                                    backgroundColor: e.converdationId === currentConversationId ? 'action.selected' : 'inherit'
+                                                }}
                                             >
                                                 <ListItemButton onClick={() => selectChat(e.converdationId)}>
                                                     <ListItemIcon>

@@ -297,7 +297,11 @@ const ChatPage = () => {
             const convs = snapshot.docs.map((doc) => ({
                 converdationId: doc.id,
                 ...(doc.data() as Omit<ConversationsTargetScan, 'converdationId'>)
-            }));
+            })).sort((a, b) => {
+                const dateA = a.updateAt ?? a.createAt ?? 0;
+                const dateB = b.updateAt ?? b.createAt ?? 0;
+                return dateB - dateA;
+            });
             setConversations(() => convs);
         });
 

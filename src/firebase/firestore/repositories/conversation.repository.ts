@@ -1,11 +1,13 @@
 import type { Messages } from "@/store/target-store";
-import { addDoc, arrayUnion, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { addDoc, arrayUnion, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc } from "firebase/firestore";
 import { conversationCollection } from "../collections/conversation.collection";
 import type { ChatMessage } from "../types/conversation.type";
 
 export const coversationRepository = {
     async getAll(): Promise<ChatMessage[]> {
-        const snapShots = await getDocs(conversationCollection);
+        const q = query(conversationCollection, orderBy("updateAt", "desc"));
+        console.log("Querying conversations with:", q);
+        const snapShots = await getDocs(q);
         return snapShots.docs.map(doc => {
             const dataChat = doc.data();
             return {
