@@ -1,10 +1,32 @@
-import imagePattern from "@/assets/patternOne.png";
-import { alpha, Typography } from "@mui/material";
+import { alpha, Typography, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import ModalDetailsFeature from "./ModalDetailsFeature";
 
 export default function GridCustom() {
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
+
+    const cardStyle = {
+        borderRadius: 3,
+        height: 100,
+        background: isDark 
+            ? 'transparent'
+            : `linear-gradient(${alpha(theme.palette.primary.main, 0.75)}, ${alpha(theme.palette.primary.main, 0.75)})`,
+        border: isDark 
+            ? `2px solid ${alpha('#FFFFFF', 0.15)}`
+            : 'none',
+        backdropFilter: isDark ? 'blur(10px)' : 'none',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+            borderColor: isDark ? alpha('#FFFFFF', 0.3) : 'transparent',
+            boxShadow: isDark 
+                ? `0 8px 32px ${alpha(theme.palette.primary.main, 0.2)}`
+                : `0 8px 24px ${alpha(theme.palette.primary.main, 0.3)}`,
+            transform: 'translateY(-4px)',
+        }
+    };
+
     return (
         <Grid
             spacing={2}
@@ -23,20 +45,7 @@ export default function GridCustom() {
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
-                        sx={(theme) => ({
-                            borderRadius: 2,
-                            height: 100,
-                            backgroundImage: `
-                                    linear-gradient(
-                                    ${alpha(theme.palette.primary.main, 0.75)},
-                                    ${alpha(theme.palette.primary.main, 0.75)}
-                                    ),
-                                    url(${imagePattern})
-                                    `,
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover"
-                        })}
+                        sx={cardStyle}
                     >
                         <Box
                             display={"flex"}
@@ -52,13 +61,13 @@ export default function GridCustom() {
                                 component="h3"
                                 marginLeft={2}
                                 fontWeight={"bold"}
-                                color="secondary.main"
                                 sx={{
                                     fontSize: {
                                         xs: "18px",
                                         md: "20px",
                                         lg: "24px"
-                                    }
+                                    },
+                                    color: isDark ? '#FFFFFF' : '#FFFFFF',
                                 }}
                             >
                                 Análisis Requerimientos
@@ -73,20 +82,7 @@ export default function GridCustom() {
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
-                        sx={(theme) => ({
-                            borderRadius: 2,
-                            height: 100,
-                            backgroundImage: `
-                                    linear-gradient(
-                                    ${alpha(theme.palette.primary.main, 0.75)},
-                                    ${alpha(theme.palette.primary.main, 0.75)}
-                                    ),
-                                    url(${imagePattern})
-                                    `,
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover"
-                        })}
+                        sx={cardStyle}
                     >
                         <Box
                             display={"flex"}
@@ -102,13 +98,13 @@ export default function GridCustom() {
                                 component="h3"
                                 marginLeft={2}
                                 fontWeight={"bold"}
-                                color="secondary.main"
                                 sx={{
                                     fontSize: {
                                         xs: "18px",
                                         md: "20px",
                                         lg: "24px"
-                                    }
+                                    },
+                                    color: isDark ? '#FFFFFF' : '#FFFFFF',
                                 }}
                             >
                                 Análisis Visual
@@ -123,20 +119,7 @@ export default function GridCustom() {
                         flexDirection={"column"}
                         justifyContent="center"
                         alignItems="center"
-                        sx={(theme) => ({
-                            borderRadius: 2,
-                            height: 100,
-                            backgroundImage: `
-                                    linear-gradient(
-                                    ${alpha(theme.palette.primary.main, 0.75)},
-                                    ${alpha(theme.palette.primary.main, 0.75)}
-                                    ),
-                                    url(${imagePattern})
-                                    `,
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover"
-                        })}
+                        sx={cardStyle}
                     >
                         <Box
                             display={"flex"}
@@ -152,13 +135,13 @@ export default function GridCustom() {
                                 component="h3"
                                 marginLeft={2}
                                 fontWeight={"bold"}
-                                color="secondary.main"
                                 sx={{
                                     fontSize: {
                                         xs: "18px",
                                         md: "20px",
                                         lg: "24px"
-                                    }
+                                    },
+                                    color: isDark ? '#FFFFFF' : '#FFFFFF',
                                 }}
                             >
                                 Análisis Funcional

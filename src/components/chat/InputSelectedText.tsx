@@ -76,24 +76,31 @@ export const InputSelectedText: React.FC<InputSelectedTextProps> = (
                 left: position.left,
                 zIndex: 10000,
                 bgcolor: theme.palette.mode === 'dark' 
-                    ? alpha(theme.palette.background.paper, 0.98)
+                    ? alpha(theme.palette.background.paper, 0.95)
                     : alpha(theme.palette.background.paper, 0.98),
-                backdropFilter: 'blur(10px)',
-                border: `1px solid ${alpha(theme.palette.primary.main, 0.3)}`,
+                backdropFilter: 'blur(20px)',
+                border: theme.palette.mode === 'dark'
+                    ? `1px solid ${alpha(theme.palette.primary.main, 0.5)}`
+                    : `1px solid ${alpha(theme.palette.primary.main, 0.3)}`,
                 borderRadius: 2,
                 overflow: 'hidden',
                 transform: 'translateY(8px)',
+                boxShadow: theme.palette.mode === 'dark'
+                    ? `0 8px 32px ${alpha(theme.palette.primary.main, 0.2)}, 0 4px 16px rgba(0,0,0,0.4)`
+                    : undefined,
             }}
         >
             {/* Header con el texto seleccionado */}
             <Box
                 sx={{
                     bgcolor: theme.palette.mode === 'dark'
-                        ? alpha(theme.palette.primary.main, 0.15)
+                        ? alpha(theme.palette.primary.main, 0.2)
                         : alpha(theme.palette.primary.main, 0.08),
                     px: 2,
                     py: 1.5,
-                    borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                    borderBottom: theme.palette.mode === 'dark'
+                        ? `1px solid ${alpha(theme.palette.primary.main, 0.3)}`
+                        : `1px solid ${alpha(theme.palette.divider, 0.1)}`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',

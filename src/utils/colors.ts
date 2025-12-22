@@ -1,5 +1,3 @@
-import { theme } from "./theme";
-
 export const getColor = () => {
     const colorOptions: [string, string][] = [
         // [blueGrey[100], blueGrey[700]],
@@ -10,7 +8,7 @@ export const getColor = () => {
         // [deepPurple[100], deepPurple[600]],
         // [amber[100], amber[700]],
         // [deepOrange[100], deepOrange[700]],
-        [theme.palette.primary.main, theme.palette.secondary.main]
+        ["#E63946", "#FFFFFF"]
     ];
 
     const randomIndex = Math.floor(Math.random() * colorOptions.length);

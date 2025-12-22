@@ -18,6 +18,7 @@ type TargetState = {
     conversations: ConversationsTargetScan[]
     currentConversationId: string | undefined
     currentMessages: Messages[],
+    themeMode: 'light' | 'dark'
 }
 
 type TargetActions = {
@@ -27,6 +28,7 @@ type TargetActions = {
         messages: Messages[] | ((prev: Messages[]) => Messages[])
     ) => void;
     resetCurrentConversation: () => void;
+    toggleTheme: () => void;
 }
 
 type TargetScanStore = TargetState & TargetActions;
@@ -36,6 +38,7 @@ const targetScanStore = create<TargetScanStore>()(
         conversations: [],
         currentConversationId: undefined,
         currentMessages: [],
+        themeMode: (localStorage.getItem('themeMode') as 'light' | 'dark') || 'light',
         setConversations: (updater: (prev: ConversationsTargetScan[]) => ConversationsTargetScan[]) =>
             set((state) => ({
                 conversations: updater(state.conversations),
@@ -51,6 +54,11 @@ const targetScanStore = create<TargetScanStore>()(
         resetCurrentConversation: () => set({
             currentConversationId: undefined,
             currentMessages: []
+        }),
+        toggleTheme: () => set((state) => {
+            const newMode = state.themeMode === 'light' ? 'dark' : 'light';
+            localStorage.setItem('themeMode', newMode);
+            return { themeMode: newMode };
         })
     })
 );
@@ -60,19 +68,23 @@ export const useTargetScanStore = () => {
         conversations,
         currentConversationId,
         currentMessages,
+        themeMode,
         resetCurrentConversation,
         setConversations,
         setCurrentConversationId,
         setCurrentMessages,
+        toggleTheme,
     } = targetScanStore();
 
     return {
         conversations,
         currentConversationId,
         currentMessages,
+        themeMode,
         resetCurrentConversation,
         setConversations,
         setCurrentConversationId,
         setCurrentMessages,
+        toggleTheme,
     }
 }

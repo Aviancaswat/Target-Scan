@@ -5,15 +5,25 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
-import { theme } from './utils/theme.ts';
+import { useTargetScanStore } from './store/target-store';
+import { getTheme } from './utils/theme.ts';
+
+function AppWrapper() {
+  const { themeMode } = useTargetScanStore();
+  const theme = getTheme(themeMode);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
+  );
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
+      <AppWrapper />
     </BrowserRouter>
   </StrictMode>
 )
