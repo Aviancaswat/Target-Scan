@@ -73,8 +73,8 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                         >
                             <Box maxWidth="80%">
                                 <Box
-                                    // px={2}
-                                    // py={isUser ? 1.5 : 2}
+                                    px={1}
+                                    py={isUser ? 0 : 2}
                                     borderRadius={3}
                                     bgcolor={isUser
                                         ? bgColor
