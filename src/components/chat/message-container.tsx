@@ -10,6 +10,7 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
+import { ThinkingLoaderText } from "./ThinkingLoaderText";
 
 interface MessageContainerProps {
     messages: Messages[],
@@ -187,7 +188,9 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                             </Box>
 
                             {showLoader && (
-                                <Box ml={1} mt={1} mb={5} className="loader-model" />
+                                <Box ml={1} mt={1} mb={5}>
+                                    <ThinkingLoaderText />
+                                </Box>
                             )}
                         </Box>
                     );

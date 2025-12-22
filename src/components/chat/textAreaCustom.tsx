@@ -445,7 +445,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     <Tooltip title="Enviar (Enter) • Salto de línea (Shift + Enter)">
                         <span>
                             <IconButton
-                                size="small"
+                                size="medium"
                                 onClick={handleSend}
                                 disabled={!question.trim() && files.length === 0}
                                 sx={{
