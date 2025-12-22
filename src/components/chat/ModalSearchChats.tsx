@@ -67,23 +67,78 @@ export const ModalSearchChats = ({ onCloseSidebar }: { onCloseSidebar: Function 
     return (
         <>
             <ListItem disablePadding>
-                <ListItemButton onClick={handleOpen}>
-                    <ListItemIcon>
-                        <Search size={16} />
+                <ListItemButton 
+                    onClick={handleOpen}
+                    sx={{
+                        py: 1.5,
+                        transition: 'all 0.2s',
+                        '&:hover': {
+                            bgcolor: 'primary.light',
+                            color: 'primary.contrastText',
+                            transform: 'translateX(4px)',
+                            '& .MuiListItemIcon-root': {
+                                color: 'primary.contrastText',
+                            }
+                        }
+                    }}
+                >
+                    <ListItemIcon sx={{ minWidth: 40 }}>
+                        <Search size={18} />
                     </ListItemIcon>
-                    <ListItemText primary="Buscar Chat" />
+                    <ListItemText primary="Buscar Chat" primaryTypographyProps={{ fontWeight: 500 }} />
                 </ListItemButton>
             </ListItem>
 
-            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle sx={{ pb: 1 }}>
+            <Dialog 
+                open={open} 
+                onClose={handleClose} 
+                fullWidth 
+                maxWidth="sm"
+                PaperProps={{
+                    sx: {
+                        borderRadius: 3,
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+                    }
+                }}
+            >
+                <DialogTitle 
+                    sx={{ 
+                        pb: 2,
+                        pt: 3,
+                        background: 'linear-gradient(135deg, rgba(230, 57, 70, 0.05) 0%, rgba(193, 18, 31, 0.05) 100%)',
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
+                    }}
+                >
                     <Box display="flex" alignItems="center" gap={1.5}>
-                        <Search size={20} />
-                        <Typography variant="h6">Buscar chat</Typography>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: 40,
+                                height: 40,
+                                borderRadius: 2,
+                                bgcolor: 'primary.main',
+                                color: 'white',
+                                boxShadow: '0 4px 12px rgba(230, 57, 70, 0.3)',
+                            }}
+                        >
+                            <Search size={20} />
+                        </Box>
+                        <Typography variant="h6" fontWeight={600}>Buscar chat</Typography>
 
                         <IconButton
                             onClick={handleClose}
-                            sx={{ marginLeft: "auto" }}
+                            sx={{ 
+                                marginLeft: "auto",
+                                transition: 'all 0.2s',
+                                '&:hover': {
+                                    bgcolor: 'error.light',
+                                    color: 'white',
+                                    transform: 'rotate(90deg)',
+                                }
+                            }}
                         >
                             <CloseIcon />
                         </IconButton>
@@ -98,40 +153,107 @@ export const ModalSearchChats = ({ onCloseSidebar }: { onCloseSidebar: Function 
                         value={valueSearchChat}
                         onChange={handleInput}
                         sx={{
-                            mt: 2,
-                            "& .MuiOutlinedInput-root.Mui-focused fieldset": {
-                                borderColor: "#bdbdbd",
-                            }
+                            mt: 3,
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: 2,
+                                bgcolor: 'background.paper',
+                                transition: 'all 0.2s',
+                                '& fieldset': {
+                                    borderColor: 'divider',
+                                    borderWidth: 2,
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: 'primary.light',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: 'primary.main',
+                                    boxShadow: '0 0 0 3px rgba(230, 57, 70, 0.1)',
+                                },
+                            },
                         }}
                     />
 
-                    <Typography
-                        variant="subtitle2"
-                        sx={{ mt: 3 }}
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        mt={3}
+                        px={0.5}
                     >
-                        Tus chats ({dataFilter.length})
-                    </Typography>
+                        <Typography
+                            variant="subtitle2"
+                            fontWeight={600}
+                            color="text.secondary"
+                        >
+                            Resultados
+                        </Typography>
+                        <Box
+                            sx={{
+                                bgcolor: 'primary.main',
+                                color: 'white',
+                                px: 1.5,
+                                py: 0.5,
+                                borderRadius: 2,
+                                fontSize: 12,
+                                fontWeight: 600,
+                            }}
+                        >
+                            {dataFilter.length}
+                        </Box>
+                    </Box>
                 </DialogTitle>
 
-                <DialogContent dividers sx={{ maxHeight: 250, p: 0 }}>
+                <DialogContent 
+                    dividers 
+                    sx={{ 
+                        maxHeight: 320, 
+                        p: 1,
+                        bgcolor: 'background.default',
+                        '&::-webkit-scrollbar': {
+                            width: '8px',
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            background: 'transparent',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            background: 'rgba(0,0,0,0.2)',
+                            borderRadius: '4px',
+                            '&:hover': {
+                                background: 'rgba(0,0,0,0.3)',
+                            },
+                        },
+                    }}
+                >
                     {/* RESULTADOS */}
                     {dataFilter.length > 0 ? (
-                        <List dense>
+                        <List dense sx={{ p: 0 }}>
                             {dataFilter.map(item => (
                                 <ListItemButton
                                     key={item.converdationId}
                                     onClick={() => setChatSelected(item.converdationId)}
                                     sx={{
-                                        "&:hover": { backgroundColor: "#f1f1f1" }
+                                        borderRadius: 2,
+                                        mb: 0.5,
+                                        py: 1.5,
+                                        transition: 'all 0.2s',
+                                        bgcolor: 'background.paper',
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                        '&:hover': { 
+                                            bgcolor: 'rgba(230, 57, 70, 0.08)',
+                                            borderColor: 'primary.light',
+                                            transform: 'translateX(4px)',
+                                            boxShadow: '0 2px 8px rgba(230, 57, 70, 0.15)',
+                                        }
                                     }}
                                 >
-                                    <ListItemIcon>
-                                        <MessageCircleMore size={18} />
+                                    <ListItemIcon sx={{ minWidth: 40 }}>
+                                        <MessageCircleMore size={20} />
                                     </ListItemIcon>
 
                                     <ListItemText
                                         primary={
-                                            <Typography fontSize="0.9rem">
+                                            <Typography fontSize="0.9rem" fontWeight={500}>
                                                 {item.title}
                                             </Typography>
                                         }
@@ -141,20 +263,47 @@ export const ModalSearchChats = ({ onCloseSidebar }: { onCloseSidebar: Function 
                         </List>
                     ) : (
                         <Box
-                            minHeight={150}
+                            minHeight={200}
                             display="flex"
                             justifyContent="center"
                             alignItems="center"
                             flexDirection="column"
-                            gap={1}
+                            gap={2}
+                            sx={{
+                                bgcolor: 'background.paper',
+                                borderRadius: 2,
+                                border: '2px dashed',
+                                borderColor: 'divider',
+                            }}
                         >
-                            <Typography color="gray">Sin resultados</Typography>
+                            <Search size={48} color="#bdbdbd" />
+                            <Typography color="text.secondary" fontWeight={500}>
+                                No se encontraron resultados
+                            </Typography>
                         </Box>
                     )}
                 </DialogContent>
 
-                <DialogActions sx={{ alignSelf: "end" }}>
-                    <Typography variant="subtitle1" fontWeight={700} sx={{ mr: "auto", pl: 1 }}>
+                <DialogActions 
+                    sx={{ 
+                        alignSelf: "end",
+                        p: 2.5,
+                        background: 'linear-gradient(135deg, rgba(230, 57, 70, 0.05) 0%, rgba(193, 18, 31, 0.05) 100%)',
+                        borderTop: '1px solid',
+                        borderColor: 'divider',
+                    }}
+                >
+                    <Typography 
+                        variant="subtitle1" 
+                        fontWeight={700} 
+                        sx={{ 
+                            mr: "auto",
+                            background: 'linear-gradient(135deg, #E63946 0%, #C1121F 100%)',
+                            backgroundClip: 'text',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                        }}
+                    >
                         Target Scan
                     </Typography>
                 </DialogActions>

@@ -1,6 +1,7 @@
 import { ConversationService } from "@/firebase/firestore/services/conversation.service";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+    Box,
     Dialog,
     DialogContent,
     DialogTitle,
@@ -55,13 +56,18 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                     fontSize: "14px",
                     display: "flex",
                     gap: 1.5,
+                    py: 1.5,
+                    px: 2,
+                    transition: 'all 0.2s',
+                    borderRadius: 1,
                     "&:hover": {
-                        background: "#f1f1f1",
-                        color: "black"
+                        background: 'rgba(230, 57, 70, 0.1)',
+                        color: "primary.main",
+                        transform: 'translateX(4px)',
                     }
                 }}
             >
-                <Pencil size={15} />
+                <Pencil size={16} />
                 Cambiar el nombre
             </MenuItem>
 
@@ -70,44 +76,140 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                 onClose={handleClose}
                 fullWidth
                 maxWidth="sm"
+                PaperProps={{
+                    sx: {
+                        borderRadius: 3,
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+                    }
+                }}
             >
-                <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Pen size={20} />
-                    <Typography variant="h6" fontWeight={700}>
-                        Nuevo nombre de chat
+                <DialogTitle 
+                    sx={{ 
+                        display: "flex", 
+                        alignItems: "center", 
+                        gap: 1.5,
+                        pb: 2,
+                        pt: 3,
+                        background: 'linear-gradient(135deg, rgba(230, 57, 70, 0.05) 0%, rgba(193, 18, 31, 0.05) 100%)',
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: 40,
+                            height: 40,
+                            borderRadius: 2,
+                            bgcolor: 'primary.main',
+                            color: 'white',
+                            boxShadow: '0 4px 12px rgba(230, 57, 70, 0.3)',
+                        }}
+                    >
+                        <Pen size={20} />
+                    </Box>
+                    <Typography variant="h6" fontWeight={600}>
+                        Cambiar nombre del chat
                     </Typography>
 
                     <IconButton
                         onClick={handleClose}
                         sx={{
                             marginLeft: "auto",
-                            "&:hover": { backgroundColor: "#f1f1f1" }
+                            transition: 'all 0.2s',
+                            '&:hover': {
+                                bgcolor: 'error.light',
+                                color: 'white',
+                                transform: 'rotate(90deg)',
+                            }
                         }}
                     >
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
 
-                <DialogContent sx={{ pt: 1 }}>
-                    <TextField
-                        fullWidth
-                        variant="outlined"
-                        placeholder="requerimiento del azure con id: 1234567"
-                        value={newChatName}
-                        onChange={(e) => setNewChatName(e.target.value)}
-                        onKeyDown={handleChangeNameChat}
-                        autoFocus
+                <DialogContent sx={{ pt: 3, pb: 3, px: 3 }}>
+                    <Box
                         sx={{
-                            mb: 1,
-                            "& .MuiOutlinedInput-root.Mui-focused fieldset": {
-                                borderColor: "#bdbdbd",
-                            }
+                            bgcolor: 'background.paper',
+                            p: 2.5,
+                            borderRadius: 2,
+                            border: '1px solid',
+                            borderColor: 'divider',
                         }}
-                    />
+                    >
+                        <Typography 
+                            variant="body2" 
+                            fontWeight={600} 
+                            color="text.secondary"
+                            sx={{ mb: 1.5 }}
+                        >
+                            Nombre del chat
+                        </Typography>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            placeholder="Ej: Análisis de vulnerabilidades Azure"
+                            value={newChatName}
+                            onChange={(e) => setNewChatName(e.target.value)}
+                            onKeyDown={handleChangeNameChat}
+                            autoFocus
+                            sx={{
+                                mb: 2,
+                                '& .MuiOutlinedInput-root': {
+                                    borderRadius: 2,
+                                    bgcolor: 'white',
+                                    transition: 'all 0.2s',
+                                    '& fieldset': {
+                                        borderColor: 'divider',
+                                        borderWidth: 2,
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'primary.light',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: 'primary.main',
+                                        boxShadow: '0 0 0 3px rgba(230, 57, 70, 0.1)',
+                                    },
+                                },
+                            }}
+                        />
 
-                    <Typography variant="body2" color="gray" sx={{ mb: 2, p: 0 }}>
-                        Presiona Enter para actualizar el nombre
-                    </Typography>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                                bgcolor: 'rgba(230, 57, 70, 0.05)',
+                                p: 1.5,
+                                borderRadius: 1.5,
+                                border: '1px solid',
+                                borderColor: 'rgba(230, 57, 70, 0.2)',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    minWidth: 24,
+                                    height: 24,
+                                    borderRadius: 1,
+                                    bgcolor: 'primary.main',
+                                    color: 'white',
+                                    fontSize: 11,
+                                    fontWeight: 700,
+                                }}
+                            >
+                                ⏎
+                            </Box>
+                            <Typography variant="body2" color="text.secondary">
+                                Presiona <strong>Enter</strong> para guardar los cambios
+                            </Typography>
+                        </Box>
+                    </Box>
                 </DialogContent>
             </Dialog>
         </>
