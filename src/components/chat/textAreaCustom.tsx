@@ -99,7 +99,8 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     `El archivo ${e.file.name} tiene un formato no admitido. 
                     Solo se permiten archivos: ${formatsAvailable}`,
                     {
-                        duration: 10000
+                        duration: 10000,
+                        closeButton: true
                     }
                 )
             })
@@ -112,9 +113,8 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         if (!e.target.files) return;
         const mapped = mapFilesToUploadItems(e.target.files);
         const validFiles = validateMimeTypeImages(mapped);
-        if (validFiles.length > 0) {
-            setFiles(prev => [...prev, ...validFiles]);
-        }
+        if (validFiles.length === 0) return;
+        setFiles(prev => [...prev, ...validFiles]);
         e.target.value = "";
     };
 
@@ -134,7 +134,9 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         setIsDragOver(false);
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
             const mapped = mapFilesToUploadItems(e.dataTransfer.files);
-            setFiles((prev) => [...prev, ...mapped]);
+            const validateFiles = validateMimeTypeImages(mapped);
+            if (validateFiles.length === 0) return;
+            setFiles((prev) => [...prev, ...validateFiles]);
         }
     };
 
