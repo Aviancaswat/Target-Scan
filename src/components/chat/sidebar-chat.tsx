@@ -68,12 +68,12 @@ export default function SidebarChatHistory() {
 
     return (
         <>
-            <Tooltip title="Historial de chats" placement="left">
+            <Tooltip title="Historial de chats" placement="bottom">
                 <IconButton
                     ref={anchorRef}
                     size="small"
                     onClick={handleOpen}
-                    sx={{ color: "secondary.main" }}
+                    sx={{ color: "#FFFFFF" }}
                 >
                     <PanelRightOpen />
                 </IconButton>

@@ -72,20 +72,20 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                         >
                             <Box maxWidth="80%">
                                 <Box
-                                    px={2}
-                                    py={isUser ? 1.5 : 2}
+                                    // px={2}
+                                    // py={isUser ? 1.5 : 2}
                                     borderRadius={3}
-                                    bgcolor={isUser 
-                                        ? bgColor 
+                                    bgcolor={isUser
+                                        ? bgColor
                                         : isDark
                                             ? alpha('#1a1a1a', 0.8)
                                             : "secondary.dark"
                                     }
                                     color={isUser ? textColor : "text.primary"}
-                                    sx={{ 
+                                    sx={{
                                         wordBreak: "break-word",
-                                        boxShadow: isUser 
-                                            ? `0 4px 12px ${bgColor}99` 
+                                        boxShadow: isUser
+                                            ? `0 4px 12px ${bgColor}99`
                                             : isDark
                                                 ? `0 4px 16px ${alpha('#000000', 0.5)}`
                                                 : '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -96,7 +96,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                             ? 'blur(10px)'
                                             : 'none',
                                         transition: 'all 0.2s ease',
-                                     }}
+                                    }}
                                 >
                                     {isUser ? (
                                         <ReactMarkdown
@@ -132,7 +132,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                     <Box pt={1} className="animate__animated animate__fadeIn" display="flex" gap={0.5}>
                                         <IconButton
                                             size="small"
-                                            sx={{ 
+                                            sx={{
                                                 ml: 1,
                                                 bgcolor: isDark
                                                     ? alpha('#1a1a1a', 0.6)
@@ -156,7 +156,7 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                         </IconButton>
                                         <IconButton
                                             size="small"
-                                            sx={{ 
+                                            sx={{
                                                 ml: 0.5,
                                                 bgcolor: isDark
                                                     ? alpha('#1a1a1a', 0.6)

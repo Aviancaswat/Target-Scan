@@ -1,6 +1,8 @@
 import { ConversationService } from "@/firebase/firestore/services/conversation.service";
+import { useTargetScanStore } from "@/store/target-store";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+    alpha,
     Box,
     Dialog,
     DialogContent,
@@ -8,13 +10,17 @@ import {
     IconButton,
     MenuItem,
     TextField,
-    Typography
+    Typography,
+    useTheme
 } from "@mui/material";
 import { Pen, Pencil } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export const ModalUpdateChatName = ({ conversationId }: { conversationId: string }) => {
+    const theme = useTheme();
+    const { themeMode } = useTargetScanStore();
+    const isDark = themeMode === 'dark';
     const [open, setOpen] = useState(false);
     const [newChatName, setNewChatName] = useState("");
 
@@ -60,8 +66,11 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                     px: 2,
                     transition: 'all 0.2s',
                     borderRadius: 1,
+                    color: 'text.primary',
                     "&:hover": {
-                        background: 'rgba(230, 57, 70, 0.1)',
+                        background: isDark
+                            ? alpha(theme.palette.primary.main, 0.15)
+                            : 'rgba(230, 57, 70, 0.1)',
                         color: "primary.main",
                         transform: 'translateX(4px)',
                     }
@@ -79,7 +88,16 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                 PaperProps={{
                     sx: {
                         borderRadius: 3,
-                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+                        boxShadow: isDark
+                            ? `0 12px 48px ${alpha('#000000', 0.8)}`
+                            : '0 8px 32px rgba(0, 0, 0, 0.12)',
+                        bgcolor: isDark
+                            ? alpha('#1a1a1a', 0.95)
+                            : 'background.paper',
+                        border: isDark
+                            ? `1px solid ${alpha('#FFFFFF', 0.1)}`
+                            : 'none',
+                        backdropFilter: isDark ? 'blur(20px)' : 'none',
                     }
                 }}
             >
@@ -90,9 +108,13 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                         gap: 1.5,
                         pb: 2,
                         pt: 3,
-                        background: 'linear-gradient(135deg, rgba(230, 57, 70, 0.05) 0%, rgba(193, 18, 31, 0.05) 100%)',
+                        background: isDark
+                            ? `linear-gradient(135deg, ${alpha('#E63946', 0.15)} 0%, ${alpha('#C1121F', 0.15)} 100%)`
+                            : 'linear-gradient(135deg, rgba(230, 57, 70, 0.05) 0%, rgba(193, 18, 31, 0.05) 100%)',
                         borderBottom: '1px solid',
-                        borderColor: 'divider',
+                        borderColor: isDark
+                            ? alpha('#FFFFFF', 0.08)
+                            : 'divider',
                     }}
                 >
                     <Box
@@ -105,7 +127,12 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                             borderRadius: 2,
                             bgcolor: 'primary.main',
                             color: 'white',
-                            boxShadow: '0 4px 12px rgba(230, 57, 70, 0.3)',
+                            boxShadow: isDark
+                                ? `0 6px 20px ${alpha(theme.palette.primary.main, 0.4)}`
+                                : '0 4px 12px rgba(230, 57, 70, 0.3)',
+                            border: isDark
+                                ? `1px solid ${alpha('#FFFFFF', 0.1)}`
+                                : 'none',
                         }}
                     >
                         <Pen size={20} />
@@ -133,11 +160,16 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                 <DialogContent sx={{ pt: 3, pb: 3, px: 3 }}>
                     <Box
                         sx={{
-                            bgcolor: 'background.paper',
+                            bgcolor: isDark
+                                ? alpha('#0a0a0a', 0.4)
+                                : 'background.paper',
                             p: 2.5,
-                            borderRadius: 2,
+                            borderRadius: 2.5,
                             border: '1px solid',
-                            borderColor: 'divider',
+                            borderColor: isDark
+                                ? alpha('#FFFFFF', 0.08)
+                                : 'divider',
+                            backdropFilter: isDark ? 'blur(10px)' : 'none',
                         }}
                     >
                         <Typography 
@@ -160,19 +192,34 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                                 mb: 2,
                                 '& .MuiOutlinedInput-root': {
                                     borderRadius: 2,
-                                    bgcolor: 'white',
+                                    bgcolor: isDark
+                                        ? alpha('#000000', 0.4)
+                                        : 'white',
                                     transition: 'all 0.2s',
+                                    color: 'text.primary',
                                     '& fieldset': {
-                                        borderColor: 'divider',
+                                        borderColor: isDark
+                                            ? alpha('#FFFFFF', 0.15)
+                                            : 'divider',
                                         borderWidth: 2,
                                     },
                                     '&:hover fieldset': {
-                                        borderColor: 'primary.light',
+                                        borderColor: isDark
+                                            ? alpha('#FFFFFF', 0.25)
+                                            : 'primary.light',
                                     },
                                     '&.Mui-focused fieldset': {
                                         borderColor: 'primary.main',
-                                        boxShadow: '0 0 0 3px rgba(230, 57, 70, 0.1)',
+                                        boxShadow: isDark
+                                            ? `0 0 0 3px ${alpha(theme.palette.primary.main, 0.25)}`
+                                            : '0 0 0 3px rgba(230, 57, 70, 0.1)',
                                     },
+                                },
+                                '& .MuiInputBase-input::placeholder': {
+                                    color: isDark
+                                        ? alpha('#FFFFFF', 0.4)
+                                        : undefined,
+                                    opacity: 1,
                                 },
                             }}
                         />
@@ -182,11 +229,15 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: 1,
-                                bgcolor: 'rgba(230, 57, 70, 0.05)',
+                                bgcolor: isDark
+                                    ? alpha(theme.palette.primary.main, 0.12)
+                                    : 'rgba(230, 57, 70, 0.05)',
                                 p: 1.5,
                                 borderRadius: 1.5,
                                 border: '1px solid',
-                                borderColor: 'rgba(230, 57, 70, 0.2)',
+                                borderColor: isDark
+                                    ? alpha(theme.palette.primary.main, 0.3)
+                                    : 'rgba(230, 57, 70, 0.2)',
                             }}
                         >
                             <Box
@@ -201,12 +252,15 @@ export const ModalUpdateChatName = ({ conversationId }: { conversationId: string
                                     color: 'white',
                                     fontSize: 11,
                                     fontWeight: 700,
+                                    boxShadow: isDark
+                                        ? `0 2px 8px ${alpha(theme.palette.primary.main, 0.3)}`
+                                        : 'none',
                                 }}
                             >
                                 ⏎
                             </Box>
                             <Typography variant="body2" color="text.secondary">
-                                Presiona <strong>Enter</strong> para guardar los cambios
+                                Presiona <strong style={{ color: isDark ? theme.palette.primary.light : undefined }}>Enter</strong> para guardar los cambios
                             </Typography>
                         </Box>
                     </Box>
