@@ -66,46 +66,50 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                             justifyContent={isUser ? "flex-end" : "flex-start"}
                             mb={10}
                         >
-                            <Box
-                                maxWidth="80%"
-                                px={1.5}
-                                borderRadius={8}
-                                bgcolor={isUser ? bgColor : "transparent"}
-                                color={isUser ? textColor : "text.primary"}
-                                sx={{ wordBreak: "break-word" }}
-                            >
-                                {isUser ? (
-                                    <ReactMarkdown
-                                        remarkPlugins={[remarkGfm]}
-                                        rehypePlugins={[rehypeRaw, rehypeHighlight]}
-                                    >
-                                        {msg.message}
-                                    </ReactMarkdown>
-                                ) : (
-                                    <Box
-                                        sx={{
-                                            '& > *': {
-                                                animation: isLastMessage && statusStream
-                                                    ? 'fadeIn 0.3s ease-out'
-                                                    : 'none',
-                                            },
-                                            '@keyframes fadeIn': {
-                                                '0%': { opacity: 0.5 },
-                                                '100%': { opacity: 1 },
-                                            },
-                                        }}
-                                    >
+                            <Box maxWidth="80%">
+                                <Box
+                                    px={1.5}
+                                    py={isUser ? 0 : 1.5}
+                                    borderRadius={8}
+                                    bgcolor={isUser ? bgColor : "secondary.dark"}
+                                    color={isUser ? textColor : "text.primary"}
+                                    sx={{ 
+                                        wordBreak: "break-word",
+                                        boxShadow: isUser ? `0 2px 8px ${bgColor}88` : '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                     }}
+                                >
+                                    {isUser ? (
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm]}
                                             rehypePlugins={[rehypeRaw, rehypeHighlight]}
                                         >
                                             {msg.message}
                                         </ReactMarkdown>
-                                    </Box>
-                                )}
-
+                                    ) : (
+                                        <Box
+                                            sx={{
+                                                '& > *': {
+                                                    animation: isLastMessage && statusStream
+                                                        ? 'fadeIn 0.3s ease-out'
+                                                        : 'none',
+                                                },
+                                                '@keyframes fadeIn': {
+                                                    '0%': { opacity: 0.5 },
+                                                    '100%': { opacity: 1 },
+                                                },
+                                            }}
+                                        >
+                                            <ReactMarkdown
+                                                remarkPlugins={[remarkGfm]}
+                                                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                                            >
+                                                {msg.message}
+                                            </ReactMarkdown>
+                                        </Box>
+                                    )}
+                                </Box>
                                 {msg.role === "model" && statusStream === false && (
-                                    <Box className="animate__animated animate__fadeIn">
+                                    <Box pt={1} className="animate__animated animate__fadeIn">
                                         <IconButton
                                             size="small"
                                             sx={{ ml: 1 }}

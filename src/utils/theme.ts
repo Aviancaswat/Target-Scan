@@ -8,9 +8,9 @@ export const theme = createTheme({
     },
     palette: {
         primary: {
-            main: "#FF0000",        // rojo Avianca — botones principales, acentos, elementos destacados
-            light: "#FF7F7F",       // rojo suave / hover / estados ligeros
-            dark: "#CC0000",        // rojo oscuro — para hover activos, estados intensos
+            main: "#E63946",        // rojo Avianca suavizado — botones principales, acentos, elementos destacados
+            light: "#FF6B77",       // rojo suave / hover / estados ligeros
+            dark: "#C1121F",        // rojo oscuro — para hover activos, estados intensos
             contrastText: "#FFFFFF" // texto sobre rojo
         },
         secondary: {
