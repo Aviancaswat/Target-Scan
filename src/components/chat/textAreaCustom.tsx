@@ -331,7 +331,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                         <Button
                             size="small"
                             onClick={() => {
-                                const codeBlock = "```\n// código aquí\n```";
+                                const codeBlock = "```html\n// código aquí\n```";
                                 const newValue = question + "\n" + codeBlock;
                                 setQuestion(newValue);
 

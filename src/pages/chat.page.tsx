@@ -319,7 +319,6 @@ const ChatPage = () => {
                     ? 'linear-gradient(to bottom, #0a0a0a, #1a1a1a)'
                     : 'linear-gradient(to bottom, #f8f9fa, #ffffff)',
             }}
-            onMouseUp={handleSelectedText}
         >
             <Navbar />
 
@@ -330,6 +329,7 @@ const ChatPage = () => {
                 py={2}
                 mt={8}
                 onScroll={handleScroll}
+                onMouseUp={handleSelectedText}
                 sx={{
                     overflowX: "hidden",
                     overflowY: "auto",
