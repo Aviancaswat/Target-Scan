@@ -100,12 +100,32 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                     }}
                                 >
                                     {isUser ? (
-                                        <ReactMarkdown
-                                            remarkPlugins={[remarkGfm]}
-                                            rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                                        <Box
+                                            sx={{
+                                                '& a': {
+                                                    color: 'inherit',
+                                                    textDecoration: 'underline',
+                                                    textDecorationColor: alpha(textColor, 0.5),
+                                                    textDecorationThickness: '2px',
+                                                    textUnderlineOffset: '3px',
+                                                    fontWeight: 600,
+                                                    transition: 'all 0.2s ease',
+                                                    wordBreak: 'break-all',
+                                                    '&:hover': {
+                                                        textDecorationColor: textColor,
+                                                        textDecorationThickness: '3px',
+                                                        opacity: 0.9,
+                                                    },
+                                                },
+                                            }}
                                         >
-                                            {msg.message}
-                                        </ReactMarkdown>
+                                            <ReactMarkdown
+                                                remarkPlugins={[remarkGfm]}
+                                                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                                            >
+                                                {msg.message}
+                                            </ReactMarkdown>
+                                        </Box>
                                     ) : (
                                         <Box
                                             sx={{
