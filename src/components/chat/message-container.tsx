@@ -125,12 +125,16 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                                 },
                                             }}
                                         >
-                                            <ReactMarkdown
-                                                remarkPlugins={[remarkGfm]}
-                                                rehypePlugins={[rehypeRaw, rehypeHighlight]}
-                                            >
-                                                {msg.message}
-                                            </ReactMarkdown>
+                                            {showLoader ? (
+                                                <ThinkingLoaderText />
+                                            ) : (
+                                                <ReactMarkdown
+                                                    remarkPlugins={[remarkGfm]}
+                                                    rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                                                >
+                                                    {msg.message}
+                                                </ReactMarkdown>
+                                            )}
                                         </Box>
                                     )}
                                 </Box>
@@ -191,12 +195,6 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                     </Box>
                                 )}
                             </Box>
-
-                            {showLoader && (
-                                <Box ml={1} mt={1} mb={5}>
-                                    <ThinkingLoaderText />
-                                </Box>
-                            )}
                         </Box>
                     );
                 })
