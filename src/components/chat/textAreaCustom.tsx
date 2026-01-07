@@ -18,6 +18,7 @@ import {
     type ChangeEvent,
     type DragEvent,
     type KeyboardEvent,
+    useCallback,
     useEffect,
     useRef,
     useState,
@@ -158,18 +159,21 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
         setIsDragOver(false);
     };
 
-    const adjustTextareaHeight = () => {
+    const adjustTextareaHeight = useCallback(() => {
         const el = textareaRef.current;
         if (!el) return;
-        const lineHeight = parseInt(window.getComputedStyle(el).lineHeight, 10);
-        const maxHeight = lineHeight * 8;
-        el.style.height = "auto";
-        el.style.height = Math.min(el.scrollHeight, maxHeight) + "px";
-    };
+        requestAnimationFrame(() => {
+            const lineHeight = parseInt(window.getComputedStyle(el).lineHeight, 10);
+            const maxHeight = lineHeight * 8;
+            el.style.height = "auto";
+            el.style.height = Math.min(el.scrollHeight, maxHeight) + "px";
+        });
+    }, []);
 
-    useEffect(() => {
+    const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setQuestion(e.target.value);
         adjustTextareaHeight();
-    }, [question]);
+    }, [adjustTextareaHeight]);
 
     useEffect(() => {
         return () => {
@@ -334,7 +338,7 @@ export const ChatInput = ({ question, setQuestion, onSend }: ChatInputProps) => 
                     placeholder="Escribe texto, pega código o describe qué quieres hacer..."
                     fullWidth
                     value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
+                    onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     variant="standard"
                     InputProps={{

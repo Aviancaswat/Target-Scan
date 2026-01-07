@@ -109,14 +109,19 @@ export const MessageContainer: React.FC<MessageContainerProps> = ({ messages, is
                                     ) : (
                                         <Box
                                             sx={{
+                                                minHeight: isLastMessage && statusStream ? '40px' : 'auto',
+                                                transition: 'all 0.2s ease-out',
                                                 '& > *': {
                                                     animation: isLastMessage && statusStream
-                                                        ? 'fadeIn 0.3s ease-out'
+                                                        ? 'fadeIn 0.2s ease-out'
                                                         : 'none',
                                                 },
+                                                '& p, & div, & pre, & code, & ul, & ol': {
+                                                    transition: 'opacity 0.15s ease-out',
+                                                },
                                                 '@keyframes fadeIn': {
-                                                    '0%': { opacity: 0.5 },
-                                                    '100%': { opacity: 1 },
+                                                    '0%': { opacity: 0.7, transform: 'translateY(-2px)' },
+                                                    '100%': { opacity: 1, transform: 'translateY(0)' },
                                                 },
                                             }}
                                         >

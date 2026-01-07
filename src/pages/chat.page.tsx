@@ -9,7 +9,7 @@ import type { Content } from "@google/genai";
 import { Box, Fade, useTheme } from "@mui/material";
 import { doc, onSnapshot } from "firebase/firestore";
 import "highlight.js/styles/tokyo-night-dark.css";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { MessageContainer } from "../components/chat/message-container";
 import Navbar from "../components/chat/navbar";
@@ -62,7 +62,8 @@ const ChatPage = () => {
 
         const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
         const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
-        setIsNearBottom(distanceFromBottom < 100);
+        // Aumentar el threshold para mejor detección durante streaming
+        setIsNearBottom(distanceFromBottom < 150);
     }, []);
 
     const handleResponseIA = useCallback(
@@ -81,7 +82,10 @@ const ChatPage = () => {
 
                 setMessages(prev => [...prev, userMessage]);
 
-                setTimeout(() => scrollToBottom("smooth"), 50);
+                // Scroll más rápido y suave al enviar mensaje
+                requestAnimationFrame(() => {
+                    scrollToBottom("smooth");
+                });
 
                 await ConversationService.addMessage(conversationId!, userMessage);
 
@@ -241,17 +245,22 @@ const ChatPage = () => {
         }
     }
 
-    useLayoutEffect(() => {
-        if (isNearBottom) {
-            scrollToBottom("smooth");
+    useEffect(() => {
+        if (isNearBottom && statusStream) {
+            // Durante el streaming, hacer scroll suave solo si el usuario está cerca del final
+            const timeoutId = setTimeout(() => {
+                scrollToBottom("smooth");
+            }, 100);
+            return () => clearTimeout(timeoutId);
         }
-    }, [messages, isNearBottom, scrollToBottom]);
+    }, [messages, isNearBottom, scrollToBottom, statusStream]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (messages.length > 0) {
-            setTimeout(() => scrollToBottom("auto"), 100);
+            // Usar smooth para mejor UX al cambiar de conversación
+            setTimeout(() => scrollToBottom("smooth"), 150);
         }
-    }, [conversationId]);
+    }, [conversationId, scrollToBottom]);
 
     useEffect(() => {
         const conversationUUID = uuid();
@@ -335,6 +344,8 @@ const ChatPage = () => {
                     overflowY: "auto",
                     scrollBehavior: "smooth",
                     position: "relative",
+                    // Mejorar el rendimiento del scroll durante streaming
+                    willChange: statusStream ? 'scroll-position' : 'auto',
                     '&::-webkit-scrollbar': {
                         width: '8px',
                     },
