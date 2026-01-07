@@ -114,6 +114,9 @@ const ChatPage = () => {
                     }];
                 });
 
+                // Scroll adicional para mostrar el loader "Pensando..." después del mensaje del usuario
+                setTimeout(() => scrollToBottom("smooth"), 100);
+
                 let currentText = "";
                 let firstChunk = true;
 
@@ -142,7 +145,9 @@ const ChatPage = () => {
                     timestamp: new Date().toISOString(),
                 });
 
-                setTimeout(() => setStatusStream(false), 300);
+                setStatusStream(false);
+                // Scroll final para mostrar los botones que aparecen al terminar
+                setTimeout(() => scrollToBottom("smooth"), 100);
 
             } catch (error) {
                 let userErrorMessage = "Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente.";
@@ -246,14 +251,14 @@ const ChatPage = () => {
     }
 
     useEffect(() => {
-        if (isNearBottom && statusStream) {
-            // Durante el streaming, hacer scroll suave solo si el usuario está cerca del final
+        if (isNearBottom) {
+            // Durante el streaming y al finalizar, hacer scroll suave si el usuario está cerca del final
             const timeoutId = setTimeout(() => {
                 scrollToBottom("smooth");
             }, 100);
             return () => clearTimeout(timeoutId);
         }
-    }, [messages, isNearBottom, scrollToBottom, statusStream]);
+    }, [messages, isNearBottom, scrollToBottom]);
 
     useEffect(() => {
         if (messages.length > 0) {
