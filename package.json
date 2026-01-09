@@ -15,6 +15,7 @@
     "@fontsource-variable/red-hat-display": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
     "@google/genai": "^1.30.0",
+    "@mendable/firecrawl-js": "^4.10.0",
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
     "animate.css": "^4.1.1",
@@ -52,6 +53,7 @@
     "pdfmake-font-generator": "^1.0.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vite-plugin-node-polyfills": "^0.24.0"
   }
 }

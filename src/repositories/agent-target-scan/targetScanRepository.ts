@@ -1,10 +1,12 @@
+import { scrapeURL } from "@/firecrawl/utils";
+import { firecrawlTool } from "@/tools/tools";
 import {
     ApiError,
+    FunctionCallingConfigMode,
     GoogleGenAI,
     type Content,
     type ContentListUnion,
-    type Part,
-    type Tool
+    type Part
 } from "@google/genai";
 import { PROMPT_TARGET_SCAN_MAIN } from "../../utils/prompt";
 
@@ -98,21 +100,69 @@ export class TargetScanRepository {
 
             const contents: ContentListUnion = contentsArray;
 
-            const groundingTool: Tool = {
-                googleSearch: {},
-                urlContext: {}
-            };
+            // const groundingTool: Tool = {
+            //     googleSearch: {},
+            //     functionDeclarations: CustomTools.functionDeclarations
+            // };
 
             const response = await this.genAI!.models.generateContentStream({
                 model: this.modelName,
                 contents,
                 config: {
                     systemInstruction: PROMPT_TARGET_SCAN_MAIN,
-                    tools: [groundingTool],
+                    tools: [
+                        {
+                            functionDeclarations: [firecrawlTool]
+                        }
+                    ],
+                    toolConfig: {
+                        functionCallingConfig: {
+                            mode: FunctionCallingConfigMode.ANY,
+                            allowedFunctionNames: ["get_url_content"]
+                        }
+                    }
                 }
             });
 
             for await (const part of response) {
+                if (part.functionCalls && part.functionCalls.length > 0) {
+                    const functionCall = part.functionCalls[0];
+                    console.log(`Function to call: ${functionCall.name}`);
+                    console.log(`Arguments: ${JSON.stringify(functionCall.args)}`);
+                    const args = functionCall.args as { url: string };
+
+                    if (args.url && args.url.trim() !== "") {
+
+                        const result = await scrapeURL(args.url);
+                        console.log("Scraped content:", result);
+
+                        const responseAgent = `Contenido extraído de la URL ${args.url}:\n\n${result || "No se pudo extraer contenido legible."}\n\nFin del contenido extraído.\n`;
+                        console.log("Response Agent URL firecrawl:", responseAgent);
+
+                        const analizeResponse = await this.genAI!.models.generateContentStream({
+                            model: this.modelName,
+                            contents: [
+                                {
+                                    parts: [{ text: responseAgent }]
+                                }
+                            ],
+                            config: {
+                                systemInstruction: `Analiza el siguiente contenido extraído de una URL y 
+                                proporciona un resumen o la información solicitada por el usuario. 
+                                La pregunta del usuario es: ${userPrompt}.`,
+                            }
+                        });
+
+                        for await (const analizePart of analizeResponse) {
+                            const text = analizePart.text ?? "";
+                            yield text;
+                        }
+                    }
+                } else {
+                    console.log("No function call found in the response.");
+                    console.log(part.text);
+                }
+
                 const text = part.text ?? "";
                 yield text;
             }
