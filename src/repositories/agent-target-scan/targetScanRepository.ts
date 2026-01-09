@@ -3,7 +3,8 @@ import {
     GoogleGenAI,
     type Content,
     type ContentListUnion,
-    type Part
+    type Part,
+    type Tool
 } from "@google/genai";
 import { PROMPT_TARGET_SCAN_MAIN } from "../../utils/prompt";
 
@@ -97,11 +98,17 @@ export class TargetScanRepository {
 
             const contents: ContentListUnion = contentsArray;
 
+            const groundingTool: Tool = {
+                googleSearch: {},
+                urlContext: {}
+            };
+
             const response = await this.genAI!.models.generateContentStream({
                 model: this.modelName,
                 contents,
                 config: {
-                    systemInstruction: PROMPT_TARGET_SCAN_MAIN
+                    systemInstruction: PROMPT_TARGET_SCAN_MAIN,
+                    tools: [groundingTool],
                 }
             });
 
