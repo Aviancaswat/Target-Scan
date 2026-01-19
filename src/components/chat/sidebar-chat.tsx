@@ -97,11 +97,11 @@ export default function SidebarChatHistory() {
                     }
                 }}
             >
-                <Box sx={{ 
-                    width: 320, 
-                    p: 2.5, 
-                    height: '100vh', 
-                    display: 'flex', 
+                <Box sx={{
+                    width: 320,
+                    p: 2.5,
+                    height: '100vh',
+                    display: 'flex',
                     flexDirection: 'column',
                     overflow: 'hidden'
                 }}>
@@ -150,7 +150,7 @@ export default function SidebarChatHistory() {
                     >
                         <List disablePadding>
                             <ListItem disablePadding>
-                                <ListItemButton 
+                                <ListItemButton
                                     onClick={createNewChat}
                                     sx={{
                                         py: 1.5,
@@ -183,8 +183,8 @@ export default function SidebarChatHistory() {
                         </List>
                     </Box>
 
-                    <Divider sx={{ 
-                        my: 2, 
+                    <Divider sx={{
+                        my: 2,
                         opacity: isDark ? 0.15 : 0.6,
                         borderColor: isDark
                             ? alpha('#FFFFFF', 0.1)
@@ -192,10 +192,10 @@ export default function SidebarChatHistory() {
                     }} />
 
                     <Box sx={{ flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                        <Accordion 
-                            defaultExpanded 
-                            elevation={0} 
-                            sx={{ 
+                        <Accordion
+                            defaultExpanded
+                            elevation={0}
+                            sx={{
                                 overflow: 'visible',
                                 bgcolor: isDark
                                     ? alpha('#1a1a1a', 0.6)
@@ -211,7 +211,7 @@ export default function SidebarChatHistory() {
                                 '&:before': { display: 'none' },
                             }}
                         >
-                            <AccordionSummary 
+                            <AccordionSummary
                                 expandIcon={<ExpandMoreIcon sx={{ color: 'text.primary' }} />}
                                 sx={{
                                     borderBottom: '1px solid',
@@ -227,8 +227,8 @@ export default function SidebarChatHistory() {
                                 <Typography fontWeight={600} fontSize={14} color="text.primary">Chats</Typography>
                             </AccordionSummary>
 
-                            <AccordionDetails sx={{ 
-                                p: 0, 
+                            <AccordionDetails sx={{
+                                p: 0,
                                 maxHeight: 'calc(100vh - 350px)',
                                 overflow: 'auto',
                                 '&::-webkit-scrollbar': {
@@ -249,96 +249,98 @@ export default function SidebarChatHistory() {
                                     },
                                 },
                             }}>
-                            {conversations.length === 0 ? (
-                                <Box
-                                    display="flex"
-                                    flexDirection="column"
-                                    alignItems="center"
-                                    textAlign="center"
-                                    gap={1}
-                                    py={2}
-                                >
-                                    <MessageCircleOff size={40} />
-                                    <Typography variant="body2">
-                                        Aún no tienes conversaciones.
-                                    </Typography>
-                                </Box>
-                            ) : (
-                                <List>
-                                    {conversations
-                                        .filter(e => e.messages.length > 0)
-                                        .map(e => (
-                                            <ListItem
-                                                key={e.converdationId}
-                                                disablePadding
-                                                onMouseEnter={() => setHoverChatId(e.converdationId)}
-                                                onMouseLeave={() => setHoverChatId(undefined)}
-                                                sx={{
-                                                    position: 'relative',
-                                                    borderLeft: e.converdationId === currentConversationId ? 4 : 0,
-                                                    borderColor: e.converdationId === currentConversationId ? 'primary.main' : 'transparent',
-                                                    backgroundColor: e.converdationId === currentConversationId 
-                                                        ? isDark
-                                                            ? alpha(theme.palette.primary.main, 0.15)
-                                                            : 'rgba(230, 57, 70, 0.08)'
-                                                        : 'inherit',
-                                                    mb: 0.5,
-                                                    borderRadius: 1,
-                                                    transition: 'all 0.2s',
-                                                }}
-                                            >
-                                                <ListItemButton 
-                                                    onClick={() => selectChat(e.converdationId)}
-                                                    sx={{
-                                                        py: 1.5,
-                                                        px: 2,
-                                                        pr: hoverChatId === e.converdationId ? 7 : 2,
-                                                        borderRadius: 1,
-                                                        transition: 'all 0.2s',
-                                                        '&:hover': {
-                                                            backgroundColor: isDark
-                                                                ? alpha('#FFFFFF', 0.05)
-                                                                : 'rgba(0, 0, 0, 0.04)',
-                                                        }
-                                                    }}
-                                                >
-                                                    <ListItemIcon sx={{ minWidth: 36 }}>
-                                                        <MessageCircleMore size={18} />
-                                                    </ListItemIcon>
-
-                                                    <ListItemText
-                                                        primaryTypographyProps={{
-                                                            noWrap: true,
-                                                            fontSize: 13.5,
-                                                            fontWeight: e.converdationId === currentConversationId ? 600 : 400,
+                                {conversations.length === 0 ? (
+                                    <Box
+                                        display="flex"
+                                        flexDirection="column"
+                                        alignItems="center"
+                                        textAlign="center"
+                                        gap={1}
+                                        py={2}
+                                    >
+                                        <MessageCircleOff size={40} />
+                                        <Typography variant="body2">
+                                            Aún no tienes conversaciones.
+                                        </Typography>
+                                    </Box>
+                                ) : (
+                                    <List>
+                                        {conversations
+                                            .filter(e => e.messages.length > 0)
+                                            .map(e => (
+                                                <Tooltip title={e.title} placement="top" key={e.converdationId}>
+                                                    <ListItem
+                                                        key={e.converdationId}
+                                                        disablePadding
+                                                        onMouseEnter={() => setHoverChatId(e.converdationId)}
+                                                        onMouseLeave={() => setHoverChatId(undefined)}
+                                                        sx={{
+                                                            position: 'relative',
+                                                            borderLeft: e.converdationId === currentConversationId ? 4 : 0,
+                                                            borderColor: e.converdationId === currentConversationId ? 'primary.main' : 'transparent',
+                                                            backgroundColor: e.converdationId === currentConversationId
+                                                                ? isDark
+                                                                    ? alpha(theme.palette.primary.main, 0.15)
+                                                                    : 'rgba(230, 57, 70, 0.08)'
+                                                                : 'inherit',
+                                                            mb: 0.5,
+                                                            borderRadius: 1,
+                                                            transition: 'all 0.2s',
                                                         }}
-                                                        primary={e.title?.slice(0, 35) + (e.title?.length! > 35 ? "..." : "")}
-                                                    />
-                                                </ListItemButton>
+                                                    >
+                                                        <ListItemButton
+                                                            onClick={() => selectChat(e.converdationId)}
+                                                            sx={{
+                                                                py: 1.5,
+                                                                px: 2,
+                                                                pr: hoverChatId === e.converdationId ? 7 : 2,
+                                                                borderRadius: 1,
+                                                                transition: 'all 0.2s',
+                                                                '&:hover': {
+                                                                    backgroundColor: isDark
+                                                                        ? alpha('#FFFFFF', 0.05)
+                                                                        : 'rgba(0, 0, 0, 0.04)',
+                                                                }
+                                                            }}
+                                                        >
+                                                            <ListItemIcon sx={{ minWidth: 36 }}>
+                                                                <MessageCircleMore size={18} />
+                                                            </ListItemIcon>
 
-                                                <Box
-                                                    sx={{
-                                                        position: 'absolute',
-                                                        right: 8,
-                                                        top: '50%',
-                                                        transform: 'translateY(-50%)',
-                                                        opacity: hoverChatId === e.converdationId ? 1 : 0,
-                                                        visibility: hoverChatId === e.converdationId ? 'visible' : 'hidden',
-                                                        transition: 'opacity 0.2s, visibility 0.2s',
-                                                        zIndex: 10,
-                                                    }}
-                                                >
-                                                    <MenuOptionsChat
-                                                        conversationId={e.converdationId}
-                                                        onMenuOpen={() => setHoverChatId(e.converdationId)}
-                                                    />
-                                                </Box>
-                                            </ListItem>
-                                        ))}
-                                </List>
-                            )}
-                        </AccordionDetails>
-                    </Accordion>
+                                                            <ListItemText
+                                                                primaryTypographyProps={{
+                                                                    noWrap: true,
+                                                                    fontSize: 13.5,
+                                                                    fontWeight: e.converdationId === currentConversationId ? 600 : 400,
+                                                                }}
+                                                                primary={e.title?.slice(0, 35) + (e.title?.length! > 35 ? "..." : "")}
+                                                            />
+                                                        </ListItemButton>
+
+                                                        <Box
+                                                            sx={{
+                                                                position: 'absolute',
+                                                                right: 8,
+                                                                top: '50%',
+                                                                transform: 'translateY(-50%)',
+                                                                opacity: hoverChatId === e.converdationId ? 1 : 0,
+                                                                visibility: hoverChatId === e.converdationId ? 'visible' : 'hidden',
+                                                                transition: 'opacity 0.2s, visibility 0.2s',
+                                                                zIndex: 10,
+                                                            }}
+                                                        >
+                                                            <MenuOptionsChat
+                                                                conversationId={e.converdationId}
+                                                                onMenuOpen={() => setHoverChatId(e.converdationId)}
+                                                            />
+                                                        </Box>
+                                                    </ListItem>
+                                                </Tooltip>
+                                            ))}
+                                    </List>
+                                )}
+                            </AccordionDetails>
+                        </Accordion>
                     </Box>
                 </Box>
             </Drawer>
@@ -367,8 +369,8 @@ const MenuOptionsChat = ({
 
     return (
         <>
-            <IconButton 
-                onClick={handleOpen} 
+            <IconButton
+                onClick={handleOpen}
                 size="small"
                 sx={{
                     bgcolor: 'background.paper',
