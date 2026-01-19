@@ -17,12 +17,12 @@ import { Pen, Pencil } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export const ModalUpdateChatName = ({ conversationId }: { conversationId: string }) => {
+export const ModalUpdateChatName = ({ conversationId, oldTitle }: { conversationId: string, oldTitle: string }) => {
     const theme = useTheme();
     const { themeMode } = useTargetScanStore();
     const isDark = themeMode === 'dark';
     const [open, setOpen] = useState(false);
-    const [newChatName, setNewChatName] = useState("");
+    const [newChatName, setNewChatName] = useState(oldTitle);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => {

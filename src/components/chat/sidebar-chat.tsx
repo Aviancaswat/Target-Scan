@@ -331,6 +331,7 @@ export default function SidebarChatHistory() {
                                                         >
                                                             <MenuOptionsChat
                                                                 conversationId={e.converdationId}
+                                                                oldTitle={e.title ?? ""}
                                                                 onMenuOpen={() => setHoverChatId(e.converdationId)}
                                                             />
                                                         </Box>
@@ -350,9 +351,11 @@ export default function SidebarChatHistory() {
 
 const MenuOptionsChat = ({
     conversationId,
+    oldTitle,
     onMenuOpen,
 }: {
     conversationId: string;
+    oldTitle: string;
     onMenuOpen?: () => void;
 }) => {
 
@@ -402,7 +405,7 @@ const MenuOptionsChat = ({
                     }
                 }}
             >
-                <ModalUpdateChatName conversationId={conversationId} />
+                <ModalUpdateChatName conversationId={conversationId} oldTitle={oldTitle} />
                 <ModalDeleteChat conversationId={conversationId} />
             </Menu>
         </>
