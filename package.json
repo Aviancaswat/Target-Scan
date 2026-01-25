@@ -1,5 +1,6 @@
 {
   "name": "validator-target-develop",
+  "author": "Fainner Ramirez De La Hoz",
   "private": true,
   "version": "0.0.0",
   "type": "module",

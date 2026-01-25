@@ -82,6 +82,12 @@ El sistema final será un chat inteligente con funcionamiento similar a la IA ut
 
 Y generar de manera automática todo el análisis detallado requerido, reduciendo tiempos de validación y estandarizando los criterios entre equipos.
 
+## Author
+Desarrollado por: [Fainner Ramirez de la hoz 🍵](https://faidev.vercel.app/)  
+Rol: Frontend Developer  
+Tecnologías: React, TypeScript  
+Proyecto realizado para: Avianca S.A
+
 ## 🛠️ Tecnologías Consideradas (Propuesta)
 
 OpenAI / Gemini Google
