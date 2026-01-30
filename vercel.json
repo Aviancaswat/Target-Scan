@@ -1,8 +1,8 @@
 {
-    "routes": [
+    "rewrites": [
         {
-            "src": "/(.*)",
-            "status": 403
+            "source": "/(.*)",
+            "destination": "/"
         }
     ]
 }
